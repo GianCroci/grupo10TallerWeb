@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -7,6 +8,7 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
 
     private Personaje personaje;
 
+    @Autowired
     public ServicioPersonajeImpl(Personaje personaje) {
         this.personaje = personaje;
     }
@@ -49,5 +51,10 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
     @Override
     public Integer getAgilidad() {
         return personaje.getAgilidad();
+    }
+
+    @Override
+    public void guardarPersonaje(Personaje personaje) {
+        this.personaje = personaje;
     }
 }

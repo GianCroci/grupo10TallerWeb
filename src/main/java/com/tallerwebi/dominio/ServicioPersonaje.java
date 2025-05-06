@@ -17,4 +17,6 @@ public interface ServicioPersonaje {
     Integer getArmadura();
 
     Integer getAgilidad();
+
+    void guardarPersonaje(Personaje personaje);
 }

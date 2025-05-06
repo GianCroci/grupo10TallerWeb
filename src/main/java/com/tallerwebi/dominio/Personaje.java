@@ -1,5 +1,8 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Personaje {
 
     private String nombre;
