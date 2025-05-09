@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 public class MejoraDto {
+
     private Integer oro;
 
 
