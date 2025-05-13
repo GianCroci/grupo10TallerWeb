@@ -19,4 +19,8 @@ public interface ServicioPersonaje {
     Integer getAgilidad();
 
     void guardarPersonaje(Personaje personaje);
+
+    void setGenero(String femenino);
+
+    String getGenero();
 }

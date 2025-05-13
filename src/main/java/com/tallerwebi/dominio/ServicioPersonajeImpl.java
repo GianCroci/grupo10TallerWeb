@@ -57,4 +57,14 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
     public void guardarPersonaje(Personaje personaje) {
         this.personaje = personaje;
     }
+
+    @Override
+    public void setGenero(String genero) {
+        personaje.setGenero(genero);
+    }
+
+    @Override
+    public String getGenero() {
+        return personaje.getGenero();
+    }
 }

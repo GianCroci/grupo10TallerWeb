@@ -159,4 +159,17 @@ public class ControladorPersonajeTest {
 
         assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
     }
+
+    @Test
+    public void queSePuedaSetearSiElPersonajeEsFemeninoOMasculino(){
+        Personaje personaje = new Personaje();
+        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
+        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
+        servicioPersonaje.setGenero("Femenino");
+
+        String generoEsperado = "Femenino";
+        String generoObtenido = servicioPersonaje.getGenero();
+
+        assertThat(generoEsperado, equalTo(generoObtenido));
+    }
 }
