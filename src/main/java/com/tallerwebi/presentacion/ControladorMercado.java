@@ -39,14 +39,13 @@ public class ControladorMercado {
     public ModelAndView realizarCompra(@RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados) {
         ModelMap model = new ModelMap();
 
-        if (itemsSeleccionados != null && !itemsSeleccionados.isEmpty()) {
-            model.put("compraExitosa", "¡Compra realizada con éxito! Has comprado: " + String.join(", ", itemsSeleccionados));
-        } else {
-            model.put("compraExitosa", "No seleccionaste ningún objeto.");
-        }
+        String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados);
 
+        model.put("compraExitosa", mensajeCompra);
         model.put("mercado", servicioMercado.mostrarMercado());
+
         return new ModelAndView("mercado", model);
     }
+
 
 }

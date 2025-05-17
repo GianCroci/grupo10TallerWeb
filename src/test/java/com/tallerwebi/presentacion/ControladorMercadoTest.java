@@ -1,9 +1,14 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.ServicioMercado;
 
+import com.tallerwebi.dominio.ServicioMercadoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +21,7 @@ public class ControladorMercadoTest {
 
     @BeforeEach
     public void init() {
-        servicioMercado = mock(ServicioMercado.class);
+        servicioMercado = new ServicioMercadoImpl();
         controladorMercado = new ControladorMercado(servicioMercado);
     }
 
@@ -26,5 +31,23 @@ public class ControladorMercadoTest {
         ModelAndView modelAndView= controladorMercado.mostrarMercado();
 
         assertThat(modelAndView.getViewName(), equalTo("mercado"));
+    }
+
+    @Test
+    public void queDevuelvaMensajeExitoAlComprar() {
+        List<String> seleccionados = Arrays.asList("espada-corta", "pan-duro");
+
+        String resultado = servicioMercado.procesarCompra(seleccionados);
+
+        assertThat(resultado, equalTo("¡Compra realizada con éxito! Has comprado: espada-corta, pan-duro"));
+    }
+
+    @Test
+    public void queDevuelvaMensajeErrorSiNoSeleccionoNada() {
+        List<String> seleccionados = Collections.emptyList();
+
+        String resultado = servicioMercado.procesarCompra(seleccionados);
+
+        assertThat(resultado, equalTo("No seleccionaste ningún objeto"));
     }
 }
