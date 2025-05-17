@@ -6,11 +6,37 @@ import org.springframework.stereotype.Component;
 public class Personaje {
 
     private String nombre;
+    private String genero;
     private String rol;
     private Integer fuerza;
     private Integer inteligencia;
     private Integer armadura;
     private Integer agilidad;
+    public String imagen;
+
+    public void setFuerza(Integer fuerza) {
+        this.fuerza = fuerza;
+    }
+
+    public void setInteligencia(Integer inteligencia) {
+        this.inteligencia = inteligencia;
+    }
+
+    public void setArmadura(Integer armadura) {
+        this.armadura = armadura;
+    }
+
+    public void setAgilidad(Integer agilidad) {
+        this.agilidad = agilidad;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -64,5 +90,13 @@ public class Personaje {
 
     public Integer getAgilidad() {
         return agilidad;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getGenero() {
+        return genero;
     }
 }

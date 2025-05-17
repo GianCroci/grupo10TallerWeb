@@ -1,13 +1,12 @@
 body {
-  padding-top: 5rem;
 }
 .starter-template {
-  padding: 3rem 1.5rem;
   text-align: center;
 }
 
-h1{
+h3{
 	color:#0000FF;
+	font-size: 50px;
 }
 
 h2{
@@ -15,5 +14,5 @@ h2{
 }
 
 .navbar-brand{
-    margin:0 2rem;
+
 }
