@@ -1,10 +1,8 @@
 package com.tallerwebi.dominio;
 
-import antlr.collections.impl.ASTArray;
 import com.tallerwebi.dominio.excepcion.Equipamiento;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -61,10 +59,10 @@ public class Inventario {
     }
 
     public Boolean agregarEquipo(Equipamiento equipoNuevo) {
-        if (equipoNuevo.getTipo() == "ARMA") {
+        if (equipoNuevo.getTipo().equals("ARMA")) {
             return this.armas.add(equipoNuevo);
         }
-        if (equipoNuevo.getTipo() == "VESTIMENTA") {
+        if (equipoNuevo.getTipo().equals("VESTIMENTA")) {
             return this.vestimentas.add(equipoNuevo);
         }else{
             return Boolean.FALSE;
