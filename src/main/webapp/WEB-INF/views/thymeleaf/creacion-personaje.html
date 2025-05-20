@@ -12,20 +12,33 @@
   <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
 
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+    </style>
 </head>
 
 <body class="bg-warning bg-opacity-50">
 
 
-<main role="main" class="container-fluid ">
+<main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
+      class="container-fluid d-flex flex-column align-items-center">
 
-    <div th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
-         class="container-fluid d-flex flex-column align-items-center">
-    <h2 class="text-center text-black fs-1">NUEVO PERSONAJE</h2>
+    <h1 class="text-center text-black fs-1">NUEVO PERSONAJE</h1>
         <div class="w-100" style="max-width: 500px;">
             <form action="#" th:action="@{/guardar-personaje}" method="POST" th:object="${datosPersonaje}">
-                <hr class="colorgraph">
-                <div class="mb-3">
+                <div class="mb-n3">
                     <input th:field="*{nombre}" type="text" id="nombre" class="form-control" placeholder="Nombre" required/>
                 </div>
                 <div id="carouselExampleFade" class="carousel slide">
@@ -71,8 +84,6 @@
 
             </form>
         </div>
-    </div>
-
 
 </main>
 <!-- /.container -->
