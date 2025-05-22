@@ -1,12 +1,12 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.Inventario;
 import com.tallerwebi.dominio.Probando;
 import com.tallerwebi.dominio.ServicioHerreria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,19 +31,21 @@ public class ControladorHerreria {
 
             model.put("mejoraDto", new MejoraDto());
 
-            model.put("inventario", new Inventario().getTodoELInventario());
+            List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
+            model.put("inventario", inventario);
 
         return new ModelAndView("herreria", model);
     }
 
     @RequestMapping(path = "/mejorar-equipamiento", method = RequestMethod.POST)
-    public ModelAndView mejorarEquipamiento(MejoraDto mejoraDto) {
+    public ModelAndView mejorarEquipamiento(@ModelAttribute MejoraDto mejoraDto) {
 
         ModelMap model = new ModelMap();
 
-        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOro());
+        List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
+        model.put("inventario", inventario);
 
-        model.put("inventario", new Inventario().getTodoELInventario());
+        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
 
         model.put("mensaje", "El equipamiento se ha mejorado correctamente");
         if (!mejorado) {

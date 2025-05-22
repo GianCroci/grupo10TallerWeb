@@ -65,7 +65,7 @@ public class ControladorHerreriaTest {
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeExitoSiSePudoMejorarCorrectamente() {
 
-        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOro())).thenReturn(true);
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(true);
 
         ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
@@ -82,7 +82,7 @@ public class ControladorHerreriaTest {
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeFalloSiNoSePudoMejorarCorrectamente() {
 
-        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOro())).thenReturn(false);
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(false);
 
         ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
@@ -100,7 +100,7 @@ public class ControladorHerreriaTest {
     @Test
     public void queAlMejorarUnEquipamientoSeVuelvaAMostrarElInventario() {
 
-        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOro())).thenReturn(false);
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(false);
 
         ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 

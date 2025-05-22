@@ -4,26 +4,31 @@ import com.tallerwebi.dominio.Equipamiento;
 
 public class MejoraDto {
 
-    private Equipamiento Equipamiento;
-    private Integer oro;
+    private Equipamiento equipamiento;
+    private Double oroUsuario;
 
 
     public MejoraDto() {
     }
 
-    public MejoraDto(Integer idEquipamiento, Integer oro) {
-        this.Equipamiento = Equipamiento;
-        this.oro = oro;
+    public MejoraDto(Equipamiento equipamiento, Double oroUsuario) {
+        this.equipamiento = equipamiento;
+        this.oroUsuario = oroUsuario;
     }
 
-    public Integer getOro() {
-        return oro;
-    }
-    public void setOro(Integer oro) {
-        this.oro = oro;
+    public Double getOroUsuario() {
+        return oroUsuario;
     }
 
-    public Equipamiento getEquipamiento() { return Equipamiento; }
+    public void setOroUsuario(Double oroUsuario) {
+        this.oroUsuario = oroUsuario;
+    }
 
-    public void setIdEquipamiento(Integer idEquipamiento) { this.Equipamiento = Equipamiento; }
+    public Equipamiento getEquipamiento() {
+        return equipamiento;
+    }
+
+    public void setEquipamiento(Equipamiento equipamiento) {
+        this.equipamiento = equipamiento;
+    }
 }

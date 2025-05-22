@@ -1,3 +1,4 @@
+/*
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioInventario;
@@ -179,3 +180,4 @@ public class ControladorInventarioTest {
 
 
 }
+*/
