@@ -72,7 +72,7 @@ public class ControladorTaberna {
         String vistaParcial = servicioTaberna.mostrarTaberna();
         modelMap.put("vistaParcial", vistaParcial);
         modelMap.put("imagenParcial", imagenParcial);
-        modelMap.put("personajeDisponible", personajeDisponible != null ? personajeDisponible.name() : null);
+        modelMap.put("personajeDisponible", personajeDisponible);
 
         return new ModelAndView("taberna", modelMap);
     }
