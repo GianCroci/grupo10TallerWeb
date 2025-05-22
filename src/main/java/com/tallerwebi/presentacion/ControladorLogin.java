@@ -57,7 +57,7 @@ public class ControladorLogin {
             model.put("error", "Error al registrar el nuevo usuario");
             return new ModelAndView("nuevo-usuario", model);
         }
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/creacion-personaje");
     }
 
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
