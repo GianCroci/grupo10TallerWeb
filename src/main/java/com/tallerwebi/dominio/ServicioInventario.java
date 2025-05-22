@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.Equipamiento;
+import com.tallerwebi.dominio.Equipamiento;
 
 import java.util.List;
 

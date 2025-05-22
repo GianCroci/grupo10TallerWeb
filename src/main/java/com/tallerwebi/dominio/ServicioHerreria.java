@@ -4,5 +4,5 @@ import com.tallerwebi.presentacion.MejoraDto;
 
 public interface ServicioHerreria {
 
-    Boolean mejorarEquipamiento(MejoraDto mejoraDto);
+    Boolean mejorarEquipamiento(Equipamiento Equipamiento, Integer oro);
 }

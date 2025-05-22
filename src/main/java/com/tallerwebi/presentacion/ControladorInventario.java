@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioInventario;
-import com.tallerwebi.dominio.excepcion.Equipamiento;
+import com.tallerwebi.dominio.Equipamiento;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

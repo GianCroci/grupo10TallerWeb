@@ -1,8 +1,7 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.Equipamiento;
+import com.tallerwebi.dominio.Equipamiento;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.*;
 

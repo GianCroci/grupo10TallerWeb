@@ -10,11 +10,9 @@ import javax.transaction.Transactional;
 public class ServicioHerreriaImpl implements ServicioHerreria {
 
     @Override
-    public Boolean mejorarEquipamiento(MejoraDto mejoraDto) {
+    public Boolean mejorarEquipamiento(Equipamiento Equipamiento, Integer oro) {
 
-        if (mejoraDto.getOro() >= 10){
-            return true;
-        }
+
         return false;
     }
 }

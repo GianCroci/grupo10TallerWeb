@@ -1,5 +1,8 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Equipamiento;
+import com.tallerwebi.dominio.Inventario;
+import com.tallerwebi.dominio.Probando;
 import com.tallerwebi.dominio.ServicioHerreria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +10,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ControladorHerreria {
@@ -25,6 +31,8 @@ public class ControladorHerreria {
 
             model.put("mejoraDto", new MejoraDto());
 
+            model.put("inventario", new Inventario().getTodoELInventario());
+
         return new ModelAndView("herreria", model);
     }
 
@@ -33,11 +41,12 @@ public class ControladorHerreria {
 
         ModelMap model = new ModelMap();
 
-        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto);
+        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOro());
 
-        if (mejorado) {
-            model.put("mensaje", "El equipamiento se ha mejorado correctamente");
-        }else {
+        model.put("inventario", new Inventario().getTodoELInventario());
+
+        model.put("mensaje", "El equipamiento se ha mejorado correctamente");
+        if (!mejorado) {
             model.put("mensaje", "El equipamiento no se ha podido mejorar");
         }
 
