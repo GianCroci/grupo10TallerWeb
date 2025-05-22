@@ -1,23 +1,34 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioHerreriaImpl;
-import com.tallerwebi.dominio.ServicioLoginImpl;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ControladorHerreriaTest {
 
+    private ServicioHerreria servicioHerreriaMock;
+    private ControladorHerreria controladorHerreria;
+    private MejoraDto mejoraDtoMock;
+
+
+    @BeforeEach
+    public void init(){
+        servicioHerreriaMock = mock(ServicioHerreria.class);
+        controladorHerreria = new ControladorHerreria(servicioHerreriaMock);
+        mejoraDtoMock = mock(MejoraDto.class);
+    }
 
     @Test
     public void queSePuedaIrALaHerreria() {
-
-        ServicioHerreriaImpl servicioHerreria = new ServicioHerreriaImpl();
-        ControladorHerreria controladorHerreria = new ControladorHerreria(servicioHerreria);
 
         ModelAndView mav = controladorHerreria.irALaHerreria();
 
@@ -29,8 +40,6 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConMejoraDto() {
-        ServicioHerreriaImpl servicioHerreria = new ServicioHerreriaImpl();
-        ControladorHerreria controladorHerreria = new ControladorHerreria(servicioHerreria);
 
         ModelAndView mav = controladorHerreria.irALaHerreria();
 
@@ -42,14 +51,23 @@ public class ControladorHerreriaTest {
     }
 
     @Test
+    public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConUnInventario() {
+
+        ModelAndView mav = controladorHerreria.irALaHerreria();
+
+        String vistaEsperada = "herreria";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("inventario"), notNullValue());
+    }
+
+    @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeExitoSiSePudoMejorarCorrectamente() {
-        ServicioHerreriaImpl servicioHerreria = new ServicioHerreriaImpl();
-        ControladorHerreria controladorHerreria = new ControladorHerreria(servicioHerreria);
 
-        MejoraDto mejoraDto = new MejoraDto();
-        mejoraDto.setOro(10);
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(true);
 
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDto);
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -64,13 +82,9 @@ public class ControladorHerreriaTest {
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeFalloSiNoSePudoMejorarCorrectamente() {
 
-        ServicioHerreriaImpl servicioHerreria = new ServicioHerreriaImpl();
-        ControladorHerreria controladorHerreria = new ControladorHerreria(servicioHerreria);
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(false);
 
-        MejoraDto mejoraDto = new MejoraDto();
-        mejoraDto.setOro(9);
-
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDto);
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -81,6 +95,20 @@ public class ControladorHerreriaTest {
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
         assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
+    }
+
+    @Test
+    public void queAlMejorarUnEquipamientoSeVuelvaAMostrarElInventario() {
+
+        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(false);
+
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
+
+        String vistaEsperada = "herreria";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("inventario"), notNullValue());
     }
 
 }
