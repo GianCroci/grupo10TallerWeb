@@ -155,7 +155,7 @@ public class ControladorPersonajeTest {
 
         ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personaje);
 
-        String vistaEsperada = "nuevo-personaje";
+        String vistaEsperada = "home";
 
         assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
     }

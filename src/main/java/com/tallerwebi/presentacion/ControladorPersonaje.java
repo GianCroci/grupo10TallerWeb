@@ -2,7 +2,6 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.ServicioPersonaje;
-import com.tallerwebi.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +32,7 @@ public class ControladorPersonaje {
         ModelMap modelMap = new ModelMap();
         servicioPersonaje.guardarPersonaje(personaje);
         modelMap.put("datosPersonaje", personaje);
-        return new ModelAndView("nuevo-personaje", modelMap);
+        return new ModelAndView("home", modelMap);
 
     }
 
@@ -41,6 +40,6 @@ public class ControladorPersonaje {
     public ModelAndView nuevoPersonaje() {
         ModelMap model = new ModelMap();
         model.put("datosPersonaje", new Personaje());
-        return new ModelAndView("nuevo-personaje", model);
+        return new ModelAndView("home", model);
     }
 }
