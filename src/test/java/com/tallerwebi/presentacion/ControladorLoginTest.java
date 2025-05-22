@@ -102,4 +102,16 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
 	}
+
+	@Test
+	public void irAlHomeSiSeLogeaYYaTienePersonajeCreado(){
+		// preparacion
+		Usuario usuarioEncontradoMock = mock(Usuario.class);
+
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
+
+		// ejecucion
+		ModelAndView modelAndView = controladorLogin.irAHome(datosLoginMock, requestMock);
+	}
 }

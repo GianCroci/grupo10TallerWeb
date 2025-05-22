@@ -57,7 +57,7 @@ public class ControladorLogin {
             model.put("error", "Error al registrar el nuevo usuario");
             return new ModelAndView("nuevo-usuario", model);
         }
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/creacion-personaje");
     }
 
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
@@ -68,7 +68,14 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
+    public ModelAndView irAHome(DatosLogin datosLoginMock, HttpServletRequest requestMock) {
+        ModelMap modelMap = new ModelMap();
+        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginMock.getEmail(), datosLoginMock.getPassword());
+        if (usuarioBuscado != null) {
+
+            return new ModelAndView("redirect:/home");
+        }
+        modelMap.put("datosPersonaje", personaje);
         return new ModelAndView("home");
     }
 

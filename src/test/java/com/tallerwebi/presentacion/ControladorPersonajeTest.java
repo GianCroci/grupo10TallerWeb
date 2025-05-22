@@ -1,16 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.ServicioPersonaje;
-import com.tallerwebi.dominio.ServicioPersonajeImpl;
-import org.dom4j.rule.Mode;
-import org.junit.jupiter.api.BeforeEach;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 
 public class ControladorPersonajeTest {
 
@@ -27,6 +22,18 @@ public class ControladorPersonajeTest {
         String nombreObtenido = servicioPersonaje.getNombre();
 
         assertThat(nombreEsperado, equalTo(nombreObtenido));
+    }
+
+    @Test
+    public void queElPersonajeSeGuardeEnElUsuario(){
+        Personaje personaje = new Personaje();
+        Usuario usuario = new Usuario();
+
+        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
+        ServicioUsuario servicioUsuario = new ServicioUsuarioImpl(usuario);
+        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje, servicioUsuario);
+
+
     }
 
     @Test
