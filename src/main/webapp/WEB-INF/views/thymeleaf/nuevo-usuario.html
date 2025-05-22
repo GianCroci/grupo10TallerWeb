@@ -10,10 +10,10 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
   <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/core/css/main.css}"/>
+  <link rel="stylesheet" th:href="@{/core/css/login.css}"/>
 
 </head>
-
+<!--
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -40,9 +40,34 @@
   </div>
 
 </main>
-<!-- /.container -->
+-->
 
+<body class="main-bg">
+<main th:style="'background-image: url(' + @{/img/fondo-login.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
+      class="container-fluid d-flex flex-column align-items-center">
+  <div class="login-container text-c animated flipInX">
+    <div>
+      <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
+    </div>
+    <h3 class="text-whitesmoke">Nuevo usuario</h3>
+    <div class="container-content">
+      <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
+        <div class="form-group">
+          <input th:field="*{email}" id="email" type="email" class="form-control" required/>
+        </div>
+        <div class="form-group">
+          <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+        </div>
+        <button type="submit" class="form-button button-l margin-b">Registrarse</button>
+        <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+        </p>
+      </form>
+    </div>
+  </div>
+</main>
+</body>
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{js/main.js}"></script>
 </body>
 </html>
