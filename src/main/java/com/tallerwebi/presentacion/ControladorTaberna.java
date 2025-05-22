@@ -47,6 +47,8 @@ public class ControladorTaberna {
         ModelMap modelMap = new ModelMap();
 
         PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
+        String imagenParcial = servicioTaberna.obtenerVistaSegunPersonaje(personajeDisponible);
+
 
         try {
             PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personaje);
@@ -69,6 +71,7 @@ public class ControladorTaberna {
 
         String vistaParcial = servicioTaberna.mostrarTaberna();
         modelMap.put("vistaParcial", vistaParcial);
+        modelMap.put("imagenParcial", imagenParcial);
         modelMap.put("personajeDisponible", personajeDisponible != null ? personajeDisponible.name() : null);
 
         return new ModelAndView("taberna", modelMap);
