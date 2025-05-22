@@ -3,15 +3,11 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class ControladorInventarioTest {
+public class ControladorEquipamientoTest {
 
     ServicioEquipamientoImpl servicioEquipamiento = new ServicioEquipamientoImpl();
 

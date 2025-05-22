@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Equipamiento</title>
 </head>
 <body>
-$END$
+    <ul th:each="equipo : ${contenido}">
+      <li th:text="${equipo.nombre}"></li>
+    </ul>
 </body>
 </html>
