@@ -10,7 +10,7 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
   <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/core/css/login.css}"/>
+  <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
 </head>
 <!--
@@ -51,7 +51,7 @@
     </div>
     <h3 class="text-whitesmoke">Nuevo usuario</h3>
     <div class="container-content">
-      <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
+      <form class="margin-t" action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
         <div class="form-group">
           <input th:field="*{email}" id="email" type="email" class="form-control" required/>
         </div>
@@ -65,7 +65,6 @@
     </div>
   </div>
 </main>
-</body>
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{js/main.js}"></script>
