@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 
 @Service("servicioLogin")
 @Transactional
 public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
+    private HashMap<String, Usuario> usuarios = new HashMap<>();
 
     @Autowired
     public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
@@ -22,7 +24,10 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     @Override
     public Usuario consultarUsuario (String email, String password) {
-        return repositorioUsuario.buscarUsuario(email, password);
+        if(usuarios.get(email).getPassword().equals(password)){
+            return usuarios.get(email);
+        }
+        return null;
     }
 
     @Override
@@ -31,7 +36,7 @@ public class ServicioLoginImpl implements ServicioLogin {
         if(usuarioEncontrado != null){
             throw new UsuarioExistente();
         }
-        repositorioUsuario.guardar(usuario);
+        usuarios.put(usuario.getEmail(), usuario);
     }
 
 }
