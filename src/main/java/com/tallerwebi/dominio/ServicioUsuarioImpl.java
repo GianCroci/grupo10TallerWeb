@@ -4,11 +4,14 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class ServicioUsuarioImpl implements ServicioUsuario {
-
     private RepositorioUsuario repoUsuario;
-    private Usuario usuario;
+    private Map<String, Usuario> usuarios = new HashMap<>();
 
     @Autowired
     public ServicioUsuarioImpl(RepositorioUsuario repoUsuario) {
@@ -16,25 +19,24 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        repoUsuario.guardar(usuario);
+        usuarios.put(usuario.getEmail(), usuario);
     }
 
     @Override
     public Usuario buscar(String mail) {
-        return repoUsuario.buscar(mail);
+        return usuarios.get(mail);
     }
 
     @Override
-    public Boolean setPersonaje(Personaje personaje) {
+    public Boolean setPersonaje(Personaje personaje, Usuario usuario) {
 
-        Usuario usuarioEncontrado = repoUsuario.buscar(usuario.getEmail());
-        if (usuarioEncontrado != null) {
-            usuarioEncontrado.setPersonaje(personaje);
-            return true;
+        if(!usuarios.containsKey(usuario.getEmail())) {
+            usuarios.put(usuario.getEmail(), usuario);
         }
-        return false;
+        Usuario usuarioEncontrado = usuarios.get(usuario.getEmail());
+        usuarioEncontrado.setPersonaje(personaje);
+        usuarios.replace(usuario.getEmail(), usuario, usuarioEncontrado);
 
-
+        return true;
     }
 }

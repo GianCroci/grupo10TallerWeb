@@ -37,17 +37,21 @@ public class ControladorPersonaje {
     }
 
     @PostMapping("/guardar-personaje")
-    public ModelAndView guardarPersonaje(@ModelAttribute("datosPersonaje") Personaje personaje, HttpSession session, Model model) {
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
-        servicioUsuario.setUsuario(usuarioLogueado);
-        ModelAndView mav = new ModelAndView("home");
-        if (usuarioLogueado != null) {
-            servicioUsuario.setPersonaje(personaje);
-            mav.addObject("datosPersonaje", usuarioLogueado.getPersonaje());
+    public ModelAndView guardarPersonaje(@ModelAttribute("datosPersonaje") Personaje personaje, HttpSession session) {
+        ModelMap modelMap = new ModelMap();
+        Personaje personajeGuardado = new Personaje();
 
-            return mav;
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuarioLogueado != null) {
+            servicioUsuario.setPersonaje(personaje, usuarioLogueado);
+            modelMap.put("datosPersonaje", usuarioLogueado.getPersonaje());
+
+            return new ModelAndView("home", modelMap);
         }
-        return mav;
+
+        modelMap.put("datosPersonaje", personajeGuardado);
+        return new ModelAndView("creacion-personaje", modelMap);
     }
 
 
