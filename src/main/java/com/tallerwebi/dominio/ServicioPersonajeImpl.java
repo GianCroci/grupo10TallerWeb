@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 public class ServicioPersonajeImpl implements ServicioPersonaje {
 
     private Personaje personaje;
+    private RepositorioPersonaje repoPersonaje;
 
     @Autowired
-    public ServicioPersonajeImpl(Personaje personaje) {
-        this.personaje = personaje;
+    public ServicioPersonajeImpl(RepositorioPersonaje repoPersonaje) {
+        this.repoPersonaje = repoPersonaje;
+        this.personaje = new Personaje();
     }
 
     @Override
@@ -20,6 +22,8 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
 
     @Override
     public String getNombre() {
+        Long id = 1l;
+        Personaje personajeBuscado = repoPersonaje.buscarPersonaje(id);
         return personaje.getNombre();
     }
 
@@ -54,8 +58,15 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
     }
 
     @Override
-    public void guardarPersonaje(Personaje personaje) {
-        this.personaje = personaje;
+    public Boolean guardarPersonaje(Personaje personaje) {
+        Long id = personaje.getId();
+        Boolean seGuardo = repoPersonaje.guardar(id, personaje);
+        if (seGuardo == true) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
