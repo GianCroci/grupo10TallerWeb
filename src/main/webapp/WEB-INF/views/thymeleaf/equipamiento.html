@@ -1,12 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Equipamiento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/equipamiento.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            padding: 0%;
+            margin: 0%;
+        }
+
+        body{
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2em;
+            font-family: Macondo;
+        }
+
+        .contenedor-principal{
+            width: auto;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 1em;
+            row-gap: 2em;
+            border-style: ridge;
+            border-color: #1c110b;
+        }
+
+        .contenedor-armas {
+            display: flex;
+            background-color: #3B2417;
+            align-items: center;
+            column-gap: 0.3em;
+            padding: 0.5em;
+            border-style: ridge;
+            border-color: #1c110b;
+        }
+
+        .imagen-arma {
+            display: flex;
+            height: fit-content;
+            background-color: #090604 ;
+            border-style: ridge;
+            border-radius: 5px;
+            border-color: #090604 ;
+            transition: transform 0.5s, background-color 0.5s ease-in-out;
+        }
+
+        .imagen-arma:hover {
+            transform: scale(0.96);
+            background-color: #1f130d;
+        }
+
+        img{
+            width: 120px;
+            height: auto;
+        }
+
+        .contenedor-informacion{
+            display: flex;
+            flex-direction: column;
+            padding: 0.5em;
+            row-gap: 1em;
+            background-color: #c99868;
+            border-style: ridge;
+            border-color: #3B2417;
+        }
+
+        .contenedor-informacion > div:last-child {
+            display: flex;
+            justify-content: center;
+        }
+
+        .estadistica{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 200;
+
+            padding: 0.3em;
+        }
+
+        .nombre-arma{
+            text-align: center;
+        }
+
+        .boton{
+            width: 30%;
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #3B2417;
+            color: white;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .boton:hover{
+            background-color: #1b120c;
+            transform: translateY(-2px);
+        }
+    </style>
+    <header th:replace="navbar :: nav"></header>
+    <title>Equipamiento</title>
 </head>
-<body>
-    <ul th:each="equipo : ${contenido}">
-      <li th:text="${equipo.nombre}"></li>
-    </ul>
+<body th:style="'background-image: url(' + @{/img/equipamiento.png} + ')'">
+<header></header>
+<main>
+
+    <div class="contenedor-principal" th:style="'background-image: url(' + @{/img/contenedor-equipamiento.png} + ')'">
+
+        <div class="contenedor-armas">
+            <a th:each="equipo : ${contenido}"
+               th:href="@{'/equipamiento/' + ${equipo.id}}"
+               class="imagen-arma">
+                <img th:src="@{'/img/' + ${equipo.nombre} + '2.png'}"
+                     th:alt="${equipo.nombre}">
+            </a>
+        </div>
+
+        <div class="contenedor-informacion" th:if="${equipoSeleccionado != null}">
+            <div class="nombre-arma">
+                <h2 th:text="${equipoSeleccionado.nombre.toUpperCase()}"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Fuerza</h2>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.fuerza}"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Resistencia</h2>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.armadura}"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Inteligencia</h2>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.inteligencia}"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Agilidad</h2>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.agilidad}"></h2>
+            </div>
+            <div>
+                <a class="boton"
+                   th:href="@{'/equipamiento/equipar/' + ${equipoSeleccionado.id}}"
+                   th:text="${equipoSeleccionado.equipado} ? 'Equipado' : 'Equipar'"
+                ></a>
+            </div>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>

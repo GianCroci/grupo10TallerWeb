@@ -4,25 +4,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class ServicioEquipamientoImpl implements ServicioEquipamiento{
 
-    @Autowired(required = false)
+    private RepositorioInventario repositorioInventario;
     private List<Equipamiento> equipos;
 
-    public ServicioEquipamientoImpl(){
-        this.equipos = new ArrayList<>();
-        this.equipos.add(new Equipamiento("Espada", 100.0, 100.0, 100.0, 20, 30, 40, 20, Boolean.TRUE));
-        this.equipos.add(new Equipamiento("Espada 2", 100.0, 100.0, 100.0, 20, 30, 40, 20, Boolean.TRUE));
+    @Autowired
+    public ServicioEquipamientoImpl(RepositorioInventario repositorioInventario) {
+        this.repositorioInventario = repositorioInventario;
+        this.equipos = repositorioInventario.obtenerInventario();
+        this.equipos.get(0).setId(1);
+        this.equipos.get(1).setId(2);
+        this.equipos.get(2).setId(3);
     }
 
-
+    @Override
     public List<Equipamiento> mostrarEquipamiento() {
         return this.equipos;
     }
+
+    @Override
+    public Optional<Equipamiento> buscarEquipamientoPorId(Integer id) {
+        return this.equipos.stream()
+                .filter(equipo -> equipo.getId().equals(id))
+                .findFirst();
+    }
+
+    @Override
+    public Boolean equipar(Integer id) {
+        Optional<Equipamiento> equipoOptional = buscarEquipamientoPorId(id);
+        if (equipoOptional.isPresent()) {
+            Equipamiento equipoAEquipar = equipoOptional.get();
+
+            equipos.stream()
+                    .filter(e -> e.getEquipado() && !e.getId().equals(equipoAEquipar.getId()))
+                    .forEach(e -> e.setEquipado(false));
+
+            equipoAEquipar.setEquipado(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 }
