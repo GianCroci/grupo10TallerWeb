@@ -1,175 +1,65 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.ServicioPersonaje;
-import com.tallerwebi.dominio.ServicioPersonajeImpl;
+import com.tallerwebi.dominio.*;
 import org.dom4j.rule.Mode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 public class ControladorPersonajeTest {
 
-    @Test
-    public void queSePuedaCrearUnPersonajeConNombre(){
-        Personaje personaje = new Personaje();
+    private HttpSession sessionMock;
+    private Personaje personajeMockeado;
+    private ServicioPersonaje servicioPersonajeMock;
+    private ServicioUsuario servicioUsuarioMock;
+    private ControladorPersonaje controladorPersonaje;
+    private Usuario usuarioMockeado;
 
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setNombre("Lenorwix");
-
-        String nombreEsperado = "Lenorwix";
-        String nombreObtenido = servicioPersonaje.getNombre();
-
-        assertThat(nombreEsperado, equalTo(nombreObtenido));
+    @BeforeEach
+    public void init() {
+        sessionMock = mock(HttpSession.class);
+        personajeMockeado = mock(Personaje.class);
+        usuarioMockeado = mock(Usuario.class);
+        servicioUsuarioMock = mock(ServicioUsuario.class);
+        servicioPersonajeMock = mock(ServicioPersonaje.class);
+        controladorPersonaje = new ControladorPersonaje(servicioPersonajeMock, servicioUsuarioMock);
     }
 
     @Test
-    public void queSeDefinaElRolDelPersonaje(){
-        Personaje personaje = new Personaje();
+    public void queSeCreeElPersonajeYMeDevuelvaUnaVistaConLaInformacion(){
 
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
+        personajeMockeado.setNombre("Rushard");
+        personajeMockeado.setRol("Mago");
+        when(sessionMock.getAttribute(anyString())).thenReturn(usuarioMockeado);
+        when(usuarioMockeado.getPersonaje()).thenReturn(personajeMockeado);
 
-        servicioPersonaje.setRol("Mago");
+        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeMockeado, sessionMock);
 
-        String rolEsperado = "Mago";
-        String rolObtenido = servicioPersonaje.getRol();
+        String vistaEsperada = "home";
 
-        assertThat(rolEsperado, equalTo(rolObtenido));
-    }
+        assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
+        assertThat(modelAndView.getModel().get("datosPersonaje"), equalTo(personajeMockeado));
 
-    @Test
-    public void queSiEsLuchadorEmpieceCon100DeFuerza(){
-        Personaje personaje = new Personaje();
-
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setRol("Luchador");
-
-        Integer fuerzaEsperado = 100;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelLuchador(){
-        Personaje personaje = new Personaje();
-
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setRol("Luchador");
-
-        Integer fuerzaEsperado = 100;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 40;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 80;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 60;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelMago(){
-        Personaje personaje = new Personaje();
-
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setRol("Mago");
-
-        Integer fuerzaEsperado = 30;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 100;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 20;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 40;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelBandido(){
-        Personaje personaje = new Personaje();
-
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setRol("Bandido");
-
-        Integer fuerzaEsperado = 50;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 70;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 30;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 100;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
     }
 
     @Test
     public void queHayaUnaVistaDeCreacionDePersonaje(){
-        Personaje personaje = new Personaje();
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
 
         ModelAndView modelAndView = controladorPersonaje.creacionPersonaje();
 
         String vistaEsperada = "creacion-personaje";
 
         assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
-    }
-
-    @Test
-    public void queSeCreeElPersonajeYMeDevuelvaUnaVistaConLaInformacion(){
-        Personaje personaje = new Personaje();
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-
-        servicioPersonaje.setNombre("Rushard");
-        servicioPersonaje.setRol("Mago");
-
-        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personaje);
-
-        String vistaEsperada = "home";
-
-        assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
-    }
-
-    @Test
-    public void queSePuedaSetearSiElPersonajeEsFemeninoOMasculino(){
-        Personaje personaje = new Personaje();
-        ServicioPersonaje servicioPersonaje = new ServicioPersonajeImpl(personaje);
-        ControladorPersonaje controladorPersonaje = new ControladorPersonaje(servicioPersonaje);
-        servicioPersonaje.setGenero("Femenino");
-
-        String generoEsperado = "Femenino";
-        String generoObtenido = servicioPersonaje.getGenero();
-
-        assertThat(generoEsperado, equalTo(generoObtenido));
     }
 }

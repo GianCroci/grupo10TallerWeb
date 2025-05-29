@@ -1,9 +1,19 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-@Component
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Personaje {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
     private String genero;
@@ -12,7 +22,7 @@ public class Personaje {
     private Integer inteligencia;
     private Integer armadura;
     private Integer agilidad;
-    public String imagen;
+    private String imagen;
 
     public void setFuerza(Integer fuerza) {
         this.fuerza = fuerza;
@@ -54,6 +64,15 @@ public class Personaje {
                 this.inteligencia = 40;
                 this.armadura = 80;
                 this.agilidad = 60;
+                this.imagen = "img/luchador.png";
+                break;
+            case "Luchadora":
+                this.rol = "Luchador";
+                this.fuerza = 100;
+                this.inteligencia = 40;
+                this.armadura = 80;
+                this.agilidad = 60;
+                this.imagen = "img/luchadora.png";
                 break;
             case "Mago":
                 this.rol = "Mago";
@@ -61,6 +80,15 @@ public class Personaje {
                 this.inteligencia = 100;
                 this.armadura = 20;
                 this.agilidad = 40;
+                this.imagen = "img/mago.png";
+                break;
+            case "Bruja":
+                this.rol = "Mago";
+                this.fuerza = 30;
+                this.inteligencia = 100;
+                this.armadura = 20;
+                this.agilidad = 40;
+                this.imagen = "img/bruja.png";
                 break;
             case "Bandido":
                 this.rol = "Bandido";
@@ -68,6 +96,15 @@ public class Personaje {
                 this.inteligencia = 70;
                 this.armadura = 30;
                 this.agilidad = 100;
+                this.imagen = "img/bandido.png";
+                break;
+            case "Bandida":
+                this.rol = "Bandido";
+                this.fuerza = 50;
+                this.inteligencia = 70;
+                this.armadura = 30;
+                this.agilidad = 100;
+                this.imagen = "img/bandida.png";
                 break;
         }
     }
@@ -99,4 +136,6 @@ public class Personaje {
     public String getGenero() {
         return genero;
     }
+
+    public Long getId(){return id;}
 }
