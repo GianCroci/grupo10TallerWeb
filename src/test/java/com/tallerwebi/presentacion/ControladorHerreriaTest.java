@@ -69,7 +69,7 @@ public class ControladorHerreriaTest {
 
         ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
-        String vistaEsperada = "herreria";
+        String vistaEsperada = "redirect:/herreria";
         String vistaObtenida = mav.getViewName();
 
         String mensajeEsperado = "El equipamiento se ha mejorado correctamente";
@@ -86,7 +86,7 @@ public class ControladorHerreriaTest {
 
         ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
 
-        String vistaEsperada = "herreria";
+        String vistaEsperada = "redirect:/herreria";
         String vistaObtenida = mav.getViewName();
 
         String mensajeEsperado = "El equipamiento no se ha podido mejorar";
@@ -95,20 +95,6 @@ public class ControladorHerreriaTest {
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
         assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
-    }
-
-    @Test
-    public void queAlMejorarUnEquipamientoSeVuelvaAMostrarElInventario() {
-
-        when(servicioHerreriaMock.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario())).thenReturn(false);
-
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
-
-        String vistaEsperada = "herreria";
-        String vistaObtenida = mav.getViewName();
-
-        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mav.getModel().get("inventario"), notNullValue());
     }
 
 }

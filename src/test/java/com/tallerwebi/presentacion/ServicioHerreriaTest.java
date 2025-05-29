@@ -37,7 +37,7 @@ public class ServicioHerreriaTest {
 
         assertThat(inventario, hasItems());
     }
-/*
+
     @Test
     public void queSePuedaRealizarUnaMejoraDeEquipamientoSiLaCantidadDeOroEsSuficiente() {
         when(mejoraDtoMock.getEquipamiento()).thenReturn(new Equipamiento("espada", 100.0, 100.0, 100.0, 15, 10, 10, 10, false));
@@ -47,7 +47,7 @@ public class ServicioHerreriaTest {
 
         assertThat(estadoMejora, is(true));
     }
-*/
+
     @Test
     public void queNoSePuedaRealizarUnaMejoraDeEquipamientoSiLaCantidadDeOroEsInsuficiente() {
         when(mejoraDtoMock.getEquipamiento()).thenReturn(new Equipamiento("espada", 100.0, 100.0, 100.0, 15, 10, 10, 10, false));

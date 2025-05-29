@@ -22,8 +22,8 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
     @Override
     public Boolean mejorarEquipamiento(Equipamiento equipamiento, Double oroUsuario) {
 
-    /*
-        if (oroUsuario > equipamiento.getCostoMejora()) {
+
+        if (oroUsuario >= equipamiento.getCostoMejora()) {
             equipamiento.setFuerza(equipamiento.getFuerza() + 1);
             equipamiento.setInteligencia(equipamiento.getInteligencia() + 1);
             equipamiento.setArmadura(equipamiento.getArmadura() + 1);
@@ -32,7 +32,6 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
             repositorioInventario.modificarEquipamiento(equipamiento);
             return true;
         }
-*/
         return false;
     }
 

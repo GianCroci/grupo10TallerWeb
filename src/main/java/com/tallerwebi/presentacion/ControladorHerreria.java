@@ -38,12 +38,9 @@ public class ControladorHerreria {
     }
 
     @RequestMapping(path = "/mejorar-equipamiento", method = RequestMethod.POST)
-    public ModelAndView mejorarEquipamiento(@ModelAttribute MejoraDto mejoraDto) {
+    public ModelAndView mejorarEquipamiento(@ModelAttribute("mejoraDto") MejoraDto mejoraDto) {
 
         ModelMap model = new ModelMap();
-
-        List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
-        model.put("inventario", inventario);
 
         Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
 
@@ -52,6 +49,22 @@ public class ControladorHerreria {
             model.put("mensaje", "El equipamiento no se ha podido mejorar");
         }
 
-        return new ModelAndView("herreria", model);
+        return new ModelAndView("redirect:/herreria", model);
     }
 }
+
+
+/*
+<input type="hidden" th:field="*{equipamiento.id}" th:value="${equipamientoActual.id}"/>
+                <input type="hidden" th:field="*{equipamiento.nombre}" th:value="${equipamientoActual.nombre}"/>
+                <input type="hidden" th:field="*{equipamiento.fuerza}" th:value="${equipamientoActual.fuerza}"/>
+                <input type="hidden" th:field="*{equipamiento.armadura}" th:value="${equipamientoActual.armadura}"/>
+                <input type="hidden" th:field="*{equipamiento.inteligencia}" th:value="${equipamientoActual.inteligencia}"/>
+                <input type="hidden" th:field="*{equipamiento.agilidad}" th:value="${equipamientoActual.agilidad}" />
+                <input type="hidden" th:field="*{equipamiento.costoMejora}" th:value="${equipamientoActual.costoMejora}"/>
+                <input type="hidden" th:field="*{equipamiento.costoCompra}" th:value="${equipamientoActual.costoCompra}"/>
+                <input type="hidden" th:field="*{equipamiento.costoVenta}" th:value="${equipamientoActual.costoVenta}"/>
+                <input type="hidden" th:field="*{equipamiento.equipado}" th:value="${equipamientoActual.equipado}"/>
+                <input type="hidden" th:field="*{oroUsuario}" th:value="1000.0" />
+
+ */
