@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 public class ControladorTaberna {
 
@@ -31,11 +34,19 @@ public class ControladorTaberna {
     @GetMapping("/taberna")
     public ModelAndView mostrarTaberna() {
         ModelMap modelMap = new ModelMap();
+        //Personajes disponibles
         PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
+        //Imagen del personaje
         String imagenParcial = servicioTaberna.obtenerVistaSegunPersonaje(personajeDisponible);
+        //Cantidad de cervezas invitadas por cada personaje
+        Map<PersonajeTaberna, Integer> personajes = new HashMap<>();
+        for (PersonajeTaberna personaje : PersonajeTaberna.values()) {
+            personajes.put(personaje, servicioTaberna.getCervezasInvitadas(personaje));
+        }
 
         modelMap.put("personajeDisponible", personajeDisponible);
         modelMap.put("imagenParcial", imagenParcial);
+        modelMap.put("personajes", personajes);
 
         return new ModelAndView("taberna", modelMap);
 
@@ -43,7 +54,7 @@ public class ControladorTaberna {
 
 
     @PostMapping("/invitarTrago")
-    public ModelAndView invitarTrago(@RequestParam("personaje") String personaje) {
+    public ModelAndView invitarTrago(@RequestParam("personaje") String personajeInvitacion) {
         ModelMap modelMap = new ModelMap();
 
         PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
@@ -51,7 +62,7 @@ public class ControladorTaberna {
 
 
         try {
-            PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personaje);
+            PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personajeInvitacion);
 
             if (personajeEnum.equals(personajeDisponible)) {
                 servicioTaberna.invitarTrago(personajeEnum);
@@ -69,10 +80,18 @@ public class ControladorTaberna {
             }
         }
 
+        Map<PersonajeTaberna, Integer> personajes = new HashMap<>();
+
+        for (PersonajeTaberna personaje : PersonajeTaberna.values()) {
+            personajes.put(personaje, servicioTaberna.getCervezasInvitadas(personaje));
+        }
+
         String vistaParcial = servicioTaberna.mostrarTaberna();
         modelMap.put("vistaParcial", vistaParcial);
         modelMap.put("imagenParcial", imagenParcial);
         modelMap.put("personajeDisponible", personajeDisponible);
+        modelMap.put("personajes", personajes);
+
 
         return new ModelAndView("taberna", modelMap);
     }
