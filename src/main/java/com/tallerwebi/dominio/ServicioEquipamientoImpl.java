@@ -17,10 +17,10 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
     @Autowired
     public ServicioEquipamientoImpl(RepositorioInventario repositorioInventario) {
         this.repositorioInventario = repositorioInventario;
-        this.equipos = repositorioInventario.obtenerInventario();
-        this.equipos.get(0).setId(1);
-        this.equipos.get(1).setId(2);
-        this.equipos.get(2).setId(3);
+        this.equipos = repositorioInventario.obtenerInventario(1L);
+        this.equipos.get(0).setId(1l);
+        this.equipos.get(1).setId(2l);
+        this.equipos.get(2).setId(3l);
     }
 
     @Override

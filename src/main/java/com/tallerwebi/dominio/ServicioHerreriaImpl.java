@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.infraestructura.RepositorioInventarioImpl;
-import com.tallerwebi.presentacion.MejoraDto;
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,33 +12,37 @@ import java.util.List;
 @Transactional
 public class ServicioHerreriaImpl implements ServicioHerreria {
 
-    RepositorioInventario repositorioInventario;
+    private final RepositorioPersonaje repositorioPersonaje;
+    private final RepositorioInventario repositorioInventario;
 
     @Autowired
-    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario) {
+    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario, RepositorioPersonaje repositorioPersonaje) {
         this.repositorioInventario = repositorioInventario;
+        this.repositorioPersonaje = repositorioPersonaje;
     }
 
     @Override
-    public Boolean mejorarEquipamiento(Equipamiento equipamiento, Double oroUsuario) {
-
-
-        if (oroUsuario >= equipamiento.getCostoMejora()) {
-            equipamiento.setFuerza(equipamiento.getFuerza() + 1);
-            equipamiento.setInteligencia(equipamiento.getInteligencia() + 1);
-            equipamiento.setArmadura(equipamiento.getArmadura() + 1);
-            equipamiento.setAgilidad(equipamiento.getAgilidad() + 1);
-            equipamiento.setCostoMejora(equipamiento.getCostoMejora() + 50.0);
-            repositorioInventario.modificarEquipamiento(equipamiento);
-            return true;
+    public void mejorarEquipamiento(Equipamiento equipamiento, Integer oroUsuario) throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
+        if (oroUsuario < equipamiento.getCostoMejora()) {
+            throw new OroInsuficienteException("Tu oro no es suficiente para realizar esta accion");
         }
-        return false;
+        equipamiento.mejorar();
     }
 
     @Override
-    public List<Equipamiento> obtenerInventario() {
+    public List<Equipamiento> obtenerInventario(Long idPersonaje) {
 
-        List<Equipamiento> inventario = repositorioInventario.obtenerInventario();
+        List<Equipamiento> inventario = repositorioInventario.obtenerInventario(idPersonaje);
         return inventario;
+    }
+
+    @Override
+    public Integer obtenerOroDelPersonaje(Long idPersonaje) {
+
+        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
+
+        Integer oroPersonaje = personajeObtenido.getOro();
+
+        return oroPersonaje;
     }
 }

@@ -1,8 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.Probando;
 import com.tallerwebi.dominio.ServicioHerreria;
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -25,14 +26,24 @@ public class ControladorHerreria {
     }
 
     @RequestMapping("/herreria")
-    public ModelAndView irALaHerreria() {
+    public ModelAndView irALaHerreria(HttpSession session) {
 
         ModelMap model = new ModelMap();
 
-            model.put("mejoraDto", new MejoraDto());
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
 
-            List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
-            model.put("inventario", inventario);
+        Integer oroPersonaje = servicioHerreria.obtenerOroDelPersonaje(idPersonaje);
+
+        model.put("oroPersonaje", oroPersonaje);
+
+        model.put("mejoraDto", new MejoraDto());
+
+        List<Equipamiento> inventario = servicioHerreria.obtenerInventario(idPersonaje);
+        if (inventario.isEmpty()) {
+            model.put("vacio", "No hay equipamientos para mejorar");
+        }
+
+        model.put("inventario", inventario);
 
         return new ModelAndView("herreria", model);
     }
@@ -42,11 +53,14 @@ public class ControladorHerreria {
 
         ModelMap model = new ModelMap();
 
-        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
+        try {
+            servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
+            model.put("mensaje", "El equipamiento se ha mejorado correctamente");
 
-        model.put("mensaje", "El equipamiento se ha mejorado correctamente");
-        if (!mejorado) {
-            model.put("mensaje", "El equipamiento no se ha podido mejorar");
+        } catch (NivelDeEquipamientoMaximoException | OroInsuficienteException e) {
+
+            model.put("mensaje", e.getMessage());
+            return new ModelAndView("redirect:/herreria", model);
         }
 
         return new ModelAndView("redirect:/herreria", model);
