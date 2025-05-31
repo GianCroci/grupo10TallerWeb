@@ -2,24 +2,25 @@ package com.tallerwebi.dominio;
 
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalTime;
 
 @Service("servicioTaberna")
+@Transactional
 public class ServicioTabernaImpl implements ServicioTaberna{
 
     public Taberna taberna;
-
     public ServicioEquipamiento servicioEquipamiento;
-
     public ServicioHerreria servicioHerreria;
-
     private RepositorioInventario repositorioInventario;
+    private RepositorioPersonaje repositorioPersonaje;
+
 
     public ServicioTabernaImpl() {
 
         this.taberna = new Taberna();
         this.servicioEquipamiento = new ServicioEquipamientoImpl(repositorioInventario);
-        this.servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, this);
+        this.servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje, this);
     }
 
     @Override

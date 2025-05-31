@@ -24,6 +24,7 @@ public class ServicioHerreriaTest {
     private ServicioHerreria servicioHerreria;
     private MejoraDto mejoraDtoMock;
     private RepositorioPersonaje repositorioPersonaje;
+    private ServicioTaberna servicioTaberna;
     private Long idPersonajeMock;
     private Personaje personajeMock;
     private Estadisticas estadisticasMock;
@@ -32,9 +33,10 @@ public class ServicioHerreriaTest {
     public void init() {
         repositorioInventario = mock(RepositorioInventario.class);
         repositorioPersonaje = mock(RepositorioPersonaje.class);
+        servicioTaberna = mock(ServicioTaberna.class);
         mejoraDtoMock = mock(MejoraDto.class);
         idPersonajeMock = 1L;
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje);
+        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje, servicioTaberna);
         personajeMock = mock(Personaje.class);
         estadisticasMock = new Estadisticas();
         estadisticasMock.setAgilidad(0);
@@ -73,6 +75,7 @@ public class ServicioHerreriaTest {
     @Test
     public void queSePuedaRealizarUnaMejoraDeEquipamientoSiLaCantidadDeOroEsSuficiente() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
 
+        //when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
         Integer oroUsuarioSuficiente = 200;
         when(mejoraDtoMock.getOroUsuario()).thenReturn(oroUsuarioSuficiente);
 

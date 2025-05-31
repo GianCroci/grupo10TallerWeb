@@ -61,18 +61,16 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
 
     @Override
     public Boolean sePuedeMejorar() {
-        /*
-        si el herrero ha recibido 5 tragos o más, se puede mejorar el equipamiento
+
+        //si el herrero ha recibido 5 tragos o más, se puede mejorar el equipamiento
         if (servicioTaberna.getCervezasInvitadas(PersonajeTaberna.HERRERO) >= 5) {
             return true;
         } else {
             throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
-
-         */
-        return false;
         }
-
     }
+
+}
 
 
 

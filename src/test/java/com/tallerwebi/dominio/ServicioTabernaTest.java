@@ -16,6 +16,8 @@ public class ServicioTabernaTest {
 
     private ServicioEquipamiento servicioEquipamientoMock;
 
+    private RepositorioPersonaje repositorioPersonaje;
+
     private Taberna tabernaMock;
 
 
@@ -23,7 +25,7 @@ public class ServicioTabernaTest {
     public void init() {
         servicioTabernaMock = mock(ServicioTaberna.class);
         repositorioInventarioMock = mock(RepositorioInventario.class);
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
+        servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, repositorioPersonaje, servicioTabernaMock);
         servicioEquipamientoMock = mock(ServicioEquipamiento.class);
         tabernaMock = mock(Taberna.class);
 
