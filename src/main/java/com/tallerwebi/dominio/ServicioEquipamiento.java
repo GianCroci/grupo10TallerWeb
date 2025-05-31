@@ -9,4 +9,6 @@ public interface ServicioEquipamiento {
     Object equipar(Integer id);
 
     Optional<Equipamiento> buscarEquipamientoPorId(Integer id);
+
+    void darArmaEspecial();
 }

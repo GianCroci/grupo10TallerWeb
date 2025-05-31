@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.RepositorioInventario;
-import com.tallerwebi.dominio.ServicioHerreria;
-import com.tallerwebi.dominio.ServicioHerreriaImpl;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.infraestructura.RepositorioInventarioImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +17,16 @@ public class ServicioHerreriaTest {
 
     private RepositorioInventario repositorioInventario;
     private ServicioHerreria servicioHerreria;
+
+    private ServicioTaberna servicioTaberna;
     private MejoraDto mejoraDtoMock;
 
     @BeforeEach
     public void init(){
         repositorioInventario = mock(RepositorioInventarioImpl.class);
         mejoraDtoMock = mock(MejoraDto.class);
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario);
+        servicioTaberna = mock(ServicioTaberna.class);
+        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario,servicioTaberna);
 
     }
 
@@ -53,6 +53,8 @@ public class ServicioHerreriaTest {
         when(mejoraDtoMock.getEquipamiento()).thenReturn(new Equipamiento("espada", 100.0, 100.0, 100.0, 15, 10, 10, 10, false));
 
         when(mejoraDtoMock.getOroUsuario()).thenReturn(5.0);
+
+        when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
 
         Boolean estadoMejora = servicioHerreria.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario());
 

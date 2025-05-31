@@ -14,25 +14,42 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
 
     RepositorioInventario repositorioInventario;
 
+    ServicioTaberna servicioTaberna;
+
+
+
     @Autowired
-    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario) {
+    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario, ServicioTaberna servicioTaberna) {
         this.repositorioInventario = repositorioInventario;
+        this.servicioTaberna = servicioTaberna;
     }
 
     @Override
     public Boolean mejorarEquipamiento(Equipamiento equipamiento, Double oroUsuario) {
 
-    /*
-        if (oroUsuario > equipamiento.getCostoMejora()) {
-            equipamiento.setFuerza(equipamiento.getFuerza() + 1);
-            equipamiento.setInteligencia(equipamiento.getInteligencia() + 1);
-            equipamiento.setArmadura(equipamiento.getArmadura() + 1);
-            equipamiento.setAgilidad(equipamiento.getAgilidad() + 1);
-            equipamiento.setCostoMejora(equipamiento.getCostoMejora() + 50.0);
-            repositorioInventario.modificarEquipamiento(equipamiento);
-            return true;
+        //la idea seria agregar mas adeltante esta logica de que si
+        //el usuario tiene mas de 5 tragos, se le permite mejorar el equipamiento
+
+        /*
+        if (sePuedeMejorar()==true) {
+            // logica normal de la mejora
         }
-*/
+           throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
+
+        */
+       /*
+
+            if (oroUsuario > equipamiento.getCostoMejora()) {
+                equipamiento.setFuerza(equipamiento.getFuerza() + 1);
+                equipamiento.setInteligencia(equipamiento.getInteligencia() + 1);
+                equipamiento.setArmadura(equipamiento.getArmadura() + 1);
+                equipamiento.setAgilidad(equipamiento.getAgilidad() + 1);
+                equipamiento.setCostoMejora(equipamiento.getCostoMejora() + 50.0);
+                repositorioInventario.modificarEquipamiento(equipamiento);
+
+                return true;
+            }
+       */
         return false;
     }
 
@@ -42,4 +59,18 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         List<Equipamiento> inventario = repositorioInventario.obtenerInventario();
         return inventario;
     }
+
+    @Override
+    public Boolean sePuedeMejorar() {
+
+        //si el herrero ha recibido 5 tragos o más, se puede mejorar el equipamiento
+        if (servicioTaberna.getCervezasInvitadas(PersonajeTaberna.HERRERO) >= 5) {
+            return true;
+        } else {
+            throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
+        }
+
+    }
+
+
 }

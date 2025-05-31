@@ -52,6 +52,20 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
         }
     }
 
+    public void darArmaEspecial(){
+        Equipamiento armaEspecial = new Equipamiento();
+        armaEspecial.setId(4);
+        armaEspecial.setNombre("Arma Especial");
+        armaEspecial.setFuerza(10);
+        armaEspecial.setInteligencia(10);
+        armaEspecial.setArmadura(10);
+        armaEspecial.setAgilidad(10);
+        armaEspecial.setCostoMejora(100.0);
+        armaEspecial.setEquipado(false);
+
+        equipar(4);
+        repositorioInventario.modificarEquipamiento(armaEspecial);
+    }
 
 
 }
