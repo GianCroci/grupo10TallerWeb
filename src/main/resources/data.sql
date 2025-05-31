@@ -1,4 +1,1 @@
 INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
-INSERT INTO Equipamiento(nombre, fuerza, inteligencia, armadura, agilidad, costoCompra, costoVenta, costoMejora, equipado) VALUES ('espada', 10, 1, 0, 2, 100.0, 75.0, 50.0, true),
-                                                                                                                                  ('daga', 2, 1, 0, 10, 100.0, 75.0, 50.0, false),
-                                                                                                                                  ('baston', 1, 10, 0, 1, 100.0, 75.0, 50.0, false);

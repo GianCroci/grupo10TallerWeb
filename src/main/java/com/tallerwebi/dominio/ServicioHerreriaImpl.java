@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +28,22 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
             throw new OroInsuficienteException("Tu oro no es suficiente para realizar esta accion");
         }
         equipamiento.mejorar();
+        repositorioInventario.modificarEquipamiento(equipamiento);
     }
 
     @Override
-    public List<Equipamiento> obtenerInventario(Long idPersonaje) {
-
+    public List<Equipamiento> obtenerInventario(Long idPersonaje) throws InventarioVacioException {
         List<Equipamiento> inventario = repositorioInventario.obtenerInventario(idPersonaje);
+        if (inventario.isEmpty()) {
+            throw new InventarioVacioException("No se han encontrado equipamientos en su inventario");
+        }
         return inventario;
     }
 
     @Override
     public Integer obtenerOroDelPersonaje(Long idPersonaje) {
-
         Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
-
         Integer oroPersonaje = personajeObtenido.getOro();
-
         return oroPersonaje;
     }
 }

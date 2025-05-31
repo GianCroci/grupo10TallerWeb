@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,21 +23,24 @@ public class ControladorHerreriaTest {
     private ServicioHerreria servicioHerreriaMock;
     private ControladorHerreria controladorHerreria;
     private MejoraDto mejoraDtoMock;
-    private List<Equipamiento> equipamientosMock;
+    private List<Equipamiento> equipamientosVacioMock;
+    private List<Equipamiento> equipamientosConCosasMock;
     private HttpSession sessionMock;
     private Long idPersonajeMock;
 
 
     @BeforeEach
-    public void init(){
+    public void init() throws InventarioVacioException {
         servicioHerreriaMock = mock(ServicioHerreria.class);
         controladorHerreria = new ControladorHerreria(servicioHerreriaMock);
         mejoraDtoMock = mock(MejoraDto.class);
         sessionMock = mock(HttpSession.class);
         idPersonajeMock = 1L;
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
-        equipamientosMock = new ArrayList<>();
-        when(servicioHerreriaMock.obtenerInventario(idPersonajeMock)).thenReturn(equipamientosMock);
+        equipamientosVacioMock = new ArrayList<>();
+        equipamientosConCosasMock = new ArrayList<>();
+        equipamientosConCosasMock.add(new Arma());
+        when(servicioHerreriaMock.obtenerInventario(idPersonajeMock)).thenReturn(equipamientosVacioMock);
         Integer oroPersonaje = 50;
         when(servicioHerreriaMock.obtenerOroDelPersonaje(idPersonajeMock)).thenReturn(oroPersonaje);
     }
@@ -64,42 +69,62 @@ public class ControladorHerreriaTest {
     }
 
     @Test
-    public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConUnInventario() {
+    public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConUnInventario() throws InventarioVacioException {
 
+        when(servicioHerreriaMock.obtenerInventario(idPersonajeMock)).thenReturn(equipamientosConCosasMock);
         ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mav.getModel().get("inventario"), notNullValue());
+        assertThat(mav.getModel().get("inventario"), equalTo(equipamientosConCosasMock));
     }
 
     @Test
-    public void queAlIrALaHerreriaSeGuardeUnMensajeDeErrorSiElInventarioEstaVacio() {
+    public void queAlIrALaHerreriaSeLanceUnaInventarioVacioException() throws InventarioVacioException {
 
+        doThrow(new InventarioVacioException("No se han encontrado equipamientos en su inventario"))
+                .when(servicioHerreriaMock)
+                .obtenerInventario(any());
         ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "No hay equipamientos para mejorar";
-        String mensajeObtenida = mav.getModel().get("vacio").toString();
+        String mensajeEsperado = "No se han encontrado equipamientos en su inventario";
+        String mensajeObtenida = mav.getModel().get("error").toString();
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
         assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
     }
 
     @Test
-    public void queElMetodoIrALaHerreriaRecibaUnObjetoHttpSessionQueContengaElIdDelPersonaje() {
+    public void queAlIrALaHerreriaYSeLanceUnaInventarioVacioExceptionSeElimineELCampoInventarioDelModel() throws InventarioVacioException {
 
+        doThrow(new InventarioVacioException("No se han encontrado equipamientos en su inventario"))
+                .when(servicioHerreriaMock)
+                .obtenerInventario(any());
         ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "No hay equipamientos para mejorar";
-        String mensajeObtenida = mav.getModel().get("vacio").toString();
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("inventario"), nullValue());
+    }
+
+    @Test
+    public void queSiElMetodoIrALaHerreriaNoRecibeElIdDePersonajeDelObjetoHttpSessionLanceUnMensajeDeError() {
+
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(null);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+
+        String vistaEsperada = "redirect:/login";
+        String vistaObtenida = mav.getViewName();
+
+        String mensajeEsperado = "No puede acceder a la vista herreria sin haberse logueado";
+        String mensajeObtenida = mav.getModel().get("error").toString();
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
         assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));

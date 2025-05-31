@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import com.tallerwebi.infraestructura.RepositorioInventarioImpl;
@@ -23,9 +24,7 @@ public class ServicioHerreriaTest {
     private ServicioHerreria servicioHerreria;
     private MejoraDto mejoraDtoMock;
     private RepositorioPersonaje repositorioPersonaje;
-    private List<Equipamiento> listaEquipamientosMock;
     private Long idPersonajeMock;
-    private Equipamiento equipamientoMock;
     private Personaje personajeMock;
     private Estadisticas estadisticasMock;
 
@@ -34,9 +33,6 @@ public class ServicioHerreriaTest {
         repositorioInventario = mock(RepositorioInventario.class);
         repositorioPersonaje = mock(RepositorioPersonaje.class);
         mejoraDtoMock = mock(MejoraDto.class);
-        equipamientoMock = mock(Equipamiento.class);
-        listaEquipamientosMock = new ArrayList<>();
-        listaEquipamientosMock.add(equipamientoMock);
         idPersonajeMock = 1L;
         servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje);
         personajeMock = mock(Personaje.class);
@@ -46,17 +42,32 @@ public class ServicioHerreriaTest {
         estadisticasMock.setFuerza(0);
         estadisticasMock.setArmadura(0);
         when(personajeMock.getOro()).thenReturn(50);
-        when(repositorioInventario.obtenerInventario(idPersonajeMock)).thenReturn(listaEquipamientosMock);
         when(mejoraDtoMock.getEquipamiento()).thenReturn(new Arma("espada", estadisticasMock, new Guerrero(), 100, 100, 100, 0, false));
         when(repositorioPersonaje.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
     }
 
     @Test
-    public void queSePuedanObtenerLosTodosLosEquipamientosDelPersonaje() {
+    public void queSePuedanObtenerLosTodosLosEquipamientosDelPersonaje() throws InventarioVacioException {
 
+        List<Equipamiento> listaEquipamientosConObjetosMock = new ArrayList<>();
+        Equipamiento equipamientoMock = mock(Arma.class);
+        listaEquipamientosConObjetosMock.add(equipamientoMock);
+        when(repositorioInventario.obtenerInventario(idPersonajeMock)).thenReturn(listaEquipamientosConObjetosMock);
         List<Equipamiento> inventario = servicioHerreria.obtenerInventario(1L);
 
-        assertThat(inventario, hasItems());
+        assertThat(inventario.isEmpty(), is(false) );
+    }
+
+    @Test
+    public void queSiElInventarioObtenidoEstaVacioLanceUnaInventarioVacioException() throws InventarioVacioException {
+
+        List<Equipamiento> listaEquipamientosVaciaMock = new ArrayList<>();
+        when(repositorioInventario.obtenerInventario(idPersonajeMock)).thenReturn(listaEquipamientosVaciaMock);
+
+
+        assertThrows(InventarioVacioException.class, () -> {
+            List<Equipamiento> inventario = servicioHerreria.obtenerInventario(1L);
+        });
     }
 
     @Test

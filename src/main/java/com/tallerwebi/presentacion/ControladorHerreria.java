@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Equipamiento;
 import com.tallerwebi.dominio.ServicioHerreria;
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +32,23 @@ public class ControladorHerreria {
         ModelMap model = new ModelMap();
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
-
+        if (idPersonaje == null) {
+            model.put("error", "No puede acceder a la vista herreria sin haberse logueado");
+            return new ModelAndView("redirect:/login", model);
+        }
         Integer oroPersonaje = servicioHerreria.obtenerOroDelPersonaje(idPersonaje);
 
         model.put("oroPersonaje", oroPersonaje);
-
         model.put("mejoraDto", new MejoraDto());
 
-        List<Equipamiento> inventario = servicioHerreria.obtenerInventario(idPersonaje);
-        if (inventario.isEmpty()) {
-            model.put("vacio", "No hay equipamientos para mejorar");
+        List<Equipamiento> inventario = null;
+        try {
+            inventario = servicioHerreria.obtenerInventario(idPersonaje);
+            model.put("inventario", inventario);
+        } catch (InventarioVacioException e) {
+            model.put("error", e.getMessage());
+            model.remove("inventario");
         }
-
-        model.put("inventario", inventario);
 
         return new ModelAndView("herreria", model);
     }
