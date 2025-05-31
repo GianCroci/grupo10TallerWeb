@@ -16,7 +16,7 @@ public class ServicioTabernaImpl implements ServicioTaberna{
     @Override
     public String invitarTrago(PersonajeTaberna personaje) {
         taberna.invitarTrago(personaje);
-        return "Invitaste un trago a " + personaje.name() + ". Total de cervezas invitadas: " + taberna.getCantidadCervezasInvitadas(personaje);
+        return "Invitaste un trago al " + personaje.name() + ". Total de cervezas invitadas: " + taberna.getCantidadCervezasInvitadas(personaje);
     }
 
     @Override
