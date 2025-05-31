@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Equipamiento{
 
     @Id

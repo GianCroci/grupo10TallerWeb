@@ -2,13 +2,16 @@ package com.tallerwebi.dominio;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Rol {
 
     @Id
     private Long id;
-    private String nombre;
+    private String tipo;
 
     public abstract void aplicarMejora(Arma arma);
     public abstract void aplicarMejora(Escudo escudo);
@@ -21,7 +24,7 @@ public abstract class Rol {
 
     public void setId(Long id) { this.id = id; }
 
-    public String getNombre() { return nombre; }
+    public String getTipo() { return tipo; }
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setTipo(String nombre) { this.tipo = nombre; }
 }

@@ -2,6 +2,9 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Escudo extends Equipamiento {
 
     public Escudo(String nombre, Estadisticas stats, Rol rol, Integer costoCompra, Integer costoVenta, Integer costoMejora, Integer nivel, Boolean equipado) {

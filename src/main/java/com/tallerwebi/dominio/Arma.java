@@ -2,6 +2,11 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
 public class Arma extends Equipamiento {
 
 

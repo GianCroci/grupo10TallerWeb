@@ -2,6 +2,9 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Pechera extends Equipamiento {
 
     @Override
