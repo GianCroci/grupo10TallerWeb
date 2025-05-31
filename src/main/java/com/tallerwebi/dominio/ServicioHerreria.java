@@ -13,4 +13,6 @@ public interface ServicioHerreria {
     List<Equipamiento> obtenerInventario(Long idPersonaje) throws InventarioVacioException;
 
     Integer obtenerOroDelPersonaje(Long idPersonaje);
+
+    Boolean sePuedeMejorar();
 }

@@ -9,25 +9,26 @@ public class ServicioTabernaImpl implements ServicioTaberna{
 
     public Taberna taberna;
 
+    public ServicioEquipamiento servicioEquipamiento;
+
+    public ServicioHerreria servicioHerreria;
+
+    private RepositorioInventario repositorioInventario;
+
     public ServicioTabernaImpl() {
+
         this.taberna = new Taberna();
+        this.servicioEquipamiento = new ServicioEquipamientoImpl(repositorioInventario);
+        this.servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, this);
     }
 
     @Override
     public String invitarTrago(PersonajeTaberna personaje) {
         taberna.invitarTrago(personaje);
+        obtenerBeneficio();
         return "Invitaste un trago al " + personaje.name() + ". Total de cervezas invitadas: " + taberna.getCantidadCervezasInvitadas(personaje);
     }
 
-    @Override
-    public void hacerGuardia(int horasDeGuardia) {
-        PersonajeTaberna personajeActual = taberna.getPersonajePorHora(LocalTime.now());
-        if (personajeActual == PersonajeTaberna.GUARDIA) {
-            System.out.println("Realizaste una guardia de " + horasDeGuardia + " horas y obtuviste oro.");
-        } else {
-            System.out.println("No hay guardia disponible en este momento.");
-        }
-    }
 
     //devuelve el personaje correspondiente a la hora actual
     @Override
@@ -69,5 +70,30 @@ public class ServicioTabernaImpl implements ServicioTaberna{
         return taberna.getPersonajePorHora(horaActual);
     }
 
+
+    //condicion de que si el personaje es el guardia y tiene 5 tragos, le da un arma especial
+    public void obtenerArmaEspecial() {
+
+      servicioEquipamiento.darArmaEspecial();
+    }
+
+    public void obtenerBeneficio(){
+        //aca iria la logica de que si el personaje es el herrero y tiene 5 tragos, le permite mejorar las armas
+        ServicioHerreriaImpl ServicioHerreria = (ServicioHerreriaImpl) servicioHerreria;
+
+        if (getCervezasInvitadas(PersonajeTaberna.HERRERO) >= 5) {
+            boolean b = ServicioHerreria.sePuedeMejorar()==true;
+        }
+
+        if (getCervezasInvitadas(PersonajeTaberna.GUARDIA) >= 5) {
+            obtenerArmaEspecial();
+        }
+
+        /*
+        if (getCervezasInvitadas(PersonajeTaberna.MERCADER) >= 5) {
+            servicioEquipamiento.equipar(1); // ejemplo de equipar un item, se puede cambiar el id
+        }
+        */
+    }
 
 }
