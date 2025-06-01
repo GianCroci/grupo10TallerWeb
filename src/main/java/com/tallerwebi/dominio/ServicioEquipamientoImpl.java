@@ -52,6 +52,8 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
         }
     }
 
+
+    /*
     public void darArmaEspecial(){
         Equipamiento armaEspecial = new Equipamiento();
         armaEspecial.setId(4);
@@ -67,5 +69,5 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
         repositorioInventario.modificarEquipamiento(armaEspecial);
     }
 
-
+*/
 }

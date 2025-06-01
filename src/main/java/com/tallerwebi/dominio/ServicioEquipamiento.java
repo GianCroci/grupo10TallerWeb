@@ -10,5 +10,5 @@ public interface ServicioEquipamiento {
 
     Optional<Equipamiento> buscarEquipamientoPorId(Integer id);
 
-    void darArmaEspecial();
+    //void darArmaEspecial();
 }

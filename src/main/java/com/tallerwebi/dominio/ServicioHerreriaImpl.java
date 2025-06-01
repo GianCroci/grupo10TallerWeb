@@ -14,14 +14,14 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
 
     RepositorioInventario repositorioInventario;
 
-    ServicioTaberna servicioTaberna;
+
 
 
 
     @Autowired
-    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario, ServicioTaberna servicioTaberna) {
+    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario) {
         this.repositorioInventario = repositorioInventario;
-        this.servicioTaberna = servicioTaberna;
+
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         return inventario;
     }
 
+    /*
     @Override
     public Boolean sePuedeMejorar() {
 
@@ -71,6 +72,8 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         }
 
     }
+    */
+
 
 
 }

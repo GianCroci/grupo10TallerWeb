@@ -10,5 +10,6 @@ public interface ServicioHerreria {
 
     List<Equipamiento> obtenerInventario();
 
-    Boolean sePuedeMejorar();
+
+   // Boolean sePuedeMejorar();
 }

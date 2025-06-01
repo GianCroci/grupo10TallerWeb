@@ -23,7 +23,7 @@ public class ServicioTabernaTest {
     public void init() {
         servicioTabernaMock = mock(ServicioTaberna.class);
         repositorioInventarioMock = mock(RepositorioInventario.class);
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
+       // servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
         servicioEquipamientoMock = mock(ServicioEquipamiento.class);
         tabernaMock = mock(Taberna.class);
 
@@ -41,6 +41,7 @@ public class ServicioTabernaTest {
     }
     */
 
+    /*
 
     @Test
     public void queAlDar5TragosOMasAlHerreroTeDejeMejorarLasArmas(){
@@ -86,5 +87,6 @@ public class ServicioTabernaTest {
 
 
      */
+
     }
 

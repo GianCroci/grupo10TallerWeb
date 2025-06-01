@@ -26,7 +26,7 @@ public class ServicioHerreriaTest {
         repositorioInventario = mock(RepositorioInventarioImpl.class);
         mejoraDtoMock = mock(MejoraDto.class);
         servicioTaberna = mock(ServicioTaberna.class);
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario,servicioTaberna);
+        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario);
 
     }
 
