@@ -2,25 +2,23 @@ package com.tallerwebi.dominio;
 
 public interface ServicioPersonaje {
 
-    public void setNombre(String nombre);
+    public String getNombre(Personaje personaje);
 
-    public String getNombre();
+    String getRol(Personaje personaje);
 
-    void setRol(String rol);
+    Integer getFuerza(Personaje personaje);
 
-    String getRol();
+    Integer getInteligencia(Personaje personaje);
 
-    Integer getFuerza();
+    Integer getArmadura(Personaje personaje);
 
-    Integer getInteligencia();
+    Integer getAgilidad(Personaje personaje);
 
-    Integer getArmadura();
+    void guardarPersonaje(Personaje personaje);
 
-    Integer getAgilidad();
+    String getGenero(Personaje personaje);
 
-    Boolean guardarPersonaje(Personaje personaje);
+    Personaje buscarPersonaje(Long id);
 
-    void setGenero(String femenino);
-
-    String getGenero();
+    void modificar(Personaje personaje);
 }

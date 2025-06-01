@@ -12,7 +12,7 @@ public class Usuario {
     private String password;
     private String rol;
     private Boolean activo = false;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personaje_id") // FK en la tabla Usuario
     private Personaje personaje;
 
