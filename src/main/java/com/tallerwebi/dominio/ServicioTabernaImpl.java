@@ -2,31 +2,23 @@ package com.tallerwebi.dominio;
 
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalTime;
 
 @Service("servicioTaberna")
-@Transactional
 public class ServicioTabernaImpl implements ServicioTaberna{
 
     public Taberna taberna;
-    public ServicioEquipamiento servicioEquipamiento;
-    public ServicioHerreria servicioHerreria;
-    private RepositorioInventario repositorioInventario;
-    private RepositorioPersonaje repositorioPersonaje;
-
 
     public ServicioTabernaImpl() {
 
         this.taberna = new Taberna();
-        this.servicioEquipamiento = new ServicioEquipamientoImpl(repositorioInventario);
-        this.servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje, this);
+
     }
 
     @Override
     public String invitarTrago(PersonajeTaberna personaje) {
         taberna.invitarTrago(personaje);
-        obtenerBeneficio();
+        //obtenerBeneficio();
         return "Invitaste un trago al " + personaje.name() + ". Total de cervezas invitadas: " + taberna.getCantidadCervezasInvitadas(personaje);
     }
 
@@ -72,12 +64,17 @@ public class ServicioTabernaImpl implements ServicioTaberna{
     }
 
 
+    /*
     //condicion de que si el personaje es el guardia y tiene 5 tragos, le da un arma especial
     public void obtenerArmaEspecial() {
 
       servicioEquipamiento.darArmaEspecial();
     }
 
+/*
+
+
+    /*
     public void obtenerBeneficio(){
         //aca iria la logica de que si el personaje es el herrero y tiene 5 tragos, le permite mejorar las armas
         ServicioHerreriaImpl ServicioHerreria = (ServicioHerreriaImpl) servicioHerreria;
@@ -94,7 +91,10 @@ public class ServicioTabernaImpl implements ServicioTaberna{
         if (getCervezasInvitadas(PersonajeTaberna.MERCADER) >= 5) {
             servicioEquipamiento.equipar(1); // ejemplo de equipar un item, se puede cambiar el id
         }
-        */
+
     }
+    */
+
+
 
 }
