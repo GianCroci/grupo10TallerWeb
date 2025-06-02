@@ -24,7 +24,8 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     @Override
     public Usuario consultarUsuario (String email, String password) {
-        if(usuarios.get(email).getPassword().equals(password)){
+        Usuario usuario = usuarios.get(email);
+        if(usuario != null && usuarios.get(email).getPassword().equals(password)){
             return usuarios.get(email);
         }
         return null;
