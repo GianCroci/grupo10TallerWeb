@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Arma;
 import com.tallerwebi.dominio.Equipamiento;
 import com.tallerwebi.dominio.ServicioEquipamiento;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,11 +28,11 @@ class ControladorEquipamientoTest {
 
     @Test
     void queSePuedaVerLaPaginaDeEquipamiento() {
-        Equipamiento eq1 = new Equipamiento();
+        Equipamiento eq1 = new Arma();
         eq1.setNombre("espada");
         eq1.setEquipado(true);
 
-        Equipamiento eq2 = new Equipamiento();
+        Equipamiento eq2 = new Arma();
         eq2.setNombre("daga");
         eq2.setEquipado(false);
 

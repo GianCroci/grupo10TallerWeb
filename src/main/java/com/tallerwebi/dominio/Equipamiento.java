@@ -1,120 +1,78 @@
 package com.tallerwebi.dominio;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+
+import javax.persistence.*;
 
 @Entity
-public class Equipamiento {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Equipamiento{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String nombre;
-    private Double costoCompra;
-    private Double costoMejora;
-    private Double costoVenta;
-    private Integer fuerza;
-    private Integer inteligencia;
-    private Integer armadura;
-    private Integer agilidad;
+    @Embedded
+    private Estadisticas stats;
+    @OneToOne
+    private Rol rol;
+    private Integer costoCompra;
+    private Integer costoMejora;
+    private Integer costoVenta;
+    private Integer nivel;
     private Boolean equipado;
-
-    public Equipamiento(String nombre, Double costoCompra,Double costoMejora,Double costoVenta, Integer fuerza,Integer inteligencia,Integer armadura,Integer agilidad,Boolean equipado) {
-        this.nombre = nombre;
-        this.costoCompra = costoCompra;
-        this.costoMejora = costoMejora;
-        this.costoVenta = costoVenta;
-        this.fuerza = fuerza;
-        this.inteligencia = inteligencia;
-        this.armadura = armadura;
-        this.agilidad = agilidad;
-        this.equipado = equipado;
-    }
 
     public Equipamiento() {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
+    public Equipamiento(String nombre, Estadisticas stats, Rol rol, Integer costoCompra, Integer costoVenta, Integer costoMejora, Integer nivel, Boolean equipado) {
         this.nombre = nombre;
-    }
-
-    public Double getCostoCompra() {
-        return costoCompra;
-    }
-
-    public void setCostoCompra(Double costoCompra) {
+        this.stats = stats;
+        this.rol = rol;
         this.costoCompra = costoCompra;
-    }
-
-    public Double getCostoMejora() {
-        return costoMejora;
-    }
-
-    public void setCostoMejora(Double costoMejora) {
-        this.costoMejora = costoMejora;
-    }
-
-    public Double getCostoVenta() {
-        return costoVenta;
-    }
-
-    public void setCostoVenta(Double costoVenta) {
         this.costoVenta = costoVenta;
-    }
-
-    public Integer getFuerza() {
-        return fuerza;
-    }
-
-    public void setFuerza(Integer fuerza) {
-        this.fuerza = fuerza;
-    }
-
-    public Integer getInteligencia() {
-        return inteligencia;
-    }
-
-    public void setInteligencia(Integer inteligencia) {
-        this.inteligencia = inteligencia;
-    }
-
-    public Integer getArmadura() {
-        return armadura;
-    }
-
-    public void setArmadura(Integer armadura) {
-        this.armadura = armadura;
-    }
-
-    public Integer getAgilidad() {
-        return agilidad;
-    }
-
-    public void setAgilidad(Integer agilidad) {
-        this.agilidad = agilidad;
-    }
-
-    public Boolean getEquipado() {
-        return equipado;
-    }
-
-    public void setEquipado(Boolean equipado) {
+        this.costoMejora = costoMejora;
+        this.nivel = nivel;
         this.equipado = equipado;
     }
+
+    public abstract void mejorar() throws NivelDeEquipamientoMaximoException;
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
+
+    public String getNombre() { return nombre; }
+
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public Estadisticas getStats() { return stats; }
+
+    public void setStats(Estadisticas stats) { this.stats = stats; }
+
+    public Rol getRol() { return rol; }
+
+    public void setRol(Rol rol) { this.rol = rol; }
+
+    public Integer getCostoCompra() { return costoCompra; }
+
+    public void setCostoCompra(Integer costoCompra) { this.costoCompra = costoCompra; }
+
+    public Integer getCostoMejora() { return costoMejora; }
+
+    public void setCostoMejora(Integer costoMejora) { this.costoMejora = costoMejora; }
+
+    public Integer getCostoVenta() { return costoVenta; }
+
+    public void setCostoVenta(Integer costoVenta) { this.costoVenta = costoVenta; }
+
+    public Integer getNivel() { return nivel; }
+
+    public void setNivel(Integer nivel) { this.nivel = nivel; }
+
+    public Boolean getEquipado() { return equipado; }
+
+    public void setEquipado(Boolean equipado) { this.equipado = equipado; }
 }

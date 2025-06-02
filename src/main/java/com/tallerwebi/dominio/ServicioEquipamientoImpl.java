@@ -16,12 +16,15 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
 
     @Autowired
     public ServicioEquipamientoImpl(RepositorioInventario repositorioInventario) {
+        /*
         this.repositorioInventario = repositorioInventario;
-        this.equipos = repositorioInventario.obtenerInventario();
-        this.equipos.get(0).setId(1);
-        this.equipos.get(1).setId(2);
-        this.equipos.get(2).setId(3);
+        this.equipos = repositorioInventario.obtenerInventario(1L);
+        this.equipos.get(0).setId(1l);
+        this.equipos.get(1).setId(2l);
+        this.equipos.get(2).setId(3l);
+         */
     }
+
 
     @Override
     public List<Equipamiento> mostrarEquipamiento() {
@@ -55,14 +58,14 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
 
     /*
     public void darArmaEspecial(){
-        Equipamiento armaEspecial = new Equipamiento();
-        armaEspecial.setId(4);
+        Equipamiento armaEspecial = new Arma();
+        armaEspecial.setId(4l);
         armaEspecial.setNombre("Arma Especial");
-        armaEspecial.setFuerza(10);
-        armaEspecial.setInteligencia(10);
-        armaEspecial.setArmadura(10);
-        armaEspecial.setAgilidad(10);
-        armaEspecial.setCostoMejora(100.0);
+        armaEspecial.getStats().setFuerza(10);
+        armaEspecial.getStats().setInteligencia(10);
+        armaEspecial.getStats().setArmadura(10);
+        armaEspecial.getStats().setAgilidad(10);
+        armaEspecial.setCostoMejora(100);
         armaEspecial.setEquipado(false);
 
         equipar(4);

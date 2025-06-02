@@ -23,6 +23,7 @@ public class Personaje {
     private Integer armadura;
     private Integer agilidad;
     private String imagen;
+    private Integer oro;
 
     public void setFuerza(Integer fuerza) {
         this.fuerza = fuerza;
@@ -138,4 +139,8 @@ public class Personaje {
     }
 
     public Long getId(){return id;}
+
+    public Integer getOro() { return oro; }
+
+    public void setOro(Integer oro) { this.oro = oro; }
 }

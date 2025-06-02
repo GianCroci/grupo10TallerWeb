@@ -5,22 +5,22 @@ import com.tallerwebi.dominio.Equipamiento;
 public class MejoraDto {
 
     private Equipamiento equipamiento;
-    private Double oroUsuario;
+    private Integer oroUsuario;
 
 
     public MejoraDto() {
     }
 
-    public MejoraDto(Equipamiento equipamiento, Double oroUsuario) {
+    public MejoraDto(Equipamiento equipamiento, Integer oroUsuario) {
         this.equipamiento = equipamiento;
         this.oroUsuario = oroUsuario;
     }
 
-    public Double getOroUsuario() {
+    public Integer getOroUsuario() {
         return oroUsuario;
     }
 
-    public void setOroUsuario(Double oroUsuario) {
+    public void setOroUsuario(Integer oroUsuario) {
         this.oroUsuario = oroUsuario;
     }
 

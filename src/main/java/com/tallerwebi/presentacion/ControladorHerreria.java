@@ -1,8 +1,10 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.Probando;
 import com.tallerwebi.dominio.ServicioHerreria;
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -25,33 +27,63 @@ public class ControladorHerreria {
     }
 
     @RequestMapping("/herreria")
-    public ModelAndView irALaHerreria() {
+    public ModelAndView irALaHerreria(HttpSession session) {
 
         ModelMap model = new ModelMap();
 
-            model.put("mejoraDto", new MejoraDto());
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        if (idPersonaje == null) {
+            model.put("error", "No puede acceder a la vista herreria sin haberse logueado");
+            return new ModelAndView("redirect:/login", model);
+        }
+        Integer oroPersonaje = servicioHerreria.obtenerOroDelPersonaje(idPersonaje);
 
-            List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
+        model.put("oroPersonaje", oroPersonaje);
+        model.put("mejoraDto", new MejoraDto());
+
+        List<Equipamiento> inventario = null;
+        try {
+            inventario = servicioHerreria.obtenerInventario(idPersonaje);
             model.put("inventario", inventario);
+        } catch (InventarioVacioException e) {
+            model.put("error", e.getMessage());
+            model.remove("inventario");
+        }
 
         return new ModelAndView("herreria", model);
     }
 
     @RequestMapping(path = "/mejorar-equipamiento", method = RequestMethod.POST)
-    public ModelAndView mejorarEquipamiento(@ModelAttribute MejoraDto mejoraDto) {
+    public ModelAndView mejorarEquipamiento(@ModelAttribute("mejoraDto") MejoraDto mejoraDto) {
 
         ModelMap model = new ModelMap();
 
-        List<Equipamiento> inventario = servicioHerreria.obtenerInventario();
-        model.put("inventario", inventario);
+        try {
+            servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
+            model.put("mensaje", "El equipamiento se ha mejorado correctamente");
 
-        Boolean mejorado = servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
+        } catch (NivelDeEquipamientoMaximoException | OroInsuficienteException e) {
 
-        model.put("mensaje", "El equipamiento se ha mejorado correctamente");
-        if (!mejorado) {
-            model.put("mensaje", "El equipamiento no se ha podido mejorar");
+            model.put("mensaje", e.getMessage());
+            return new ModelAndView("redirect:/herreria", model);
         }
 
-        return new ModelAndView("herreria", model);
+        return new ModelAndView("redirect:/herreria", model);
     }
 }
+
+
+/*
+<input type="hidden" th:field="*{equipamiento.id}" th:value="${equipamientoActual.id}"/>
+                <input type="hidden" th:field="*{equipamiento.nombre}" th:value="${equipamientoActual.nombre}"/>
+                <input type="hidden" th:field="*{equipamiento.fuerza}" th:value="${equipamientoActual.fuerza}"/>
+                <input type="hidden" th:field="*{equipamiento.armadura}" th:value="${equipamientoActual.armadura}"/>
+                <input type="hidden" th:field="*{equipamiento.inteligencia}" th:value="${equipamientoActual.inteligencia}"/>
+                <input type="hidden" th:field="*{equipamiento.agilidad}" th:value="${equipamientoActual.agilidad}" />
+                <input type="hidden" th:field="*{equipamiento.costoMejora}" th:value="${equipamientoActual.costoMejora}"/>
+                <input type="hidden" th:field="*{equipamiento.costoCompra}" th:value="${equipamientoActual.costoCompra}"/>
+                <input type="hidden" th:field="*{equipamiento.costoVenta}" th:value="${equipamientoActual.costoVenta}"/>
+                <input type="hidden" th:field="*{equipamiento.equipado}" th:value="${equipamientoActual.equipado}"/>
+                <input type="hidden" th:field="*{oroUsuario}" th:value="1000.0" />
+
+ */

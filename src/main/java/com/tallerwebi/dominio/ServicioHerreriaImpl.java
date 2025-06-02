@@ -1,10 +1,10 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.infraestructura.RepositorioInventarioImpl;
-import com.tallerwebi.presentacion.MejoraDto;
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -12,23 +12,21 @@ import java.util.List;
 @Transactional
 public class ServicioHerreriaImpl implements ServicioHerreria {
 
-    RepositorioInventario repositorioInventario;
-
-
+    private final RepositorioPersonaje repositorioPersonaje;
+    private final RepositorioInventario repositorioInventario;
+    private final ServicioTaberna servicioTaberna;
 
 
 
     @Autowired
-    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario) {
+    public ServicioHerreriaImpl(RepositorioInventario repositorioInventario, RepositorioPersonaje repositorioPersonaje, ServicioTaberna servicioTaberna) {
         this.repositorioInventario = repositorioInventario;
-
+        this.repositorioPersonaje = repositorioPersonaje;
+        this.servicioTaberna = servicioTaberna;
     }
 
     @Override
-    public Boolean mejorarEquipamiento(Equipamiento equipamiento, Double oroUsuario) {
-
-        //la idea seria agregar mas adeltante esta logica de que si
-        //el usuario tiene mas de 5 tragos, se le permite mejorar el equipamiento
+    public void mejorarEquipamiento(Equipamiento equipamiento, Integer oroUsuario) throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
 
         /*
         if (sePuedeMejorar()==true) {
@@ -36,32 +34,31 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         }
            throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
 
-        */
-       /*
+         */
 
-            if (oroUsuario > equipamiento.getCostoMejora()) {
-                equipamiento.setFuerza(equipamiento.getFuerza() + 1);
-                equipamiento.setInteligencia(equipamiento.getInteligencia() + 1);
-                equipamiento.setArmadura(equipamiento.getArmadura() + 1);
-                equipamiento.setAgilidad(equipamiento.getAgilidad() + 1);
-                equipamiento.setCostoMejora(equipamiento.getCostoMejora() + 50.0);
-                repositorioInventario.modificarEquipamiento(equipamiento);
-
-                return true;
-            }
-       */
-        return false;
+        if (oroUsuario < equipamiento.getCostoMejora()) {
+            throw new OroInsuficienteException("Tu oro no es suficiente para realizar esta accion");
+        }
+        equipamiento.mejorar();
+        repositorioInventario.modificarEquipamiento(equipamiento);
     }
 
     @Override
-    public List<Equipamiento> obtenerInventario() {
-
-        List<Equipamiento> inventario = repositorioInventario.obtenerInventario();
+    public List<Equipamiento> obtenerInventario(Long idPersonaje) throws InventarioVacioException {
+        List<Equipamiento> inventario = repositorioInventario.obtenerInventario(idPersonaje);
+        if (inventario.isEmpty()) {
+            throw new InventarioVacioException("No se han encontrado equipamientos en su inventario");
+        }
         return inventario;
     }
 
-    /*
     @Override
+    public Integer obtenerOroDelPersonaje(Long idPersonaje) {
+        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
+        Integer oroPersonaje = personajeObtenido.getOro();
+        return oroPersonaje;
+    }
+
     public Boolean sePuedeMejorar() {
 
         //si el herrero ha recibido 5 tragos o más, se puede mejorar el equipamiento
@@ -70,10 +67,9 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         } else {
             throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
         }
-
     }
-    */
-
-
 
 }
+
+
+

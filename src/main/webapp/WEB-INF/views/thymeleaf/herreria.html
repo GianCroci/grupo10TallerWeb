@@ -49,17 +49,18 @@
 
         <div th:each="equipamientoActual : ${inventario}" class="col-6 col-md-3 d-flex justify-content-center">
             <form th:action="@{/mejorar-equipamiento}" method="post" th:object="${mejoraDto}">
-                <input type="hidden" th:field="*{equipamiento.id}" th:value="${equipamientoActual.id}"/>
-                <input type="hidden" th:field="*{equipamiento.nombre}" th:value="${equipamientoActual.nombre}"/>
-                <input type="hidden" th:field="*{equipamiento.fuerza}" th:value="${equipamientoActual.fuerza}"/>
-                <input type="hidden" th:field="*{equipamiento.armadura}" th:value="${equipamientoActual.armadura}"/>
-                <input type="hidden" th:field="*{equipamiento.inteligencia}" th:value="${equipamientoActual.inteligencia}"/>
-                <input type="hidden" th:field="*{equipamiento.agilidad}" th:value="${equipamientoActual.agilidad}" />
-                <input type="hidden" th:field="*{equipamiento.costoMejora}" th:value="${equipamientoActual.costoMejora}"/>
-                <input type="hidden" th:field="*{equipamiento.costoCompra}" th:value="${equipamientoActual.costoCompra}"/>
-                <input type="hidden" th:field="*{equipamiento.costoVenta}" th:value="${equipamientoActual.costoVenta}"/>
-                <input type="hidden" th:field="*{equipamiento.equipado}" th:value="${equipamientoActual.equipado}"/>
-                <input type="hidden" th:field="*{oroUsuario}" th:value="1000.0"/>
+                <input type="hidden" name="equipamiento.id" th:value="${equipamientoActual.id}"/>
+                <input type="hidden" name="equipamiento.nombre" th:value="${equipamientoActual.nombre}"/>
+                <input type="hidden" name="equipamiento.fuerza" th:value="${equipamientoActual.fuerza}"/>
+                <input type="hidden" name="equipamiento.armadura" th:value="${equipamientoActual.armadura}"/>
+                <input type="hidden" name="equipamiento.inteligencia" th:value="${equipamientoActual.inteligencia}"/>
+                <input type="hidden" name="equipamiento.agilidad" th:value="${equipamientoActual.agilidad}" />
+                <input type="hidden" name="equipamiento.costoMejora" th:value="${equipamientoActual.costoMejora}"/>
+                <input type="hidden" name="equipamiento.costoCompra" th:value="${equipamientoActual.costoCompra}"/>
+                <input type="hidden" name="equipamiento.costoVenta" th:value="${equipamientoActual.costoVenta}"/>
+                <input type="hidden" name="equipamiento.equipado" th:value="${equipamientoActual.equipado}"/>
+                <input type="hidden" name="oroUsuario" th:value="1000.0"/>
+
 
             <div class="card bg-secondary text-light h-100 shadow">
                 <img th:src="@{'/img/' + ${equipamientoActual.nombre} + '.png'}" class="card-img-top p-3" th:alt="${equipamientoActual.nombre}" />
