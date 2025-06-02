@@ -59,7 +59,6 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         return oroPersonaje;
     }
 
-    @Override
     public Boolean sePuedeMejorar() {
 
         //si el herrero ha recibido 5 tragos o más, se puede mejorar el equipamiento
