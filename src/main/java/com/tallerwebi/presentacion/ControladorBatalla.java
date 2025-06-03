@@ -52,6 +52,8 @@ public class ControladorBatalla {
         servicioBatalla.atacarRival(personaje, rival);
 
         ModelMap modelMap = new ModelMap();
+        modelMap.put("personaje", personaje);
+        modelMap.put("rival", rival);
         modelMap.put("resultado", "Derrota");
 
         if (servicioBatalla.getResultado().equals("Victoria")) {
