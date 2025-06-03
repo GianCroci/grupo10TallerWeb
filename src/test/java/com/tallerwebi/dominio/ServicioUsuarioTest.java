@@ -21,22 +21,15 @@ public class ServicioUsuarioTest {
     private ServicioUsuario servicioUsuario;
     private Personaje personajeMockeado;
     private Usuario usuarioMock1;
-    private Usuario usuarioMock2;
-    private DatosLogin datosLoginMock;
-    private HttpServletRequest requestMock;
-    private HttpSession sessionMock;
+
 
     @BeforeEach
     public void init(){
         personajeMockeado = mock(Personaje.class);
         repoUsuarioMock = mock(RepositorioUsuario.class);
         servicioUsuario = new ServicioUsuarioImpl(repoUsuarioMock);
-        datosLoginMock = new DatosLogin("gian@unlam.com", "1234");
         usuarioMock1 = mock(Usuario.class);
-        usuarioMock2 = mock(Usuario.class);
-        requestMock = mock(HttpServletRequest.class);
-        sessionMock = mock(HttpSession.class);
-        List<Usuario> usuarios = List.of(usuarioMock1, usuarioMock2);
+
     }
 
 
@@ -48,10 +41,9 @@ public class ServicioUsuarioTest {
         when(repoUsuarioMock.buscar("gian@unlam.com")).thenReturn(usuarioEncontradoMock);
 
         servicioUsuario.setUsuario(usuarioEncontradoMock);
-        Boolean seSeteo = servicioUsuario.setPersonaje(personajeMockeado, usuarioEncontradoMock);
+        servicioUsuario.setPersonaje(personajeMockeado, usuarioEncontradoMock);
 
         verify(usuarioEncontradoMock, times(1)).setPersonaje(personajeMockeado);
-        assertThat(seSeteo, equalTo(true));
 
     }
 

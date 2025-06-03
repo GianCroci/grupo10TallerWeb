@@ -2,8 +2,9 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.RepositorioPersonaje;
-import com.tallerwebi.dominio.Usuario;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,16 +23,19 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
 
     @Override
     public Personaje buscarPersonaje(Long id) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return (Personaje) session.createCriteria(Personaje.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
     }
 
     @Override
-    public Boolean guardar(Long id, Personaje personaje) {
-    return false;
+    public void guardar(Personaje personaje) {
+    sessionFactory.getCurrentSession().save(personaje);
     }
 
     @Override
     public void modificar(Personaje personaje) {
-
+        sessionFactory.getCurrentSession().update(personaje);
     }
 }

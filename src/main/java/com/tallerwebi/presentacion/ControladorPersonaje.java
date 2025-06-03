@@ -13,19 +13,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ControladorPersonaje {
 
-
-    private ServicioPersonaje servicioPersonaje;
     private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ControladorPersonaje(ServicioPersonaje servicioPersonaje, ServicioUsuario servicioUsuario) {
-        this.servicioPersonaje = servicioPersonaje;
+    public ControladorPersonaje(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
-    }
-
-    public ControladorPersonaje(ServicioPersonaje servicioPersonaje) {
-        this.servicioPersonaje = servicioPersonaje;
-
     }
 
     @GetMapping("/creacion-personaje")
@@ -55,10 +47,4 @@ public class ControladorPersonaje {
     }
 
 
-    @GetMapping("/nuevo-personaje")
-    public ModelAndView nuevoPersonaje() {
-        ModelMap model = new ModelMap();
-        model.put("datosPersonaje", new Personaje());
-        return new ModelAndView("home", model);
-    }
 }

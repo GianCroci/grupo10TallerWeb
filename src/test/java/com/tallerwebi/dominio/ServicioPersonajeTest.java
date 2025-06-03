@@ -7,8 +7,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ServicioPersonajeTest {
 
@@ -23,7 +22,7 @@ public class ServicioPersonajeTest {
         servicioPersonaje = new ServicioPersonajeImpl(repoPersonajeMock);
     }
 
-    @Test
+   /* @Test
     public void queSePuedaCrearUnPersonajeConNombre(){
 
         servicioPersonaje.setNombre("Lenorwix");
@@ -36,7 +35,7 @@ public class ServicioPersonajeTest {
         assertThat(nombreEsperado, equalTo(nombreObtenido));
     }
 
-    @Test
+   /* @Test
     public void queSePuedaGuardarElPersonajeEnElRepositorio(){
 
         when(personajeMockeado.getId()).thenReturn(1L);
@@ -154,5 +153,45 @@ public class ServicioPersonajeTest {
         String generoObtenido = servicioPersonaje.getGenero();
 
         assertThat(generoEsperado, equalTo(generoObtenido));
+    }
+
+    */
+    @Test
+    public void queSePuedaGuardarUnPersonaje(){
+
+        servicioPersonaje.guardarPersonaje(personajeMockeado);
+
+        verify(repoPersonajeMock, times(1)).guardar(personajeMockeado);
+    }
+
+    @Test
+    public void queSePuedaBuscarUnPersonajePorSuId(){
+        //preparacion
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
+
+        //ejecucion
+        Personaje personajeObtenido = servicioPersonaje.buscarPersonaje(1L);
+
+        //verificacion
+        verify(repoPersonajeMock, times(1)).buscarPersonaje(1L);
+        assertThat(personajeObtenido, equalTo(personajeMockeado));
+    }
+
+    @Test
+    public void queSePuedaModificarUnPersonaje(){
+        //preparacion
+        Personaje personaje = new Personaje();
+        personaje.setGenero("Femenino");
+        servicioPersonaje.guardarPersonaje(personaje);
+        personaje.setGenero("Masculino");
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        //ejecucion
+        servicioPersonaje.modificar(personaje);
+        Personaje personajeObtenido = servicioPersonaje.buscarPersonaje(1L);
+
+        //verificacion
+        verify(repoPersonajeMock, times(1)).modificar(personaje);
+        assertThat(personajeObtenido.getGenero(), equalTo("Masculino"));
     }
 }
