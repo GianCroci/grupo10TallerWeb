@@ -4,9 +4,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServicioBatallaImpl implements ServicioBatalla {
+
+    private ServicioPersonaje servicioPersonaje;
+
+    public ServicioBatallaImpl(ServicioPersonaje servicioPersonaje) {
+        this.servicioPersonaje = servicioPersonaje;
+    }
+
     @Override
     public Personaje buscarRival() {
-        return null;
+        return servicioPersonaje.buscarRival();
     }
 
     @Override

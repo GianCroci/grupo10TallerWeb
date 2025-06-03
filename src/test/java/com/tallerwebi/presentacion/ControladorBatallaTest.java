@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.ServicioBatalla;
-import com.tallerwebi.dominio.ServicioPersonaje;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +28,7 @@ public class ControladorBatallaTest {
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioBatallaMock = mock(ServicioBatalla.class);
         servicioPersonajeMock = mock(ServicioPersonaje.class);
+        servicioBatallaMock = new ServicioBatallaImpl(servicioPersonajeMock);
         controladorBatalla = new ControladorBatalla(servicioPersonajeMock, servicioBatallaMock);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
