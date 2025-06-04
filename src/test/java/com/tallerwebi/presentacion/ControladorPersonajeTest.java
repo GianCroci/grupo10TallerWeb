@@ -33,24 +33,7 @@ public class ControladorPersonajeTest {
         usuarioMockeado = mock(Usuario.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioPersonajeMock = mock(ServicioPersonaje.class);
-        controladorPersonaje = new ControladorPersonaje(servicioPersonajeMock, servicioUsuarioMock);
-    }
-
-    @Test
-    public void queSeCreeElPersonajeYMeDevuelvaUnaVistaConLaInformacion(){
-
-        personajeMockeado.setNombre("Rushard");
-        personajeMockeado.setRol("Mago");
-        when(sessionMock.getAttribute(anyString())).thenReturn(usuarioMockeado);
-        when(usuarioMockeado.getPersonaje()).thenReturn(personajeMockeado);
-
-        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeMockeado, sessionMock);
-
-        String vistaEsperada = "home";
-
-        assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
-        assertThat(modelAndView.getModel().get("datosPersonaje"), equalTo(personajeMockeado));
-
+        controladorPersonaje = new ControladorPersonaje(servicioUsuarioMock);
     }
 
     @Test
@@ -62,4 +45,23 @@ public class ControladorPersonajeTest {
 
         assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
     }
+
+    @Test
+    public void queSeCreeElPersonajeYMeDevuelvaUnaVistaConLaInformacion(){
+        //preparacion
+        when(sessionMock.getAttribute(anyString())).thenReturn(usuarioMockeado);
+        when(usuarioMockeado.getPersonaje()).thenReturn(personajeMockeado);
+
+        //ejecucion
+        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeMockeado, sessionMock);
+
+        String vistaEsperada = "home";
+
+        assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
+        assertThat(modelAndView.getModel().get("datosPersonaje"), equalTo(personajeMockeado));
+        verify(servicioUsuarioMock, times(1)).setPersonaje(personajeMockeado, usuarioMockeado);
+
+    }
+
+
 }
