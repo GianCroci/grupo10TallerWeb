@@ -56,7 +56,7 @@ public class ControladorBatalla {
         modelMap.put("rival", rival);
         modelMap.put("resultado", "Derrota");
 
-        if (servicioBatalla.getResultado().equals("Victoria")) {
+        if (servicioBatalla.getResultado() == "Victoria") {
             modelMap.put("resultado", "Victoria");
         }
 

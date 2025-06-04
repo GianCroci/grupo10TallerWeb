@@ -29,6 +29,7 @@ public class ControladorBatallaTest {
         servicioBatallaMock = mock(ServicioBatalla.class);
         servicioPersonajeMock = mock(ServicioPersonaje.class);
         servicioBatallaMock = new ServicioBatallaImpl(servicioPersonajeMock);
+        servicioBatallaMock = mock(ServicioBatalla.class);
         controladorBatalla = new ControladorBatalla(servicioPersonajeMock, servicioBatallaMock);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
@@ -63,7 +64,6 @@ public class ControladorBatallaTest {
         when(sessionMock.getAttribute("idRival")).thenReturn(2L);
         when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
         when(servicioPersonajeMock.buscarPersonaje(2L)).thenReturn(rivalMockeado);
-
         when(servicioBatallaMock.getResultado()).thenReturn("Victoria");
 
         //ejecucion
