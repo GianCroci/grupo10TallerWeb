@@ -67,4 +67,9 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
     public void modificar(Personaje personaje) {
         repoPersonaje.modificar(personaje);
     }
+
+    @Override
+    public Personaje buscarRival() {
+        return repoPersonaje.buscarRival();
+    }
 }

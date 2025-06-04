@@ -21,4 +21,6 @@ public interface ServicioPersonaje {
     Personaje buscarPersonaje(Long id);
 
     void modificar(Personaje personaje);
+
+    Personaje buscarRival();
 }
