@@ -45,23 +45,18 @@
 <body>
 <main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
       class="container-fluid d-flex flex-column align-items-center">
-<div th:object="${datosPersonaje}" id="loginbox" style="margin-top:50px;" class="mt-5 row">
-    <div class="col-md-6">
-        <h1 th:text="*{nombre}">Nombre del personaje</h1>
-        <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+    <div th:object="${personaje}" id="personajeBox" style="margin-top:50px;" class="mt-5 row">
+        <div class="col-md-6">
+            <h1 th:text="*{nombre}">Nombre del personaje</h1>
+            <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+        </div>
     </div>
-    <div class="col-md-6">
-        <h2>Estadísticas</h2>
-        <h2>Fuerza:</h2>
-        <h3 th:text="*{fuerza}">Fuerza</h3>
-        <h2>Inteligencia:</h2>
-        <h3 th:text="*{inteligencia}">Inteligencia</h3>
-        <h2>Armadura:</h2>
-        <h3 th:text="*{armadura}">Armadura</h3>
-        <h2>Agilidad:</h2>
-        <h3 th:text="*{agilidad}">Agilidad</h3>
+    <div th:object="${rival}" id="rivalBox" style="margin-top:50px;" class="mt-5 row">
+        <div class="col-md-6">
+            <h1 th:text="*{nombre}">Nombre del personaje</h1>
+            <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+        </div>
     </div>
-</div>
 </main>
 
 <!-- Boostrap core js -->

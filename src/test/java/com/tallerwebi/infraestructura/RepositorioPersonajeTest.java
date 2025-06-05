@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateInfraestructuraTestConfig.class})
@@ -54,7 +55,6 @@ public class RepositorioPersonajeTest {
 
     @Test
     public void queSePuedaObtenerElOroDeUnPersonajeATravesDeSuIdDePersonaje() {
-
         Integer valorEsperado = 500;
         Integer valorObtenido = repositorioPersonaje.buscarOroPersonaje(idPersonajeMock);
 
@@ -69,4 +69,51 @@ public class RepositorioPersonajeTest {
 
         assertThat(personajeObtenido, equalTo(personajeEsperado));
     }
+
+    @Test
+    public void queSePuedaGuardarUnPersonaje() {
+        //preparacion
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
+
+        //ejecucion
+        repoPersonaje.guardar(personajeMockeado);
+
+        verify(sessionFactoryMock, times(1)).getCurrentSession();
+        verify(sessionMock, times(1)).save(personajeMockeado);
+    }
+
+    @Test
+    public void queSePuedaBuscarUnPersonaje() {
+        //preparacion
+        when(personajeMockeado.getId()).thenReturn(1L);
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
+        when(sessionMock.createCriteria(Personaje.class)).thenReturn(criteriaMock);
+        when(criteriaMock.add(any())).thenReturn(criteriaMock);
+        when(criteriaMock.uniqueResult()).thenReturn(personajeMockeado);
+
+        //ejecucion
+        Personaje personajeEncontrado = repoPersonaje.buscarPersonaje(1L);
+
+        //verificacion
+
+        assertThat(personajeMockeado.getId(), equalTo(personajeEncontrado.getId()));
+        verify(sessionFactoryMock, times(1)).getCurrentSession();
+        verify(sessionMock, times(1)).createCriteria(Personaje.class);
+        verify(criteriaMock, times(1)).add(any());
+        verify(criteriaMock, times(1)).uniqueResult();
+    }
+
+    @Test
+    public void queSePuedaActualizarUnPersonaje() {
+        //preparacion
+        when(sessionFactoryMock.getCurrentSession()).thenReturn(sessionMock);
+
+        //ejecucion
+        repoPersonaje.modificar(personajeMockeado);
+
+        //verificacion
+        verify(sessionFactoryMock, times(1)).getCurrentSession();
+        verify(sessionMock, times(1)).update(personajeMockeado);
+    }
+
 }

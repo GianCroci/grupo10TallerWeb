@@ -2,7 +2,6 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.RepositorioPersonaje;
-import com.tallerwebi.dominio.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Random;
 
 @Transactional
 @Repository("repositorioPersonaje")
@@ -32,13 +33,29 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
     }
 
     @Override
-    public Boolean guardar(Long id, Personaje personaje) {
-    return false;
+    public void guardar(Personaje personaje) {
+    sessionFactory.getCurrentSession().save(personaje);
     }
 
     @Override
     public void modificar(Personaje personaje) {
+        sessionFactory.getCurrentSession().update(personaje);
+    }
 
+    @Override
+    public Personaje buscarRival() {
+        Session session = sessionFactory.getCurrentSession();
+
+        // Trae todos los personajes
+        List<Personaje> personajes = session.createCriteria(Personaje.class).list();
+
+        if (personajes.isEmpty()) {
+            return null;
+        }
+
+        // Selecciona uno aleatorio
+        int indexAleatorio = new Random().nextInt(personajes.size());
+        return personajes.get(indexAleatorio);
     }
 
     @Override
@@ -49,4 +66,5 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
                 .setProjection(Projections.property("oro"))
                 .uniqueResult();
     }
+
 }

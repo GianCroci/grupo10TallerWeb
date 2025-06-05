@@ -11,32 +11,26 @@ import java.util.Map;
 @Service
 public class ServicioUsuarioImpl implements ServicioUsuario {
     private RepositorioUsuario repoUsuario;
-    private Map<String, Usuario> usuarios = new HashMap<>();
 
     @Autowired
     public ServicioUsuarioImpl(RepositorioUsuario repoUsuario) {
+
         this.repoUsuario = repoUsuario;
     }
 
     public void setUsuario(Usuario usuario) {
-        usuarios.put(usuario.getEmail(), usuario);
+        repoUsuario.guardar(usuario);
     }
 
     @Override
     public Usuario buscar(String mail) {
-        return usuarios.get(mail);
+
+        return repoUsuario.buscar(mail);
     }
 
     @Override
-    public Boolean setPersonaje(Personaje personaje, Usuario usuario) {
-
-        if(!usuarios.containsKey(usuario.getEmail())) {
-            usuarios.put(usuario.getEmail(), usuario);
-        }
-        Usuario usuarioEncontrado = usuarios.get(usuario.getEmail());
-        usuarioEncontrado.setPersonaje(personaje);
-        usuarios.replace(usuario.getEmail(), usuario, usuarioEncontrado);
-
-        return true;
+    public void setPersonaje(Personaje personaje, Usuario usuario) {
+        usuario.setPersonaje(personaje);
+        repoUsuario.modificar(usuario);
     }
 }

@@ -15,29 +15,21 @@ import java.util.HashMap;
 public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
-    private HashMap<String, Usuario> usuarios = new HashMap<>();
 
     @Autowired
     public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
+
         this.repositorioUsuario = repositorioUsuario;
     }
 
     @Override
     public Usuario consultarUsuario (String email, String password) {
-        Usuario usuario = usuarios.get(email);
-        if(usuario != null && usuarios.get(email).getPassword().equals(password)){
-            return usuarios.get(email);
-        }
-        return null;
+       return repositorioUsuario.buscarUsuario(email, password);
     }
 
     @Override
     public void registrar(Usuario usuario) throws UsuarioExistente {
-        Usuario usuarioEncontrado = repositorioUsuario.buscarUsuario(usuario.getEmail(), usuario.getPassword());
-        if(usuarioEncontrado != null){
-            throw new UsuarioExistente();
-        }
-        usuarios.put(usuario.getEmail(), usuario);
+        repositorioUsuario.guardar(usuario);
     }
 
 }
