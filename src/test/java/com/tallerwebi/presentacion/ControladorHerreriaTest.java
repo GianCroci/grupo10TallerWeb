@@ -7,11 +7,11 @@ import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,10 +27,12 @@ public class ControladorHerreriaTest {
     private List<Equipamiento> equipamientosConCosasMock;
     private HttpSession sessionMock;
     private Long idPersonajeMock;
+    RedirectAttributes redirectAttributesMock;
 
 
     @BeforeEach
     public void init() throws InventarioVacioException {
+        redirectAttributesMock = mock(RedirectAttributes.class);
         servicioHerreriaMock = mock(ServicioHerreria.class);
         controladorHerreria = new ControladorHerreria(servicioHerreriaMock);
         mejoraDtoMock = mock(MejoraDto.class);
@@ -47,8 +49,7 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queSePuedaIrALaHerreria() {
-
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -58,8 +59,7 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConMejoraDto() {
-
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -70,9 +70,8 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queAlIrALaHerreriaSeGuardeEnLaVistaUnModelMapConUnInventario() throws InventarioVacioException {
-
         when(servicioHerreriaMock.obtenerInventario(idPersonajeMock)).thenReturn(equipamientosConCosasMock);
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -82,12 +81,11 @@ public class ControladorHerreriaTest {
     }
 
     @Test
-    public void queAlIrALaHerreriaSeLanceUnaInventarioVacioException() throws InventarioVacioException {
-
+    public void queAlIrALaHerreriaSeLanceUnaInventarioVacioExceptionSiElInventarioObtenidoEstaVacio() throws InventarioVacioException {
         doThrow(new InventarioVacioException("No se han encontrado equipamientos en su inventario"))
                 .when(servicioHerreriaMock)
                 .obtenerInventario(any());
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -101,11 +99,10 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queAlIrALaHerreriaYSeLanceUnaInventarioVacioExceptionSeElimineELCampoInventarioDelModel() throws InventarioVacioException {
-
         doThrow(new InventarioVacioException("No se han encontrado equipamientos en su inventario"))
                 .when(servicioHerreriaMock)
                 .obtenerInventario(any());
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -115,25 +112,21 @@ public class ControladorHerreriaTest {
     }
 
     @Test
-    public void queSiElMetodoIrALaHerreriaNoRecibeElIdDePersonajeDelObjetoHttpSessionLanceUnMensajeDeError() {
-
+    public void queSiElMetodoIrALaHerreriaNoRecibeElIdDePersonajeDelObjetoHttpSessionLanceUnMensajeDeErrorYHagaRedirectLogin() {
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(null);
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "redirect:/login";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "No puede acceder a la vista herreria sin haberse logueado";
-        String mensajeObtenida = mav.getModel().get("error").toString();
-
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
+
+        verify(redirectAttributesMock).addFlashAttribute("error", "No puede acceder a la vista herreria sin haberse logueado");
     }
 
     @Test
     public void queElMetodoIrALaHerreriaRecibaElOroDelPersonajeYLoGuardeEnElModel() {
-
-        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock);
+        ModelAndView mav = controladorHerreria.irALaHerreria(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "herreria";
         String vistaObtenida = mav.getViewName();
@@ -147,59 +140,47 @@ public class ControladorHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeExitoSiSePudoMejorarCorrectamente() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
+        doNothing().when(servicioHerreriaMock).mejorarEquipamiento(any(), any(), any());
 
-        doNothing().when(servicioHerreriaMock).mejorarEquipamiento(any(), any());
-
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock, sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "redirect:/herreria";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "El equipamiento se ha mejorado correctamente";
-        String mensajeObtenida = mav.getModel().get("mensaje").toString();
-
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
+        verify(redirectAttributesMock).addFlashAttribute("estadoMejora", "El equipamiento se ha mejorado correctamente");
+        verify(redirectAttributesMock).addFlashAttribute("tipoEstadoMejora", "success");
     }
 
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeFalloDeNivelDeEquipamientoMaximoExceptionSiElEquipamientoTieneNivelMaximo() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         doThrow(new NivelDeEquipamientoMaximoException("Se ha alcanzado el nivel maximo de este equipamiento"))
                 .when(servicioHerreriaMock)
-                .mejorarEquipamiento(any(), any());
+                .mejorarEquipamiento(any(), any(), any());
 
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
-
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock, sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "redirect:/herreria";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "Se ha alcanzado el nivel maximo de este equipamiento";
-        String mensajeObtenida = mav.getModel().get("mensaje").toString();
-
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
+        verify(redirectAttributesMock).addFlashAttribute("estadoMejora", "Se ha alcanzado el nivel maximo de este equipamiento");
+        verify(redirectAttributesMock).addFlashAttribute("tipoEstadoMejora", "danger");
     }
 
     @Test
     public void queAlMejorarUnEquipamientoSeMuestreUnMensajeDeFalloDeOroInsuficienteExceptionSiElOroDelPersonajeEsInsuficiente() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         doThrow(new OroInsuficienteException("Tu oro no es suficiente para realizar esta accion"))
                 .when(servicioHerreriaMock)
-                .mejorarEquipamiento(any(), any());
+                .mejorarEquipamiento(any(), any(), any());
 
-        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock);
-
+        ModelAndView mav = controladorHerreria.mejorarEquipamiento(mejoraDtoMock, sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "redirect:/herreria";
         String vistaObtenida = mav.getViewName();
 
-        String mensajeEsperado = "Tu oro no es suficiente para realizar esta accion";
-        String mensajeObtenida = mav.getModel().get("mensaje").toString();
-
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
-        assertThat(mensajeObtenida, equalToIgnoringCase(mensajeEsperado));
+        verify(redirectAttributesMock).addFlashAttribute("estadoMejora", "Tu oro no es suficiente para realizar esta accion");
+        verify(redirectAttributesMock).addFlashAttribute("tipoEstadoMejora", "danger");
     }
-
 }

@@ -5,4 +5,5 @@ public interface RepositorioPersonaje {
     void guardar(Personaje personaje);
     void modificar(Personaje personaje);
     Personaje buscarRival();
+    Integer buscarOroPersonaje(Long idPersonaje);
 }

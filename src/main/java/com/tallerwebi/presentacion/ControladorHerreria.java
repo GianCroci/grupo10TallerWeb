@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -27,13 +29,13 @@ public class ControladorHerreria {
     }
 
     @RequestMapping("/herreria")
-    public ModelAndView irALaHerreria(HttpSession session) {
+    public ModelAndView irALaHerreria(HttpSession session, RedirectAttributes redirectAttributes) {
 
         ModelMap model = new ModelMap();
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         if (idPersonaje == null) {
-            model.put("error", "No puede acceder a la vista herreria sin haberse logueado");
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista herreria sin haberse logueado");
             return new ModelAndView("redirect:/login", model);
         }
         Integer oroPersonaje = servicioHerreria.obtenerOroDelPersonaje(idPersonaje);
@@ -54,17 +56,17 @@ public class ControladorHerreria {
     }
 
     @RequestMapping(path = "/mejorar-equipamiento", method = RequestMethod.POST)
-    public ModelAndView mejorarEquipamiento(@ModelAttribute("mejoraDto") MejoraDto mejoraDto) {
+    public ModelAndView mejorarEquipamiento(@ModelAttribute("mejoraDto") MejoraDto mejoraDto, HttpSession session, RedirectAttributes redirectAttributes) {
 
         ModelMap model = new ModelMap();
-
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         try {
-            servicioHerreria.mejorarEquipamiento(mejoraDto.getEquipamiento(), mejoraDto.getOroUsuario());
-            model.put("mensaje", "El equipamiento se ha mejorado correctamente");
-
+            servicioHerreria.mejorarEquipamiento(mejoraDto.getIdEquipamiento(), mejoraDto.getOroUsuario(), idPersonaje);
+            redirectAttributes.addFlashAttribute("estadoMejora", "El equipamiento se ha mejorado correctamente");
+            redirectAttributes.addFlashAttribute("tipoEstadoMejora", "success");
         } catch (NivelDeEquipamientoMaximoException | OroInsuficienteException e) {
-
-            model.put("mensaje", e.getMessage());
+            redirectAttributes.addFlashAttribute("estadoMejora", e.getMessage());
+            redirectAttributes.addFlashAttribute("tipoEstadoMejora", "danger");
             return new ModelAndView("redirect:/herreria", model);
         }
 

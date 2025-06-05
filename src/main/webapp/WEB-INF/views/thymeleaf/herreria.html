@@ -30,14 +30,21 @@
 </head>
 
 <body class="bg-dark text-light" th:style="'background-image: url(' + @{/img/herreria.png} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
+<div class="d-flex align-items-center mb-4">
+    <img th:src="@{/img/oro.png}" alt="Oro" style="width: 32px; height: 32px; margin-right: 8px;" />
+    <span th:text="${oroPersonaje}" class="fs-5 fw-bold text-warning"></span>
+</div>
 
-<div th:if="${mensaje == 'El equipamiento se ha mejorado correctamente'}" class="alert alert-success alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 9999; width: 50%;">
-    <p th:text="${mensaje}"></p>
+<div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 9999; width: 50%;">
+    <p th:text="${error}"></p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
 </div>
 
-<div th:if="${mensaje == 'El equipamiento no se ha podido mejorar'}" class="alert alert-danger alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 9999; width: 50%;">
-    <p th:text="${mensaje}"></p>
+<div th:if="${estadoMejora != null}"
+     th:class="'alert alert-' + ${tipoEstadoMejora} + ' alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3'"
+     role="alert"
+     style="z-index: 9999; width: 50%;">
+    <p th:text="${estadoMejora}"></p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
 </div>
 
@@ -49,28 +56,22 @@
 
         <div th:each="equipamientoActual : ${inventario}" class="col-6 col-md-3 d-flex justify-content-center">
             <form th:action="@{/mejorar-equipamiento}" method="post" th:object="${mejoraDto}">
-                <input type="hidden" name="equipamiento.id" th:value="${equipamientoActual.id}"/>
-                <input type="hidden" name="equipamiento.nombre" th:value="${equipamientoActual.nombre}"/>
-                <input type="hidden" name="equipamiento.fuerza" th:value="${equipamientoActual.fuerza}"/>
-                <input type="hidden" name="equipamiento.armadura" th:value="${equipamientoActual.armadura}"/>
-                <input type="hidden" name="equipamiento.inteligencia" th:value="${equipamientoActual.inteligencia}"/>
-                <input type="hidden" name="equipamiento.agilidad" th:value="${equipamientoActual.agilidad}" />
-                <input type="hidden" name="equipamiento.costoMejora" th:value="${equipamientoActual.costoMejora}"/>
-                <input type="hidden" name="equipamiento.costoCompra" th:value="${equipamientoActual.costoCompra}"/>
-                <input type="hidden" name="equipamiento.costoVenta" th:value="${equipamientoActual.costoVenta}"/>
-                <input type="hidden" name="equipamiento.equipado" th:value="${equipamientoActual.equipado}"/>
-                <input type="hidden" name="oroUsuario" th:value="1000.0"/>
+                <input type="hidden" name="idEquipamiento" th:value="${equipamientoActual.id}"/>
+                <input type="hidden" name="oroUsuario" th:value="${oroPersonaje}"/>
 
 
             <div class="card bg-secondary text-light h-100 shadow">
                 <img th:src="@{'/img/' + ${equipamientoActual.nombre} + '.png'}" class="card-img-top p-3" th:alt="${equipamientoActual.nombre}" />
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${equipamientoActual.nombre}"></h5>
+                    <h5 class="card-title">
+                        <span th:text="${equipamientoActual.nombre}"></span>
+                        <span th:if="${equipamientoActual.nivel > 0}" th:text="' +' + ${equipamientoActual.nivel}"></span>
+                    </h5>
                     <ul class="list-unstyled mb-3">
-                        <li th:text="'Fuerza: ' + ${equipamientoActual.fuerza}"></li>
-                        <li th:text="'Armadura: ' + ${equipamientoActual.armadura}"></li>
-                        <li th:text="'Integilencia: ' + ${equipamientoActual.inteligencia}"></li>
-                        <li th:text="'Agilidad: ' + ${equipamientoActual.agilidad}"></li>
+                        <li th:text="'Fuerza: ' + ${equipamientoActual.stats.fuerza}"></li>
+                        <li th:text="'Armadura: ' + ${equipamientoActual.stats.armadura}"></li>
+                        <li th:text="'Integilencia: ' + ${equipamientoActual.stats.inteligencia}"></li>
+                        <li th:text="'Agilidad: ' + ${equipamientoActual.stats.agilidad}"></li>
                         <li th:text="'Costo de mejora: ' + ${equipamientoActual.costoMejora}"></li>
                     </ul>
                     <button class="btn btn-warning w-100">Mejorar</button>

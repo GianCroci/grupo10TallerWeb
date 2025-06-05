@@ -29,10 +29,11 @@ public class ControladorLogin {
     }
 
     @RequestMapping("/login")
-    public ModelAndView irALogin() {
+    public ModelAndView irALogin(HttpSession session) {
 
         ModelMap modelo = new ModelMap();
         modelo.put("datosLogin", new DatosLogin());
+        session.removeAttribute("idPersonaje");
         return new ModelAndView("login", modelo);
     }
 
@@ -42,7 +43,11 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
+            if (usuarioBuscado.getPersonaje() == null) {
+                return new ModelAndView("redirect:/creacion-personaje");
+            }
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            request.getSession().setAttribute("idPersonaje", usuarioBuscado.getPersonaje().getId());
             Usuario usuarioEncontrado = servicioUsuario.buscar(datosLogin.getEmail());
             model.put("datosPersonaje", usuarioEncontrado.getPersonaje());
             return new ModelAndView("home", model);

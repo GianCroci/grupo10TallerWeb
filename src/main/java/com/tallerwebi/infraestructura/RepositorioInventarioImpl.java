@@ -1,37 +1,44 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
+@Transactional
 @Repository("repositorioInventario")
 public class RepositorioInventarioImpl implements RepositorioInventario {
 
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    public RepositorioInventarioImpl(SessionFactory sessionFactory){
+        this.sessionFactory = sessionFactory;
+    }
+
         @Override
         public List<Equipamiento> obtenerInventario(Long idPersonaje) {
-            List<Equipamiento> inventario = new ArrayList<>();
-            String nombre = "espada";
-            Estadisticas stats = new Estadisticas();
-            Rol rol = new Guerrero();
-            Integer costoCompra = 100;
-            Integer costoVenta = 100;
-            Integer costoMejora = 100;
-            Integer nivel = 1;
-            Boolean equipado = false;
-
-            Equipamiento equipamiento = new Arma(nombre, stats, rol, costoCompra, costoVenta, costoMejora, nivel, equipado);
-            Equipamiento equipamiento2 = new Arma("baston", stats, rol, costoCompra, costoVenta, costoMejora, nivel, equipado);
-            Equipamiento equipamiento3 = new Arma("daga", stats, rol, costoCompra, costoVenta, costoMejora, nivel, equipado);
-            inventario.add(equipamiento);
-            inventario.add(equipamiento2);
-            inventario.add(equipamiento3);
-            return inventario;
+            Session session = sessionFactory.getCurrentSession();
+            return session.createCriteria(Equipamiento.class)
+                    .add(Restrictions.eq("personaje.id", idPersonaje))
+                    .list();
         }
 
     @Override
     public void modificarEquipamiento(Equipamiento equipamiento) {
+        sessionFactory.getCurrentSession().save(equipamiento);
+    }
 
+    @Override
+    public Equipamiento obtenerEquipamientoPorId(Long idEquipamiento) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Equipamiento) session.createCriteria(Equipamiento.class)
+                .add(Restrictions.eq("id", idEquipamiento))
+                .uniqueResult();
     }
 }

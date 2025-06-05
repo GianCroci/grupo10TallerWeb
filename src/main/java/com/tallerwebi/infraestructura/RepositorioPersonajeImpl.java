@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.RepositorioPersonaje;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,10 +25,10 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
     }
 
     @Override
-    public Personaje buscarPersonaje(Long id) {
+    public Personaje buscarPersonaje(Long idPersonaje) {
         Session session = sessionFactory.getCurrentSession();
         return (Personaje) session.createCriteria(Personaje.class)
-                .add(Restrictions.eq("id", id))
+                .add(Restrictions.eq("id", idPersonaje))
                 .uniqueResult();
     }
 
@@ -55,6 +56,15 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
         // Selecciona uno aleatorio
         int indexAleatorio = new Random().nextInt(personajes.size());
         return personajes.get(indexAleatorio);
+    }
+
+    @Override
+    public Integer buscarOroPersonaje(Long idPersonaje) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Integer) session.createCriteria(Personaje.class)
+                .add(Restrictions.eq("id", idPersonaje))
+                .setProjection(Projections.property("oro"))
+                .uniqueResult();
     }
 
 }
