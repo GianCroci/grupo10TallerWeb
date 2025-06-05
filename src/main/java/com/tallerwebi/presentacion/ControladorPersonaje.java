@@ -38,7 +38,7 @@ public class ControladorPersonaje {
         if (usuarioLogueado != null) {
             servicioUsuario.setPersonaje(personaje, usuarioLogueado);
             modelMap.put("datosPersonaje", usuarioLogueado.getPersonaje());
-
+            session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
             return new ModelAndView("home", modelMap);
         }
 

@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Usuario {
@@ -46,20 +47,27 @@ public class Usuario {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
-
     public boolean activo() {
         return activo;
     }
-
     public void activar() {
         activo = true;
     }
-
     public Personaje getPersonaje() {
         return personaje;
     }
-
     public void setPersonaje(Personaje personaje) {
         this.personaje = personaje;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
