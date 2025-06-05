@@ -17,11 +17,13 @@ public class Botas extends Equipamiento {
 
     @Override
     public void mejorar() throws NivelDeEquipamientoMaximoException {
-        Integer nivel = this.getNivel();
-        if (nivel == 5){
+        if (this.getNivel() == 5){
             throw new NivelDeEquipamientoMaximoException("Se ha alcanzado el nivel maximo de este equipamiento");
         }
-        this.setNivel(nivel + 1);
-        getRol().aplicarMejora(this);
+        this.getRol().aplicarMejora(this);
+        this.setCostoMejora(this.getCostoMejora() + 20);
+        this.setCostoCompra(this.getCostoCompra() + 20);
+        this.setCostoVenta(this.getCostoVenta() + 20);
+        this.setNivel(this.getNivel() + 1);
     }
 }

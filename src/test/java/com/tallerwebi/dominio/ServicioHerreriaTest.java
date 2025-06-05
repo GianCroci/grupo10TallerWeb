@@ -3,8 +3,6 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
-import com.tallerwebi.infraestructura.RepositorioInventarioImpl;
-import com.tallerwebi.infraestructura.RepositorioPersonajeImpl;
 import com.tallerwebi.presentacion.MejoraDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +13,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ServicioHerreriaTest {
 
@@ -28,6 +25,9 @@ public class ServicioHerreriaTest {
     private Long idPersonajeMock;
     private Personaje personajeMock;
     private Estadisticas estadisticasMock;
+    private Long idEquipamientoMock;
+    private Equipamiento equipamientoMock;
+    private Equipamiento equipamientoMock2;
 
     @BeforeEach
     public void init() {
@@ -36,6 +36,7 @@ public class ServicioHerreriaTest {
         servicioTaberna = mock(ServicioTaberna.class);
         mejoraDtoMock = mock(MejoraDto.class);
         idPersonajeMock = 1L;
+        idEquipamientoMock = 1L;
         servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje, servicioTaberna);
         personajeMock = mock(Personaje.class);
         estadisticasMock = new Estadisticas();
@@ -43,26 +44,29 @@ public class ServicioHerreriaTest {
         estadisticasMock.setInteligencia(0);
         estadisticasMock.setFuerza(0);
         estadisticasMock.setArmadura(0);
+        equipamientoMock = new Arma("a", estadisticasMock,new Guerrero(), 10, 10, 50, 0, true );
+        equipamientoMock2 = new Arma("z", estadisticasMock,new Guerrero(), 10, 10, 50, 0, true );
         when(personajeMock.getOro()).thenReturn(50);
-        when(mejoraDtoMock.getEquipamiento()).thenReturn(new Arma("espada", estadisticasMock, new Guerrero(), 100, 100, 100, 0, false));
+        when(mejoraDtoMock.getIdEquipamiento()).thenReturn(idEquipamientoMock);
         when(repositorioPersonaje.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        doNothing().when(repositorioInventario).modificarEquipamiento(equipamientoMock);
+        doNothing().when(repositorioPersonaje).modificar(personajeMock);
     }
 
     @Test
-    public void queSePuedanObtenerLosTodosLosEquipamientosDelPersonaje() throws InventarioVacioException {
-
+    public void queSePuedanObtenerLosTodosLosEquipamientosDelPersonajeOrdenadosPorNombre() throws InventarioVacioException {
         List<Equipamiento> listaEquipamientosConObjetosMock = new ArrayList<>();
-        Equipamiento equipamientoMock = mock(Arma.class);
+        listaEquipamientosConObjetosMock.add(equipamientoMock2);
         listaEquipamientosConObjetosMock.add(equipamientoMock);
         when(repositorioInventario.obtenerInventario(idPersonajeMock)).thenReturn(listaEquipamientosConObjetosMock);
         List<Equipamiento> inventario = servicioHerreria.obtenerInventario(1L);
 
-        assertThat(inventario.isEmpty(), is(false) );
+        assertThat(inventario.get(0).getNombre(), equalToIgnoringCase("a"));
+        assertThat(inventario.get(1).getNombre(), equalToIgnoringCase("z"));
     }
 
     @Test
     public void queSiElInventarioObtenidoEstaVacioLanceUnaInventarioVacioException() throws InventarioVacioException {
-
         List<Equipamiento> listaEquipamientosVaciaMock = new ArrayList<>();
         when(repositorioInventario.obtenerInventario(idPersonajeMock)).thenReturn(listaEquipamientosVaciaMock);
 
@@ -74,33 +78,36 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queSePuedaRealizarUnaMejoraDeEquipamientoSiLaCantidadDeOroEsSuficiente() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         //when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
         Integer oroUsuarioSuficiente = 200;
         when(mejoraDtoMock.getOroUsuario()).thenReturn(oroUsuarioSuficiente);
 
-        servicioHerreria.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario());
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(equipamientoMock);
+
+        servicioHerreria.mejorarEquipamiento(mejoraDtoMock.getIdEquipamiento(), mejoraDtoMock.getOroUsuario(), idPersonajeMock);
 
         Integer valorFuerzaEsperado = 4;
-        Integer valorFuerzaObtenido = mejoraDtoMock.getEquipamiento().getStats().getFuerza();
+        Integer valorFuerzaObtenido = equipamientoMock.getStats().getFuerza();
 
         assertThat(valorFuerzaObtenido, equalTo(valorFuerzaEsperado));
+        verify(repositorioInventario, times(1)).modificarEquipamiento(equipamientoMock);
     }
 
     @Test
     public void queNoSePuedaRealizarUnaMejoraDeEquipamientoSiLaCantidadDeOroEsInsuficienteYLanceUna() throws NivelDeEquipamientoMaximoException {
-
         Integer oroUsuarioInsuficiente = 5;
         when(mejoraDtoMock.getOroUsuario()).thenReturn(oroUsuarioInsuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(equipamientoMock);
 
         assertThrows(OroInsuficienteException.class, () -> {
-            servicioHerreria.mejorarEquipamiento(mejoraDtoMock.getEquipamiento(), mejoraDtoMock.getOroUsuario());
+            servicioHerreria.mejorarEquipamiento(mejoraDtoMock.getIdEquipamiento(), mejoraDtoMock.getOroUsuario(), idPersonajeMock);
         });
     }
 
     @Test
     public void quePuedaObtenerElOroDelPersonaje() {
-
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(equipamientoMock);
+        when(servicioHerreria.obtenerOroDelPersonaje(anyLong())).thenReturn(50);
         Integer oroObtenido = servicioHerreria.obtenerOroDelPersonaje(idPersonajeMock);
         Integer oroEsperado = 50;
 
@@ -109,7 +116,6 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queSePuedaCrearUnEquipamientoArma() {
-
         String nombre = "espada";
         Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
@@ -126,21 +132,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarCualquierEquipamientoSubaDeNivel() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento armaGuerrero = new Arma();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        armaGuerrero.setStats(stats);
+        armaGuerrero.setStats(estadisticasMock);
         armaGuerrero.setRol(rol);
+        armaGuerrero.setCostoCompra(0);
+        armaGuerrero.setCostoVenta(0);
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(0);
+        armaGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(armaGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(armaGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer nivelEsperado = 1;
         Integer nivelObtenido = armaGuerrero.getNivel();
@@ -148,22 +153,55 @@ public class ServicioHerreriaTest {
     }
 
     @Test
-    public void queAlIntentarMejorarUnEquipamientoDeCualquierTipoNivel5MelanceUnaNivelDeEquipamientoMaximoException() throws NivelDeEquipamientoMaximoException {
+    public void queAlMejorarCualquierEquipamientoSubanTodosLosCostos() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
+        Integer oroUsuarioSuficiente = 200;
+        Equipamiento armaGuerrero = new Arma();
+        Rol rol = new Guerrero();
+        armaGuerrero.setStats(estadisticasMock);
+        armaGuerrero.setRol(rol);
+        armaGuerrero.setCostoMejora(1);
+        armaGuerrero.setNivel(0);
+        armaGuerrero.setId(1l);
+        armaGuerrero.setCostoMejora(0);
+        armaGuerrero.setCostoCompra(0);
+        armaGuerrero.setCostoVenta(0);
 
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(armaGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
+
+        Integer costoMejoraEsperado = 20;
+        Integer costoMejoraObtenido = armaGuerrero.getCostoMejora();
+
+        Integer costoCompraEsperado = 20;
+        Integer costoCompraObtenido = armaGuerrero.getCostoCompra();
+
+        Integer costoVentaEsperado = 20;
+        Integer costoVentaObtenido = armaGuerrero.getCostoVenta();
+
+        assertThat(costoMejoraObtenido, equalTo(costoMejoraEsperado));
+        assertThat(costoCompraObtenido, equalTo(costoCompraEsperado));
+        assertThat(costoVentaObtenido, equalTo(costoVentaEsperado));
+    }
+
+    @Test
+    public void queAlIntentarMejorarUnEquipamientoDeCualquierTipoNivel5MelanceUnaNivelDeEquipamientoMaximoException() throws NivelDeEquipamientoMaximoException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento armaGuerrero = new Arma();
         Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        armaGuerrero.setStats(stats);
+        armaGuerrero.setStats(estadisticasMock);
         armaGuerrero.setRol(rol);
+        armaGuerrero.setCostoCompra(0);
+        armaGuerrero.setCostoVenta(0);
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(5);
+        armaGuerrero.setId(1l);
+
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
+
         assertThrows(NivelDeEquipamientoMaximoException.class, () -> {
-            servicioHerreria.mejorarEquipamiento(armaGuerrero, oroUsuarioSuficiente);
+            servicioHerreria.mejorarEquipamiento(armaGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
         });
     }
 
@@ -173,16 +211,17 @@ public class ServicioHerreriaTest {
         Equipamiento armaGuerrero = new Arma();
         Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        armaGuerrero.setStats(stats);
+        armaGuerrero.setStats(estadisticasMock);
         armaGuerrero.setRol(rol);
+        armaGuerrero.setCostoCompra(0);
+        armaGuerrero.setCostoVenta(0);
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(0);
+        armaGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(armaGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(armaGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 4;
         Integer valorFuerzaObtenido = armaGuerrero.getStats().getFuerza();
@@ -200,26 +239,24 @@ public class ServicioHerreriaTest {
         assertThat(valorArmaduraEsperado, equalTo(valorArmaduraObtenido));
         assertThat(valorInteligenciaEsperado, equalTo(valorInteligenciaObtenido));
         assertThat(valorAgilidadEsperado, equalTo(valorAgilidadObtenido));
-
     }
 
     @Test
     public void queAlMejorarUnEquipamientoEscudoDeRolGuerreroSeMejorenSoloLasEstadisticasDeDefensa() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento escudoGuerrero = new Escudo();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        escudoGuerrero.setStats(stats);
+        escudoGuerrero.setStats(estadisticasMock);
         escudoGuerrero.setRol(rol);
+        escudoGuerrero.setCostoCompra(0);
+        escudoGuerrero.setCostoVenta(0);
         escudoGuerrero.setCostoMejora(1);
         escudoGuerrero.setNivel(0);
+        escudoGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(escudoGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(escudoGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = escudoGuerrero.getStats().getFuerza();
@@ -242,21 +279,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoCascoDeRolGuerreroSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento cascoGuerrero = new Casco();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        cascoGuerrero.setStats(stats);
+        cascoGuerrero.setStats(estadisticasMock);
         cascoGuerrero.setRol(rol);
+        cascoGuerrero.setCostoCompra(0);
+        cascoGuerrero.setCostoVenta(0);
         cascoGuerrero.setCostoMejora(1);
         cascoGuerrero.setNivel(0);
+        cascoGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(cascoGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(cascoGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = cascoGuerrero.getStats().getFuerza();
@@ -274,27 +310,24 @@ public class ServicioHerreriaTest {
         assertThat(valorArmaduraEsperado, equalTo(valorArmaduraObtenido));
         assertThat(valorInteligenciaEsperado, equalTo(valorInteligenciaObtenido));
         assertThat(valorAgilidadEsperado, equalTo(valorAgilidadObtenido));
-
     }
 
     @Test
     public void queAlMejorarUnEquipamientoPecheraDeRolGuerreroSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pecheraGuerrero = new Pechera();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pecheraGuerrero.setStats(stats);
+        pecheraGuerrero.setStats(estadisticasMock);
         pecheraGuerrero.setRol(rol);
+        pecheraGuerrero.setCostoCompra(0);
+        pecheraGuerrero.setCostoVenta(0);
         pecheraGuerrero.setCostoMejora(1);
         pecheraGuerrero.setNivel(0);
+        pecheraGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pecheraGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraGuerrero);
 
+        servicioHerreria.mejorarEquipamiento(pecheraGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pecheraGuerrero.getStats().getFuerza();
@@ -312,27 +345,24 @@ public class ServicioHerreriaTest {
         assertThat(valorArmaduraEsperado, equalTo(valorArmaduraObtenido));
         assertThat(valorInteligenciaEsperado, equalTo(valorInteligenciaObtenido));
         assertThat(valorAgilidadEsperado, equalTo(valorAgilidadObtenido));
-
     }
 
     @Test
     public void queAlMejorarUnEquipamientoPantalonesDeRolGuerreroSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pantalonesGuerrero = new Pantalones();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pantalonesGuerrero.setStats(stats);
+        pantalonesGuerrero.setStats(estadisticasMock);
         pantalonesGuerrero.setRol(rol);
+        pantalonesGuerrero.setCostoCompra(0);
+        pantalonesGuerrero.setCostoVenta(0);
         pantalonesGuerrero.setCostoMejora(1);
         pantalonesGuerrero.setNivel(0);
+        pantalonesGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pantalonesGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesGuerrero);
 
+        servicioHerreria.mejorarEquipamiento(pantalonesGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pantalonesGuerrero.getStats().getFuerza();
@@ -355,21 +385,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoBotasDeRolGuerreroSeMejorenSoloLasEstadisticasDeAgilidadYArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento botasGuerrero = new Botas();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Guerrero();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        botasGuerrero.setStats(stats);
+        botasGuerrero.setStats(estadisticasMock);
         botasGuerrero.setRol(rol);
+        botasGuerrero.setCostoCompra(0);
+        botasGuerrero.setCostoVenta(0);
         botasGuerrero.setCostoMejora(1);
         botasGuerrero.setNivel(0);
+        botasGuerrero.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(botasGuerrero, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasGuerrero);
+
+        servicioHerreria.mejorarEquipamiento(botasGuerrero.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
 
         Integer valorFuerzaEsperado = 0;
@@ -393,21 +422,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoArmaDeRolMagoSeMejorenSoloLasEstadisticasDeInteligencia() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento armaMago = new Arma();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        armaMago.setStats(stats);
+        armaMago.setStats(estadisticasMock);
         armaMago.setRol(rol);
+        armaMago.setCostoCompra(0);
+        armaMago.setCostoVenta(0);
         armaMago.setCostoMejora(1);
         armaMago.setNivel(0);
+        armaMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(armaMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaMago);
+
+        servicioHerreria.mejorarEquipamiento(armaMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = armaMago.getStats().getFuerza();
@@ -430,21 +458,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoEscudoDeRolMagoSeMejorenSoloLasEstadisticasDeDefensa() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento escudoMago = new Escudo();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        escudoMago.setStats(stats);
+        escudoMago.setStats(estadisticasMock);
         escudoMago.setRol(rol);
+        escudoMago.setCostoCompra(0);
+        escudoMago.setCostoVenta(0);
         escudoMago.setCostoMejora(1);
         escudoMago.setNivel(0);
+        escudoMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(escudoMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoMago);
+
+        servicioHerreria.mejorarEquipamiento(escudoMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = escudoMago.getStats().getFuerza();
@@ -467,21 +494,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoCascoDeRolMagoSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento cascoMago = new Casco();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        cascoMago.setStats(stats);
+        cascoMago.setStats(estadisticasMock);
         cascoMago.setRol(rol);
+        cascoMago.setCostoCompra(0);
+        cascoMago.setCostoVenta(0);
         cascoMago.setCostoMejora(1);
         cascoMago.setNivel(0);
+        cascoMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(cascoMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoMago);
+
+        servicioHerreria.mejorarEquipamiento(cascoMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = cascoMago.getStats().getFuerza();
@@ -504,21 +530,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoPecheraDeRolMagoSeMejorenSoloLasEstadisticasDeArmaduraEInteligencia() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pecheraMago = new Pechera();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pecheraMago.setStats(stats);
+        pecheraMago.setStats(estadisticasMock);
         pecheraMago.setRol(rol);
+        pecheraMago.setCostoCompra(0);
+        pecheraMago.setCostoVenta(0);
         pecheraMago.setCostoMejora(1);
         pecheraMago.setNivel(0);
+        pecheraMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pecheraMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraMago);
+
+        servicioHerreria.mejorarEquipamiento(pecheraMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pecheraMago.getStats().getFuerza();
@@ -541,21 +566,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoPantalonesDeRolMagoSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pantalonesMago = new Pantalones();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pantalonesMago.setStats(stats);
+        pantalonesMago.setStats(estadisticasMock);
         pantalonesMago.setRol(rol);
+        pantalonesMago.setCostoCompra(0);
+        pantalonesMago.setCostoVenta(0);
         pantalonesMago.setCostoMejora(1);
         pantalonesMago.setNivel(0);
+        pantalonesMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pantalonesMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesMago);
+
+        servicioHerreria.mejorarEquipamiento(pantalonesMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pantalonesMago.getStats().getFuerza();
@@ -578,21 +602,20 @@ public class ServicioHerreriaTest {
 
     @Test
     public void queAlMejorarUnEquipamientoBotasDeRolMagoSeMejorenSoloLasEstadisticasDeAgilidadYArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
         Integer oroUsuarioSuficiente = 200;
         Equipamiento botasMago = new Botas();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Mago();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        botasMago.setStats(stats);
+        botasMago.setStats(estadisticasMock);
         botasMago.setRol(rol);
+        botasMago.setCostoCompra(0);
+        botasMago.setCostoVenta(0);
         botasMago.setCostoMejora(1);
         botasMago.setNivel(0);
+        botasMago.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(botasMago, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasMago);
+
+        servicioHerreria.mejorarEquipamiento(botasMago.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = botasMago.getStats().getFuerza();
@@ -617,18 +640,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoArmaDeRolBandidoSeMejorenSoloLasEstadisticasDeInteligencia() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento armaBandido = new Arma();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        armaBandido.setStats(stats);
+        armaBandido.setStats(estadisticasMock);
         armaBandido.setRol(rol);
+        armaBandido.setCostoCompra(0);
+        armaBandido.setCostoVenta(0);
         armaBandido.setCostoMejora(1);
         armaBandido.setNivel(0);
+        armaBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(armaBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaBandido);
+
+        servicioHerreria.mejorarEquipamiento(armaBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 1;
         Integer valorFuerzaObtenido = armaBandido.getStats().getFuerza();
@@ -652,18 +675,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoEscudoDeRolBandidoSeMejorenSoloLasEstadisticasDeDefensa() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento escudoBandido = new Escudo();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        escudoBandido.setStats(stats);
+        escudoBandido.setStats(estadisticasMock);
         escudoBandido.setRol(rol);
+        escudoBandido.setCostoCompra(0);
+        escudoBandido.setCostoVenta(0);
         escudoBandido.setCostoMejora(1);
         escudoBandido.setNivel(0);
+        escudoBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(escudoBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoBandido);
+
+        servicioHerreria.mejorarEquipamiento(escudoBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = escudoBandido.getStats().getFuerza();
@@ -687,18 +710,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoCascoDeRolBandidoSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento cascoBandido = new Casco();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        cascoBandido.setStats(stats);
+        cascoBandido.setStats(estadisticasMock);
         cascoBandido.setRol(rol);
+        cascoBandido.setCostoCompra(0);
+        cascoBandido.setCostoVenta(0);
         cascoBandido.setCostoMejora(1);
         cascoBandido.setNivel(0);
+        cascoBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(cascoBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoBandido);
+
+        servicioHerreria.mejorarEquipamiento(cascoBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = cascoBandido.getStats().getFuerza();
@@ -722,18 +745,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoPecheraDeRolBandidoSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pecheraBandido = new Pechera();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pecheraBandido.setStats(stats);
+        pecheraBandido.setStats(estadisticasMock);
         pecheraBandido.setRol(rol);
+        pecheraBandido.setCostoCompra(0);
+        pecheraBandido.setCostoVenta(0);
         pecheraBandido.setCostoMejora(1);
         pecheraBandido.setNivel(0);
+        pecheraBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pecheraBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraBandido);
+
+        servicioHerreria.mejorarEquipamiento(pecheraBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pecheraBandido.getStats().getFuerza();
@@ -757,18 +780,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoPantalonesDeRolBandidoSeMejorenSoloLasEstadisticasDeArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento pantalonesBandido = new Pantalones();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        pantalonesBandido.setStats(stats);
+        pantalonesBandido.setStats(estadisticasMock);
         pantalonesBandido.setRol(rol);
+        pantalonesBandido.setCostoCompra(0);
+        pantalonesBandido.setCostoVenta(0);
         pantalonesBandido.setCostoMejora(1);
         pantalonesBandido.setNivel(0);
+        pantalonesBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(pantalonesBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesBandido);
+
+        servicioHerreria.mejorarEquipamiento(pantalonesBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = pantalonesBandido.getStats().getFuerza();
@@ -792,18 +815,18 @@ public class ServicioHerreriaTest {
     public void queAlMejorarUnEquipamientoBotasDeRolBandidoSeMejorenSoloLasEstadisticasDeAgilidadYArmadura() throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         Integer oroUsuarioSuficiente = 200;
         Equipamiento botasBandido = new Botas();
-        Estadisticas stats = new Estadisticas();
         Rol rol = new Bandido();
-        stats.setFuerza(0);
-        stats.setArmadura(0);
-        stats.setInteligencia(0);
-        stats.setAgilidad(0);
-        botasBandido.setStats(stats);
+        botasBandido.setStats(estadisticasMock);
         botasBandido.setRol(rol);
+        botasBandido.setCostoCompra(0);
+        botasBandido.setCostoVenta(0);
         botasBandido.setCostoMejora(1);
         botasBandido.setNivel(0);
+        botasBandido.setId(1l);
 
-        servicioHerreria.mejorarEquipamiento(botasBandido, oroUsuarioSuficiente);
+        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasBandido);
+
+        servicioHerreria.mejorarEquipamiento(botasBandido.getId(), oroUsuarioSuficiente, idPersonajeMock);
 
         Integer valorFuerzaEsperado = 0;
         Integer valorFuerzaObtenido = botasBandido.getStats().getFuerza();
@@ -822,5 +845,4 @@ public class ServicioHerreriaTest {
         assertThat(valorInteligenciaEsperado, equalTo(valorInteligenciaObtenido));
         assertThat(valorAgilidadEsperado, equalTo(valorAgilidadObtenido));
     }
-
 }

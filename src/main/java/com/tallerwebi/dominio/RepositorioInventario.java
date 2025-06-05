@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface RepositorioInventario {
     List<Equipamiento> obtenerInventario(Long idPersonaje);
-
     void modificarEquipamiento(Equipamiento equipamiento);
+    Equipamiento obtenerEquipamientoPorId(Long idEquipamiento);
 }

@@ -3,10 +3,10 @@ package com.tallerwebi.dominio;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Personaje {
@@ -24,6 +24,14 @@ public class Personaje {
     private Integer agilidad;
     private String imagen;
     private Integer oro;
+    @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Equipamiento> equipamientos = new ArrayList<>();
+
+    public void setId(Long id) { this.id = id; }
+
+    public List<Equipamiento> getEquipamientos() { return equipamientos; }
+
+    public void setEquipamientos(List<Equipamiento> equipamientos) { this.equipamientos = equipamientos; }
 
     public void setFuerza(Integer fuerza) {
         this.fuerza = fuerza;
@@ -143,4 +151,16 @@ public class Personaje {
     public Integer getOro() { return oro; }
 
     public void setOro(Integer oro) { this.oro = oro; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Personaje personaje = (Personaje) o;
+        return Objects.equals(id, personaje.id) && Objects.equals(nombre, personaje.nombre) && Objects.equals(genero, personaje.genero) && Objects.equals(rol, personaje.rol) && Objects.equals(fuerza, personaje.fuerza) && Objects.equals(inteligencia, personaje.inteligencia) && Objects.equals(armadura, personaje.armadura) && Objects.equals(agilidad, personaje.agilidad) && Objects.equals(imagen, personaje.imagen) && Objects.equals(oro, personaje.oro) && Objects.equals(equipamientos, personaje.equipamientos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

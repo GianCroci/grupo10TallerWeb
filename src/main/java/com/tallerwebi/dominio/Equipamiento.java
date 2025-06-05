@@ -22,6 +22,9 @@ public abstract class Equipamiento{
     private Integer costoVenta;
     private Integer nivel;
     private Boolean equipado;
+    @ManyToOne
+    @JoinColumn(name = "idPersonaje") // FK en la tabla equipamiento
+    private Personaje personaje;
 
     public Equipamiento() {
 
@@ -75,4 +78,8 @@ public abstract class Equipamiento{
     public Boolean getEquipado() { return equipado; }
 
     public void setEquipado(Boolean equipado) { this.equipado = equipado; }
+
+    public Personaje getPersonaje() { return personaje; }
+
+    public void setPersonaje(Personaje personaje) { this.personaje = personaje; }
 }

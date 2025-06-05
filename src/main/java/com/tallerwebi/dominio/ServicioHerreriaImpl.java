@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 
 @Service("servicioHerreria")
@@ -26,21 +27,24 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
     }
 
     @Override
-    public void mejorarEquipamiento(Equipamiento equipamiento, Integer oroUsuario) throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
-
+    public void mejorarEquipamiento(Long idEquipamiento, Integer oroUsuario, Long idPersonaje) throws NivelDeEquipamientoMaximoException, OroInsuficienteException {
         /*
         if (sePuedeMejorar()==true) {
             // logica normal de la mejora
         }
            throw new IllegalArgumentException("No puedes mejorar el equipamiento, debes invitar al menos 5 tragos al herrero.");
-
          */
+        Equipamiento equipamientoObtenido = repositorioInventario.obtenerEquipamientoPorId(idEquipamiento);
 
-        if (oroUsuario < equipamiento.getCostoMejora()) {
+        if (oroUsuario < equipamientoObtenido.getCostoMejora()) {
             throw new OroInsuficienteException("Tu oro no es suficiente para realizar esta accion");
         }
-        equipamiento.mejorar();
-        repositorioInventario.modificarEquipamiento(equipamiento);
+        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
+        Integer oroUsuarioFinal = personajeObtenido.getOro() - equipamientoObtenido.getCostoMejora();
+        equipamientoObtenido.mejorar();
+        personajeObtenido.setOro(oroUsuarioFinal);
+        repositorioInventario.modificarEquipamiento(equipamientoObtenido);
+        repositorioPersonaje.modificar(personajeObtenido);
     }
 
     @Override
@@ -49,13 +53,13 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         if (inventario.isEmpty()) {
             throw new InventarioVacioException("No se han encontrado equipamientos en su inventario");
         }
+        inventario.sort(Comparator.comparing(Equipamiento::getNombre));
         return inventario;
     }
 
     @Override
     public Integer obtenerOroDelPersonaje(Long idPersonaje) {
-        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
-        Integer oroPersonaje = personajeObtenido.getOro();
+        Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
         return oroPersonaje;
     }
 

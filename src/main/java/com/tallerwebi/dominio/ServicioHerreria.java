@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ServicioHerreria {
 
-    void mejorarEquipamiento(Equipamiento equipamiento, Integer oro) throws NivelDeEquipamientoMaximoException, OroInsuficienteException;
+    void mejorarEquipamiento(Long equipamiento, Integer oro, Long idPersonaje) throws NivelDeEquipamientoMaximoException, OroInsuficienteException;
 
     List<Equipamiento> obtenerInventario(Long idPersonaje) throws InventarioVacioException;
 
