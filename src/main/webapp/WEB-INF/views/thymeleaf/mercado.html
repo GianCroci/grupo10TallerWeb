@@ -83,49 +83,24 @@
     <h1>Bienvenido al Mercado</h1>
 
     <form th:action="@{/realizar-compra}" method="POST">
-    <div class="secciones">
+        <div class="secciones">
 
-        <div class="categoria">
-            <h2>Vestimenta</h2>
-
-                <label><input type="checkbox" name="itemsSeleccionados" value="tunica-ligera"> Túnica ligera</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="tunica-reforzada"> Túnica reforzada</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="manto-guerra"> Manto de guerra</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="botas-cuero"> Botas de cuero</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="botas-acero"> Botas de acero</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="cinturon-gladiador"> Cinturón de gladiador</label>
-
-        </div>
-
-        <div class="categoria">
-            <h2>Armas</h2>
-
-                <label><input type="checkbox" name="itemsSeleccionados" value="espada-corta"> Espada corta</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="hacha-pesada"> Hacha pesada</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="lanza-larga"> Lanza larga</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="dagas-gemelas"> Dagas gemelas</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="maza-pinchos"> Maza con pinchos</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="tridente"> Tridente</label>
+            <div class="categoria">
+                <h2>Todos los Productos</h2>
+                <div th:each="producto : ${mercado.productos}">
+                    <label>
+                        <input type="checkbox" name="itemsSeleccionados" th:value="${producto.nombre}"/>
+                        <span th:text="${producto.nombre}">Nombre</span> -
+                        <span th:text="'$' + ${producto.precio}">Precio</span>
+                    </label>
+                </div>
+            </div>
 
         </div>
 
-        <div class="categoria">
-            <h2>Consumibles</h2>
-
-                <label><input type="checkbox" name="itemsSeleccionados" value="pan-duro"> Pan duro</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="carne-asada"> Carne asada</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="hidromiel"> Hidromiel</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="pocion-velocidad"> Poción de velocidad</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="hierbas"> Hierbas curativas</label>
-                <label><input type="checkbox" name="itemsSeleccionados" value="unguento"> Ungüento de combate</label>
-
-        </div>
-
-    </div>
         <button>Comprar</button>
         <p th:if="${compraExitosa != null}" class="alert alert-success" th:text="${compraExitosa}"></p>
     </form>
-
 
 </div>
 </body>
