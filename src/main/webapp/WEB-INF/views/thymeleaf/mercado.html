@@ -25,7 +25,7 @@
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 30px;
             text-shadow: 2px 2px 5px #000;
         }
@@ -44,33 +44,33 @@
         }
 
         .producto-card {
-            background-color: rgba(100, 100, 100, 0.4); /* Fondo más oscuro */
+            background-color: rgba(100, 100, 100, 0.4);
             border-radius: 10px;
             padding: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease-in-out;
             height: 100%;
             box-sizing: border-box;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .producto-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
             background-color: rgba(100, 100, 100, 0.5);
         }
 
         .producto-nombre {
-            font-size: 1.4em;
+            font-size: 1.1em;
             font-weight: bold;
             margin-bottom: 15px;
             text-align: center;
         }
 
         .producto-precio {
-            font-size: 1.5em;
+            font-size: 1.2em;
             color: #f4c542;
             text-align: center;
             margin: 15px 0;
@@ -79,7 +79,7 @@
 
         .producto-btn {
             padding: 10px 20px;
-            font-size: 1.1em;
+            font-size: 1em;
             background-color: #f4c542;
             border: none;
             border-radius: 5px;
@@ -87,7 +87,7 @@
             font-weight: bold;
             cursor: pointer;
             width: 80%;
-            transition: all 0.3s;
+            transition: all 0.4s ease-in-out;
             margin-top: auto;
         }
 
@@ -110,7 +110,7 @@
 
         .btn-comprar-todos {
             padding: 14px 35px;
-            font-size: 1.2em;
+            font-size: 1em;
             background-color: #4CAF50;
             border: none;
             border-radius: 8px;
@@ -129,6 +129,7 @@
             background-color: rgba(76, 175, 80, 0.3);
             border: 1px solid #4CAF50;
         }
+
     </style>
 </head>
 <body>
@@ -143,6 +144,7 @@
             <div class="productos-grid">
                 <div th:each="producto : ${mercado.productos}" class="producto-card">
                     <input type="checkbox" class="checkbox-hidden" name="itemsSeleccionados" th:value="${producto.nombre}"/>
+                    <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 100px; margin-bottom: 10px;">
                     <div class="producto-nombre" th:text="${producto.nombre}">Nombre</div>
                     <div class="producto-precio" th:text="'$' + ${producto.precio}">Precio</div>
                     <button type="button" class="producto-btn"

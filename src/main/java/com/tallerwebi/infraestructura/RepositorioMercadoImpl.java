@@ -58,7 +58,7 @@ public class RepositorioMercadoImpl implements RepositorioMercado {
         mercado.getProductos().add(new Capucha("Capucha de Sombras", 120.0));
         mercado.getProductos().add(new ZapatoUno("Zapatos grises", 250.0));
         mercado.getProductos().add(new ZapatoDos("Zapatos reforzados", 100.0));
-        mercado.getProductos().add(new ZapatoUno("Cinturon oro", 250.0));
+        mercado.getProductos().add(new Cinturon("Cinturon oro", 250.0));
         session.saveOrUpdate(mercado);
     }
     @Override
