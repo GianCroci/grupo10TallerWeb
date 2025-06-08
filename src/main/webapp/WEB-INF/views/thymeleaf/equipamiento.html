@@ -143,19 +143,19 @@
             </div>
             <div class="estadistica">
                 <h2>Fuerza</h2>
-                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.fuerza}"></h2>
-            </div>
-            <div class="estadistica">
-                <h2>Resistencia</h2>
-                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.armadura}"></h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.stats.getFuerza()})"></h2>
             </div>
             <div class="estadistica">
                 <h2>Inteligencia</h2>
-                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.inteligencia}"></h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.stats.getInteligencia()})"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Resistencia</h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.stats.getArmadura()})"></h2>
             </div>
             <div class="estadistica">
                 <h2>Agilidad</h2>
-                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.agilidad}"></h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.stats.getAgilidad()})"></h2>
             </div>
             <div>
                 <a class="boton"

@@ -16,19 +16,18 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
 
     @Autowired
     public ServicioEquipamientoImpl(RepositorioInventario repositorioInventario) {
-        /*
         this.repositorioInventario = repositorioInventario;
-        this.equipos = repositorioInventario.obtenerInventario(1L);
-        this.equipos.get(0).setId(1l);
-        this.equipos.get(1).setId(2l);
-        this.equipos.get(2).setId(3l);
-         */
+        this.equipos = repositorioInventario.obtenerInventario(null);
+        //Agregar el repo del usuario para poder buscar el equipamiento correspondiente por el id
     }
-
 
     @Override
     public List<Equipamiento> mostrarEquipamiento() {
         return this.equipos;
+    }
+
+    public Optional<Equipamiento> mostrarPrimerEquipado(){
+        return this.equipos.stream().filter(Equipamiento::getEquipado).findFirst();
     }
 
     @Override
@@ -43,17 +42,21 @@ public class ServicioEquipamientoImpl implements ServicioEquipamiento{
         Optional<Equipamiento> equipoOptional = buscarEquipamientoPorId(id);
         if (equipoOptional.isPresent()) {
             Equipamiento equipoAEquipar = equipoOptional.get();
-
             equipos.stream()
                     .filter(e -> e.getEquipado() && !e.getId().equals(equipoAEquipar.getId()))
                     .forEach(e -> e.setEquipado(false));
-
             equipoAEquipar.setEquipado(true);
-            return true;
+            return Boolean.TRUE;
         } else {
-            return false;
+            return Boolean.FALSE;
         }
     }
+
+    @Override
+    public Boolean agregarEquipo(Equipamiento nuevo) {
+        return this.equipos.add(nuevo);
+    }
+
 
 
     /*

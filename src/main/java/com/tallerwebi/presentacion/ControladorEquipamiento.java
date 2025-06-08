@@ -27,29 +27,16 @@ public class ControladorEquipamiento {
     @GetMapping("/equipamiento")
     public ModelAndView verEquipamiento() {
         ModelMap model = new ModelMap();
-        List<Equipamiento> lista = servicioEquipamiento.mostrarEquipamiento();
-
-        model.addAttribute("contenido", lista);
-
-        if (!lista.isEmpty()) {
-            Optional<Equipamiento> equipoEquipado = lista.stream().filter(Equipamiento::getEquipado).findFirst();
-            if (equipoEquipado.isPresent()) {
-                model.addAttribute("equipoSeleccionado", equipoEquipado.get());
-            } else {
-                model.addAttribute("equipoSeleccionado", lista.get(0));
-            }
-        }
+        model.addAttribute("contenido", servicioEquipamiento.mostrarEquipamiento());
+        model.addAttribute("equipoSeleccionado", servicioEquipamiento.mostrarPrimerEquipado());
         return new ModelAndView("equipamiento", model);
     }
 
     @GetMapping("/equipamiento/{id}")
-    public ModelAndView verDetalleEquipamiento(@PathVariable Integer id) {
+    public ModelAndView verEquipoEspecifico(@PathVariable Integer id) {
         ModelMap model = new ModelMap();
-        Optional<Equipamiento> equipoSeleccionado = servicioEquipamiento.buscarEquipamientoPorId(id);
-
         model.addAttribute("contenido", servicioEquipamiento.mostrarEquipamiento());
-        equipoSeleccionado.ifPresent(equipo -> model.addAttribute("equipoSeleccionado", equipo));
-
+        model.addAttribute("equipoSeleccionado", servicioEquipamiento.buscarEquipamientoPorId(id));
         return new ModelAndView("equipamiento", model);
     }
 
@@ -58,4 +45,5 @@ public class ControladorEquipamiento {
         servicioEquipamiento.equipar(id);
         return "redirect:/equipamiento";
     }
+
 }
