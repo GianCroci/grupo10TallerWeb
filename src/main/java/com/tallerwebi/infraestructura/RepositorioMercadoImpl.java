@@ -53,10 +53,12 @@ public class RepositorioMercadoImpl implements RepositorioMercado {
             session.save(mercado);
         }
 
-        mercado.getProductos().add(new Tunica("Tunica Ligera", 100.0));
-        mercado.getProductos().add(new Abrigo("Manto de Guerra", 200.0));
+        mercado.getProductos().add(new Tunica("Tunica azul", 100.0));
+        mercado.getProductos().add(new Abrigo("Abrigo gris", 200.0));
         mercado.getProductos().add(new Capucha("Capucha de Sombras", 120.0));
-
+        mercado.getProductos().add(new ZapatoUno("Zapatos grises", 250.0));
+        mercado.getProductos().add(new ZapatoDos("Zapatos reforzados", 100.0));
+        mercado.getProductos().add(new ZapatoUno("Cinturon oro", 250.0));
         session.saveOrUpdate(mercado);
     }
     @Override
