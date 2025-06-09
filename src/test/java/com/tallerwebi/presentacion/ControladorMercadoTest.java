@@ -3,7 +3,6 @@ import com.tallerwebi.dominio.RepositorioMercado;
 import com.tallerwebi.dominio.ServicioMercado;
 
 import com.tallerwebi.dominio.ServicioMercadoImpl;
-import com.tallerwebi.dominio.ServicioTaberna;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,46 +19,37 @@ public class ControladorMercadoTest {
 
     private ControladorMercado controladorMercado;
     private ServicioMercado servicioMercado;
-
-
+    private RepositorioMercado repositorioMercado;
     @BeforeEach
     public void init() {
-        //servicioMercado = new ServicioMercadoImpl();
-
-        private RepositorioMercado repositorioMercado;
-
-        @BeforeEach
-        public void init () {
-            repositorioMercado = mock(RepositorioMercado.class);
-            servicioMercado = new ServicioMercadoImpl(repositorioMercado);
-
-            controladorMercado = new ControladorMercado(servicioMercado);
-        }
-
-        @Test
-        public void queSePuedaVerVistaDeMercado () {
-
-            ModelAndView modelAndView = controladorMercado.mostrarMercado();
-
-            assertThat(modelAndView.getViewName(), equalTo("mercado"));
-        }
-
-        //@Test
-        //public void queDevuelvaMensajeExitoAlComprar() {
-        //    List<String> seleccionados = Arrays.asList("espada-corta", "pan-duro");
-
-        //    String resultado = servicioMercado.procesarCompra(seleccionados);
-
-        //    assertThat(resultado, equalTo("¡Compra realizada con éxito! Has comprado: espada-corta, pan-duro"));
-        //}
-
-        //@Test
-        //public void queDevuelvaMensajeErrorSiNoSeleccionoNada() {
-        //    List<String> seleccionados = Collections.emptyList();
-
-        //   String resultado = servicioMercado.procesarCompra(seleccionados);
-
-        //    assertThat(resultado, equalTo("No seleccionaste ningún objeto"));
-        //}
+        repositorioMercado = mock(RepositorioMercado.class);
+        servicioMercado = new ServicioMercadoImpl(repositorioMercado);
+        controladorMercado = new ControladorMercado(servicioMercado);
     }
+
+    @Test
+    public void queSePuedaVerVistaDeMercado(){
+
+        ModelAndView modelAndView= controladorMercado.mostrarMercado();
+
+        assertThat(modelAndView.getViewName(), equalTo("mercado"));
+    }
+
+    //@Test
+    //public void queDevuelvaMensajeExitoAlComprar() {
+    //    List<String> seleccionados = Arrays.asList("espada-corta", "pan-duro");
+
+    //    String resultado = servicioMercado.procesarCompra(seleccionados);
+
+    //    assertThat(resultado, equalTo("¡Compra realizada con éxito! Has comprado: espada-corta, pan-duro"));
+    //}
+
+    //@Test
+    //public void queDevuelvaMensajeErrorSiNoSeleccionoNada() {
+    //    List<String> seleccionados = Collections.emptyList();
+
+    //   String resultado = servicioMercado.procesarCompra(seleccionados);
+
+    //    assertThat(resultado, equalTo("No seleccionaste ningún objeto"));
+    //}
 }
