@@ -1,17 +1,26 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 
 @Service("servicioTaberna")
-public class ServicioTabernaImpl implements ServicioTaberna{
+public class ServicioTabernaImpl implements ServicioTaberna {
 
     public Taberna taberna;
 
-    public ServicioTabernaImpl() {
+    private RepositorioTaberna repositorioTaberna;
+
+    private ServicioMercado servicioMercado;
+
+
+    public ServicioTabernaImpl(RepositorioTaberna repositorioTaberna, ServicioMercado servicioMercado) {
 
         this.taberna = new Taberna();
+        this.repositorioTaberna = repositorioTaberna;
+        this.servicioMercado = servicioMercado;
+
 
     }
 
@@ -25,7 +34,7 @@ public class ServicioTabernaImpl implements ServicioTaberna{
 
     //devuelve el personaje correspondiente a la hora actual
     @Override
-    public String  mostrarTaberna() {
+    public String mostrarTaberna() {
         PersonajeTaberna vistaSegunPersonaje = taberna.getPersonajePorHora(LocalTime.now());
         return obtenerVistaSegunPersonaje(vistaSegunPersonaje);
     }
@@ -63,38 +72,45 @@ public class ServicioTabernaImpl implements ServicioTaberna{
         return taberna.getPersonajePorHora(horaActual);
     }
 
+    @Override
+    public boolean obtenerBeneficioMercader() {
+        if (repositorioTaberna.getCantidadCervezasInvitadas(PersonajeTaberna.MERCADER) >= 5) {
+            return true;
+        } else {
+            return false;
+        }
 
-    /*
+    }
+
+    @Override
+    public boolean obtenerBeneficioHerrero() {
+        if (repositorioTaberna.getCantidadCervezasInvitadas(PersonajeTaberna.HERRERO) >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public boolean obtenerBeneficioGuardia() {
+        if (repositorioTaberna.getCantidadCervezasInvitadas(PersonajeTaberna.GUARDIA) >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+        /*
     //condicion de que si el personaje es el guardia y tiene 5 tragos, le da un arma especial
     public void obtenerArmaEspecial() {
 
       servicioEquipamiento.darArmaEspecial();
     }
 
-/*
-
-
-    /*
-    public void obtenerBeneficio(){
-        //aca iria la logica de que si el personaje es el herrero y tiene 5 tragos, le permite mejorar las armas
-        ServicioHerreriaImpl ServicioHerreria = (ServicioHerreriaImpl) servicioHerreria;
-
-        if (getCervezasInvitadas(PersonajeTaberna.HERRERO) >= 5) {
-            boolean b = ServicioHerreria.sePuedeMejorar()==true;
-        }
-
-        if (getCervezasInvitadas(PersonajeTaberna.GUARDIA) >= 5) {
-            obtenerArmaEspecial();
-        }
-
-        /*
-        if (getCervezasInvitadas(PersonajeTaberna.MERCADER) >= 5) {
-            servicioEquipamiento.equipar(1); // ejemplo de equipar un item, se puede cambiar el id
-        }
-
-    }
     */
 
-
-
 }
+
+
+
+
+

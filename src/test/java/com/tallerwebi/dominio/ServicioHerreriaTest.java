@@ -33,11 +33,10 @@ public class ServicioHerreriaTest {
     public void init() {
         repositorioInventario = mock(RepositorioInventario.class);
         repositorioPersonaje = mock(RepositorioPersonaje.class);
-        servicioTaberna = mock(ServicioTaberna.class);
         mejoraDtoMock = mock(MejoraDto.class);
         idPersonajeMock = 1L;
         idEquipamientoMock = 1L;
-        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje, servicioTaberna);
+        servicioHerreria = new ServicioHerreriaImpl(repositorioInventario, repositorioPersonaje);
         personajeMock = mock(Personaje.class);
         estadisticasMock = new Estadisticas();
         estadisticasMock.setAgilidad(0);

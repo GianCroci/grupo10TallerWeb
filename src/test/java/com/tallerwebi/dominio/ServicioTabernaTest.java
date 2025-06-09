@@ -8,55 +8,64 @@ import static org.mockito.Mockito.*;
 
 public class ServicioTabernaTest {
 
+    private PersonajeTaberna personajeTabernaMock;
+
+    private RepositorioTaberna repositorioTabernaMock;
+
+    private ServicioTaberna servicioTaberna;
+
+    private ServicioMercado servicioMercadoMock;
+
     private ServicioTaberna servicioTabernaMock;
-
-    private ServicioHerreria servicioHerreria;
-
-    private RepositorioInventario repositorioInventarioMock;
-
-    private ServicioEquipamiento servicioEquipamientoMock;
-
-    private Taberna tabernaMock;
-
 
     @BeforeEach
     public void init() {
+        personajeTabernaMock= mock(PersonajeTaberna.class);
+        repositorioTabernaMock = mock(RepositorioTaberna.class);
+        servicioMercadoMock = mock(ServicioMercado.class); // PRIMERO mockeás esto
+        servicioTaberna = new ServicioTabernaImpl(repositorioTabernaMock, servicioMercadoMock); // LUEGO lo inyectás
         servicioTabernaMock = mock(ServicioTaberna.class);
-        repositorioInventarioMock = mock(RepositorioInventario.class);
-       // servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
-        servicioEquipamientoMock = mock(ServicioEquipamiento.class);
-        tabernaMock = mock(Taberna.class);
 
     }
-
-
-    /*
     @Test
-    public void queAlDar5TragosOMasAlMercaderTeHagaUnDescuentoDel20PorcientoAlComprar() {
-        // Aquí deberías implementar la lógica de prueba para verificar el descuento del 20%
-        // al comprar 5 tragos o más al herrero.
-        // Por ejemplo, podrías simular una compra y verificar que el precio final sea correcto.
-        when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(5);
+    public void queAlDar5TragosOMasAlMercaderTeApliqueElDescuento(){
+        //preparacion
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeTabernaMock.MERCADER)).thenReturn(5);
 
+        //ejecucion
+        Boolean seObtuvo= servicioTaberna.obtenerBeneficioMercader();
+
+        //verificacion
+        assertTrue(seObtuvo);
     }
-    */
-
-    /*
 
     @Test
     public void queAlDar5TragosOMasAlHerreroTeDejeMejorarLasArmas(){
+        //preparacion
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
 
-        // Simulamos que el herrero ha recibido 5 tragos
-        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
+        //ejecucion
+        Boolean seObtuvo= servicioTaberna.obtenerBeneficioHerrero();
 
-
-        boolean sePuedeMejorar = servicioHerreria.sePuedeMejorar();
-
-        // Assert
-        assertTrue(sePuedeMejorar);
-        verify(servicioTabernaMock).getCervezasInvitadas(PersonajeTaberna.HERRERO);
+        //verificacion
+        assertTrue(seObtuvo);
     }
 
+    @Test
+    public void queAlDar5TragosOMasAlGuardiaTeRegaleUnArma(){
+        //preparacion
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(PersonajeTaberna.GUARDIA)).thenReturn(5);
+
+        //ejecucion
+        Boolean seObtuvo= servicioTaberna.obtenerBeneficioGuardia();
+
+        //verificacion
+        assertTrue(seObtuvo);
+    }
+
+
+
+    /*
     @Test
     public void queAlDarMenosDe5TragosAlHerreroNoDejeMejorarLasArmas(){
 

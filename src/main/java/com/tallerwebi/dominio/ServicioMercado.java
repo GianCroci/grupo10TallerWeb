@@ -6,4 +6,6 @@ public interface ServicioMercado {
     Mercado mostrarMercado();
 
     String procesarCompra(List<String> itemsSeleccionados);
+
+    double aplicarDescuentoMercader(Equipamiento equipamiento);
 }

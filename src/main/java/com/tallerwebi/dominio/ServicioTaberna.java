@@ -14,10 +14,9 @@ public interface ServicioTaberna {
     PersonajeTaberna obtenerPersonajeDisponible();
 
 
+    boolean obtenerBeneficioMercader();
 
+    boolean obtenerBeneficioHerrero();
 
-
-
-
-
+    boolean obtenerBeneficioGuardia();
 }

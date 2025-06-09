@@ -15,5 +15,5 @@ public interface ServicioHerreria {
     Integer obtenerOroDelPersonaje(Long idPersonaje);
 
 
-   // Boolean sePuedeMejorar();
+
 }

@@ -20,14 +20,14 @@ import static org.mockito.Mockito.*;
 public class ControladorTabernaTest {
 
     private ControladorTaberna controladorTaberna;
-    private ServicioTaberna servicioTaberna;
+    private ServicioTaberna servicioTabernaMock;
 
     private Taberna taberna;
 
     @BeforeEach
     public void init() {
-        servicioTaberna = mock(ServicioTaberna.class);
-        controladorTaberna = new ControladorTaberna(servicioTaberna);
+        servicioTabernaMock = mock(ServicioTaberna.class);
+        controladorTaberna = new ControladorTaberna(servicioTabernaMock);
         taberna = new Taberna();
     }
 
@@ -37,16 +37,16 @@ public class ControladorTabernaTest {
 
         ModelAndView modelAndView= controladorTaberna.mostrarTaberna();
 
-        assertThat(modelAndView.getViewName(), equalTo("taberna"));
+        String vistaEsperda= "taberna";
+
+        assertThat(modelAndView.getViewName(), equalTo(vistaEsperda));
     }
 
 
     @Test
     public void queEntre00amy12amCargueLaImagenDelMercaderYQueSoloTengaEseOption() {
-
-        when(servicioTaberna.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
-        when(servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.MERCADER)).thenReturn("mercader.png");
-
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
+        when(servicioTabernaMock.obtenerVistaSegunPersonaje(PersonajeTaberna.MERCADER)).thenReturn("mercader.png");
         ModelAndView modelAndView = controladorTaberna.mostrarTaberna();
 
         assertThat(modelAndView.getModel().get("personajeDisponible"), equalTo(PersonajeTaberna.MERCADER));
@@ -57,8 +57,8 @@ public class ControladorTabernaTest {
     @Test
     public void queEntre12amy7pmCargueLaImagenDelHerreroYQueSoloTengaEseOption() {
 
-        when(servicioTaberna.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.HERRERO);
-        when(servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.HERRERO)).thenReturn("herrero.png");
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.HERRERO);
+        when(servicioTabernaMock.obtenerVistaSegunPersonaje(PersonajeTaberna.HERRERO)).thenReturn("herrero.png");
 
         ModelAndView modelAndView = controladorTaberna.mostrarTaberna();
 
@@ -70,8 +70,8 @@ public class ControladorTabernaTest {
     @Test
     public void queEntre7pmy12pmCargueLaImagenDelGuardiaYQueSoloTengaEseOption() {
 
-        when(servicioTaberna.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.GUARDIA);
-        when(servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.GUARDIA)).thenReturn("guardia.png");
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.GUARDIA);
+        when(servicioTabernaMock.obtenerVistaSegunPersonaje(PersonajeTaberna.GUARDIA)).thenReturn("guardia.png");
 
         ModelAndView modelAndView = controladorTaberna.mostrarTaberna();
 
@@ -84,8 +84,8 @@ public class ControladorTabernaTest {
     @Test
     public void queSePuedaInvitarUnTragoAlPersonajeDisponible() {
 
-        when(servicioTaberna.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
-        when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(1);
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
+        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(1);
 
         ModelAndView modelAndView = controladorTaberna.invitarTrago("MERCADER");
 
@@ -95,14 +95,28 @@ public class ControladorTabernaTest {
     @Test
     public void queNoSePuedaInvitarDosVecesEnUnDiaAlMismoPersonaje() {
 
-        when(servicioTaberna.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
-        when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(1);
-        when(servicioTaberna.invitarTrago(PersonajeTaberna.MERCADER)).thenThrow(new IllegalArgumentException("Ya invitaste a MERCADER hoy."));
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
+        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(1);
+        when(servicioTabernaMock.invitarTrago(PersonajeTaberna.MERCADER)).thenThrow(new IllegalArgumentException("Ya invitaste a MERCADER hoy."));
 
         ModelAndView modelAndView = controladorTaberna.invitarTrago("MERCADER");
 
 
         assertThat(modelAndView.getModel().get("mensaje"), equalTo("Ya invitaste a MERCADER hoy."));
+    }
+
+    @Test
+    public void queSeCargueCorrectamenteLaTablaConLosPersonajesYLasCervezasInvitadas() {
+        when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.MERCADER);
+        when(servicioTabernaMock.obtenerVistaSegunPersonaje(PersonajeTaberna.MERCADER)).thenReturn("mercader.png");
+
+        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(2);
+        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.GUARDIA)).thenReturn(1);
+        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(3);
+
+        ModelAndView modelAndView = controladorTaberna.mostrarTaberna();
+
+        assertThat(modelAndView.getModel().get("personajes").toString(), equalTo("{GUARDIA=1, HERRERO=3, MERCADER=2}"));
     }
 
 

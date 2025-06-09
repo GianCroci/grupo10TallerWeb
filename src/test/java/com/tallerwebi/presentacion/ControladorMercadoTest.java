@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.ServicioMercado;
 
 import com.tallerwebi.dominio.ServicioMercadoImpl;
+import com.tallerwebi.dominio.ServicioTaberna;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,9 +20,10 @@ public class ControladorMercadoTest {
     private ControladorMercado controladorMercado;
     private ServicioMercado servicioMercado;
 
+
     @BeforeEach
     public void init() {
-        servicioMercado = new ServicioMercadoImpl();
+        //servicioMercado = new ServicioMercadoImpl();
         controladorMercado = new ControladorMercado(servicioMercado);
     }
 
