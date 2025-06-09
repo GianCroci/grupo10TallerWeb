@@ -3,9 +3,8 @@ package com.tallerwebi.dominio;
 import java.util.List;
 
 public interface RepositorioMercado {
-    List<Producto> obtenerProductos();
-    Producto buscarPorId(Long id);
-    void guardarProducto(Producto producto);
+    List<Equipamiento> obtenerProductos();
+    Equipamiento buscarPorId(Long id);
     void inicializarProductos();
 
     Mercado obtenerMercadoConProductos();

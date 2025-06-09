@@ -6,7 +6,7 @@ import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import javax.persistence.*;
 
 
-@Entity
+/*@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_producto", discriminatorType = DiscriminatorType.STRING)
 public abstract class Producto {
@@ -34,3 +34,4 @@ public abstract class Producto {
 
 
 }
+*/

@@ -1,19 +1,28 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
+
 import javax.persistence.*;
 
 @Entity
-public class Capucha extends Producto {
+public class Capucha extends Equipamiento {
 
     private String imagen;
 
     public Capucha() {
         super();
-        this.imagen = "img/capucha-sombras.png";
+
     }
 
-    public Capucha(String nombre, double precio) {
-        super(nombre, precio);
+    @Override
+    public void mejorar() throws NivelDeEquipamientoMaximoException {
+
+    }
+
+    public Capucha(String nombre, Integer costoVenta) {
+        super();
+        this.setNombre(nombre);
+        this.setCostoVenta(costoVenta);
         this.imagen = "img/capucha-sombras.png";
     }
 

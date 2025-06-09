@@ -23,9 +23,11 @@ public class ControladorMercadoTest {
     @BeforeEach
     public void init() {
         repositorioMercado = mock(RepositorioMercado.class);
-        servicioMercado = new ServicioMercadoImpl(repositorioMercado);
+        //servicioMercado = new ServicioMercadoImpl(repositorioMercado);
+        servicioMercado = new ServicioMercadoImpl();
         controladorMercado = new ControladorMercado(servicioMercado);
     }
+
 
     @Test
     public void queSePuedaVerVistaDeMercado(){
