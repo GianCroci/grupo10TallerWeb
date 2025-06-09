@@ -10,18 +10,14 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
     private final RepositorioMercado repositorioMercado;
 
-    public ServicioMercadoImpl(RepositorioMercado repositorioMercado) {
+    private  ServicioTaberna servicioTaberna;
+
+    public ServicioMercadoImpl(RepositorioMercado repositorioMercado, @Lazy ServicioTaberna servicioTaberna) {
         this.repositorioMercado = repositorioMercado;
-    }
-
-
-    private ServicioTaberna servicioTaberna;
-
-    public ServicioMercadoImpl(@Lazy ServicioTaberna servicioTaberna) {
-
         this.servicioTaberna = servicioTaberna;
-
     }
+
+
     @Override
     public Mercado mostrarMercado() {
         repositorioMercado.inicializarProductos();
@@ -48,4 +44,3 @@ public class ServicioMercadoImpl implements ServicioMercado {
         }
     }
 }
-

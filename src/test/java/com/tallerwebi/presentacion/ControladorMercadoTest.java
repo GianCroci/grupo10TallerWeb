@@ -3,6 +3,7 @@ import com.tallerwebi.dominio.RepositorioMercado;
 import com.tallerwebi.dominio.ServicioMercado;
 
 import com.tallerwebi.dominio.ServicioMercadoImpl;
+import com.tallerwebi.dominio.ServicioTaberna;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,10 +21,12 @@ public class ControladorMercadoTest {
     private ControladorMercado controladorMercado;
     private ServicioMercado servicioMercado;
     private RepositorioMercado repositorioMercado;
+    private ServicioTaberna servicioTabernaMock;
     @BeforeEach
     public void init() {
         repositorioMercado = mock(RepositorioMercado.class);
-        servicioMercado = new ServicioMercadoImpl(repositorioMercado);
+        servicioTabernaMock = mock(ServicioTaberna.class);
+        servicioMercado = new ServicioMercadoImpl(repositorioMercado, servicioTabernaMock);
         controladorMercado = new ControladorMercado(servicioMercado);
     }
 
