@@ -6,7 +6,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("servicioMercado")
-public class ServicioMercadoImpl implements ServicioMercado{
+public class ServicioMercadoImpl implements ServicioMercado {
+
+    private final RepositorioMercado repositorioMercado;
+
+    public ServicioMercadoImpl(RepositorioMercado repositorioMercado) {
+        this.repositorioMercado = repositorioMercado;
+    }
+
 
     private ServicioTaberna servicioTaberna;
 
@@ -17,7 +24,11 @@ public class ServicioMercadoImpl implements ServicioMercado{
     }
     @Override
     public Mercado mostrarMercado() {
-        return null;
+        repositorioMercado.inicializarProductos();
+        return repositorioMercado.obtenerMercadoConProductos();
+        //Mercado mercado = new Mercado();
+        //mercado.getProductos().addAll(repositorioMercado.obtenerProductos());
+        //return mercado;
     }
 
     @Override
@@ -25,7 +36,6 @@ public class ServicioMercadoImpl implements ServicioMercado{
         if (itemsSeleccionados == null || itemsSeleccionados.isEmpty()) {
             return "No seleccionaste ningún objeto";
         }
-
         return "¡Compra realizada con éxito! Has comprado: " + String.join(", ", itemsSeleccionados);
     }
 
@@ -38,3 +48,4 @@ public class ServicioMercadoImpl implements ServicioMercado{
         }
     }
 }
+
