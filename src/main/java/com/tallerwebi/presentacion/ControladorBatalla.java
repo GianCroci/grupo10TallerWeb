@@ -41,13 +41,13 @@ public class ControladorBatalla {
         return new ModelAndView("batalla", modelMap);
     }
 
-    @PostMapping("/batalla")
+    @PostMapping("/atacar-rival")
     public ModelAndView atacarRival(HttpServletRequest request) {
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
         Long idRival = (Long) request.getSession().getAttribute("idRival");
 
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
-        Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
+        Personaje rival = servicioPersonaje.buscarRival();
 
         servicioBatalla.atacarRival(personaje, rival);
 

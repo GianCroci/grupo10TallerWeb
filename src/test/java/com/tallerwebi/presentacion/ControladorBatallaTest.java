@@ -63,7 +63,7 @@ public class ControladorBatallaTest {
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
         when(sessionMock.getAttribute("idRival")).thenReturn(2L);
         when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
-        when(servicioPersonajeMock.buscarPersonaje(2L)).thenReturn(rivalMockeado);
+        when(servicioPersonajeMock.buscarRival()).thenReturn(rivalMockeado);
         when(servicioBatallaMock.getResultado()).thenReturn("Victoria");
 
         //ejecucion

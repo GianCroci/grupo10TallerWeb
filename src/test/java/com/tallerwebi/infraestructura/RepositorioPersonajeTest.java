@@ -30,6 +30,7 @@ public class RepositorioPersonajeTest {
     private RepositorioPersonaje repositorioPersonaje;
     private Session session;
     private Personaje personaje;
+    private Personaje rival;
     private Long idPersonajeGuardado;
 
     @BeforeEach
@@ -137,5 +138,42 @@ public class RepositorioPersonajeTest {
         Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonajeGuardado);
 
         assertThat(personajeObtenido, is(personajeEsperado));
+    }
+
+    @Test
+    public void queHayaunRivalparaMiPersonaje() {
+        personaje = new Personaje();
+        personaje.setNombre("Arthas");
+        personaje.setGenero("Masculino");
+        personaje.setRol("Guerrero");
+        personaje.setFuerza(10);
+        personaje.setInteligencia(5);
+        personaje.setArmadura(8);
+        personaje.setAgilidad(6);
+        personaje.setImagen("guerrero.png");
+        personaje.setOro(500);
+
+        session.save(personaje);
+
+        rival = new Personaje();
+        rival.setNombre("Arthas");
+        rival.setGenero("Masculino");
+        rival.setRol("Guerrero");
+        rival.setFuerza(10);
+        rival.setInteligencia(5);
+        rival.setArmadura(8);
+        rival.setAgilidad(6);
+        rival.setImagen("guerrero.png");
+        rival.setOro(500);
+
+        repositorioPersonaje.guardar(rival);
+
+        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(personaje.getId());
+        Personaje rivalObtenido = repositorioPersonaje.buscarRival();
+
+        assertThat(personajeObtenido, is(personaje));
+        assertThat(rivalObtenido, is(rival));
+
+
     }
 }

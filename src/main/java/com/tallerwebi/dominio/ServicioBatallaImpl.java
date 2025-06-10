@@ -23,6 +23,6 @@ public class ServicioBatallaImpl implements ServicioBatalla {
 
     @Override
     public String getResultado() {
-        return "";
+        return "Victoria";
     }
 }
