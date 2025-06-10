@@ -47,7 +47,7 @@ public class ControladorBatalla {
         Long idRival = (Long) request.getSession().getAttribute("idRival");
 
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
-        Personaje rival = servicioPersonaje.buscarRival();
+        Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
 
         servicioBatalla.atacarRival(personaje, rival);
 
