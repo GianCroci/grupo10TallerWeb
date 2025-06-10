@@ -1,29 +1,16 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Arma;
-import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.ServicioEquipamiento;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.tallerwebi.dominio.ServicioInventario;
 
 class ControladorEquipamientoTest {
 
-    private ServicioEquipamiento servicioEquipamiento;
-    private ControladorEquipamiento controlador;
+    private ServicioInventario servicioInventario;
+    private ControladorInventario controlador;
 /*
     @BeforeEach
     void init() {
-        servicioEquipamiento = mock(ServicioEquipamiento.class);
-        controlador = new ControladorEquipamiento(servicioEquipamiento);
+        servicioInventario = mock(ServicioInventario.class);
+        controlador = new ControladorInventario(servicioInventario);
     }
 
     @Test
@@ -38,7 +25,7 @@ class ControladorEquipamientoTest {
 
         List<Equipamiento> listaMock = Arrays.asList(eq1, eq2);
 
-        when(servicioEquipamiento.mostrarEquipamiento()).thenReturn(listaMock);
+        when(servicioInventario.mostrarEquipamiento()).thenReturn(listaMock);
 
         ModelAndView mav = controlador.verEquipamiento();
 
@@ -48,6 +35,6 @@ class ControladorEquipamientoTest {
         assertEquals(2, contenido.size());
         assertEquals("espada", ((Equipamiento) mav.getModel().get("equipoSeleccionado")).getNombre());
 
-        verify(servicioEquipamiento).mostrarEquipamiento();
+        verify(servicioInventario).mostrarEquipamiento();
     }*/
 }

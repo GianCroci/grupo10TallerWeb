@@ -1,9 +1,7 @@
 package com.tallerwebi.dominio;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ServicioTabernaTest {
@@ -14,7 +12,7 @@ public class ServicioTabernaTest {
 
     private RepositorioInventario repositorioInventarioMock;
 
-    private ServicioEquipamiento servicioEquipamientoMock;
+    private ServicioInventario servicioInventarioMock;
 
     private Taberna tabernaMock;
 
@@ -24,7 +22,7 @@ public class ServicioTabernaTest {
         servicioTabernaMock = mock(ServicioTaberna.class);
         repositorioInventarioMock = mock(RepositorioInventario.class);
        // servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
-        servicioEquipamientoMock = mock(ServicioEquipamiento.class);
+        servicioInventarioMock = mock(ServicioInventario.class);
         tabernaMock = mock(Taberna.class);
 
     }
@@ -81,7 +79,7 @@ public class ServicioTabernaTest {
 
             servicioTaberna.obtenerBeneficio();
 
-            verify(servicioEquipamientoMock).darArmaEspecial();
+            verify(servicioInventarioMock).darArmaEspecial();
             verify(tabernaMock).getCantidadCervezasInvitadas(PersonajeTaberna.GUARDIA);
         }
 
