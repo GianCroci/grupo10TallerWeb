@@ -29,4 +29,7 @@ public class ZapatoDos extends Equipamiento {
     public String getImagen() {
         return imagen;
     }
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 }

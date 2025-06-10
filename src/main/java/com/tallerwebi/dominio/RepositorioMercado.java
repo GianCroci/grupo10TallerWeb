@@ -5,7 +5,5 @@ import java.util.List;
 public interface RepositorioMercado {
     List<Equipamiento> obtenerProductos();
     Equipamiento buscarPorId(Long id);
-    void inicializarProductos();
-
     Mercado obtenerMercadoConProductos();
 }

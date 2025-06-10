@@ -30,8 +30,7 @@ public class RepositorioMercadoImpl implements RepositorioMercado {
         return session.get(Equipamiento.class, id);
     }
 
-
-    @Override
+    /*@Override
     public void inicializarProductos() {
         Session session = sessionFactory.getCurrentSession();
 
@@ -78,7 +77,7 @@ public class RepositorioMercadoImpl implements RepositorioMercado {
         session.save(zapatoDos);
         session.save(cinturon);
 
-    }
+    }*/
 
     @Override
     public Mercado obtenerMercadoConProductos() {

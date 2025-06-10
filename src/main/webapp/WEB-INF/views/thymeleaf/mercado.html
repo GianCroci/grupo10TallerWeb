@@ -144,7 +144,7 @@
             <div class="productos-grid">
                 <div th:each="producto : ${mercado.productos}" class="producto-card">
                     <input type="checkbox" class="checkbox-hidden" name="itemsSeleccionados" th:value="${producto.nombre}"/>
-                    <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 100px; margin-bottom: 10px;">
+                    <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 80px; margin-bottom: 10px;">
                     <div class="producto-nombre" th:text="${producto.nombre}">Nombre</div>
                     <div class="producto-precio" th:text="'$' + ${producto.costoVenta}">Precio</div>
                     <button type="button" class="producto-btn"
