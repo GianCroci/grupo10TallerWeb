@@ -52,6 +52,8 @@ public class ServicioInventarioImpl implements ServicioInventario {
         this.equipos.add(baston);
     }
 
+    //Todos los metodos se llevan a cabo encima de un arraylist, falta cambiarlos por los metodos del repo!
+
     @Override
     public List<Equipamiento> mostrarEquipamiento() {
         return this.equipos;
@@ -62,7 +64,7 @@ public class ServicioInventarioImpl implements ServicioInventario {
         return this.equipos.stream()
                 .filter(Equipamiento::getEquipado)
                 .findFirst()
-                .orElse(null); // Devolvemos null si no se encuentra ninguno equipado
+                .orElse(null);
     }
 
     @Override
@@ -70,7 +72,7 @@ public class ServicioInventarioImpl implements ServicioInventario {
         return this.equipos.stream()
                 .filter(equipo -> equipo.getId().equals(id))
                 .findFirst()
-                .orElse(null); // Devolvemos null si no se encuentra
+                .orElse(null);
     }
 
     @Override
@@ -86,7 +88,6 @@ public class ServicioInventarioImpl implements ServicioInventario {
             return Boolean.FALSE;
         }
     }
-
 
     @Override
     public Boolean agregarEquipo(Equipamiento nuevo) {
