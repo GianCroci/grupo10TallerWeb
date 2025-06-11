@@ -14,12 +14,12 @@ public class Mercado {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mercado_id")
-    private List<Producto> productos = new ArrayList<>();
+    private List<Equipamiento> productos = new ArrayList<>();
 
-    public List<Producto> getProductos() {
+    public List<Equipamiento> getProductos() {
         return productos;
     }
-    public void setProductos(List<Producto> productos) {
+    public void setProductos(List<Equipamiento> productos) {
         this.productos = productos;
     }
 }

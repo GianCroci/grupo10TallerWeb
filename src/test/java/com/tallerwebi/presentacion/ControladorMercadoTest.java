@@ -24,8 +24,10 @@ public class ControladorMercadoTest {
     public void init() {
         repositorioMercado = mock(RepositorioMercado.class);
         servicioMercado = new ServicioMercadoImpl(repositorioMercado);
+
         controladorMercado = new ControladorMercado(servicioMercado);
     }
+
 
     @Test
     public void queSePuedaVerVistaDeMercado(){

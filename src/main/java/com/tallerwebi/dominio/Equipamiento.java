@@ -22,10 +22,22 @@ public abstract class Equipamiento{
     private Integer costoVenta;
     private Integer nivel;
     private Boolean equipado;
+    private String imagen;
     @ManyToOne
     @JoinColumn(name = "idPersonaje") // FK en la tabla equipamiento
     private Personaje personaje;
 
+    @ManyToOne
+    @JoinColumn(name = "mercado_id")
+    private Mercado mercado;
+
+    public Mercado getMercado() {
+        return mercado;
+    }
+
+    public void setMercado(Mercado mercado) {
+        this.mercado = mercado;
+    }
     public Equipamiento() {
 
     }
