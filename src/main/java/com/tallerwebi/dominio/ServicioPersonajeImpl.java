@@ -69,7 +69,7 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
     }
 
     @Override
-    public Personaje buscarRival() {
-        return repoPersonaje.buscarRival();
+    public Personaje buscarRival(Long idPersonaje) {
+        return repoPersonaje.buscarRival(idPersonaje);
     }
 }

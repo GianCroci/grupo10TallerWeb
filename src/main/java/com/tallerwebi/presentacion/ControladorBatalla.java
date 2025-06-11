@@ -30,7 +30,7 @@ public class ControladorBatalla {
     public ModelAndView irABatalla(HttpServletRequest request) {
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
-        Personaje rival = servicioBatalla.buscarRival();
+        Personaje rival = servicioBatalla.buscarRival(idPersonaje);
         request.getSession().setAttribute("idRival", rival.getId());
 
         ModelMap modelMap = new ModelMap();
@@ -41,7 +41,7 @@ public class ControladorBatalla {
         return new ModelAndView("batalla", modelMap);
     }
 
-    @PostMapping("/batalla")
+    @PostMapping("/atacar-rival")
     public ModelAndView atacarRival(HttpServletRequest request) {
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
         Long idRival = (Long) request.getSession().getAttribute("idRival");
@@ -54,22 +54,10 @@ public class ControladorBatalla {
         ModelMap modelMap = new ModelMap();
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
-        modelMap.put("resultado", "Derrota");
+        modelMap.put("resultado", servicioBatalla.getResultado());
 
-        if (servicioBatalla.getResultado() == "Victoria") {
-            modelMap.put("resultado", "Victoria");
-        }
 
         return new ModelAndView("batalla", modelMap);
     }
-    /*
-    when(servicioBatallaMock.getResultado()).thenReturn("Victoria");
 
-        //ejecucion
-        ModelAndView modelAndView = controladorBatalla.atacarRival();
-
-        String vistaEsperada = "victoria";
-
-        //verificacion
-        verify(servicioBatallaMock, times(1)).atacarRival(rivalMockeado); */
 }

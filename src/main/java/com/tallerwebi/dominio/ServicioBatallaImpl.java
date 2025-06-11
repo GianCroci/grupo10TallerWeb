@@ -6,23 +6,28 @@ import org.springframework.stereotype.Service;
 public class ServicioBatallaImpl implements ServicioBatalla {
 
     private ServicioPersonaje servicioPersonaje;
+    private String resultado;
 
     public ServicioBatallaImpl(ServicioPersonaje servicioPersonaje) {
         this.servicioPersonaje = servicioPersonaje;
     }
 
     @Override
-    public Personaje buscarRival() {
-        return servicioPersonaje.buscarRival();
+    public Personaje buscarRival(Long idPersonaje) {
+        return servicioPersonaje.buscarRival(idPersonaje);
     }
 
     @Override
-    public Object atacarRival(Personaje rivalMockeado, Personaje mockeado) {
-        return null;
+    public void atacarRival(Personaje personaje, Personaje rival) {
+
+        if (personaje.getFuerza() + personaje.getArmadura() + personaje.getAgilidad() + personaje.getInteligencia() > rival.getFuerza() + rival.getArmadura() + personaje.getAgilidad() + personaje.getInteligencia()) {
+            resultado = "Victoria";
+        };
+        resultado = "Derrota";
     }
 
     @Override
     public String getResultado() {
-        return "";
+        return resultado;
     }
 }
