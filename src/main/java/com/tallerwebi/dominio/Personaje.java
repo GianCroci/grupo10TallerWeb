@@ -70,7 +70,7 @@ public class Personaje {
             case "Luchador":
                 this.rol = "Luchador";
                 this.fuerza = 100;
-                this.inteligencia = 40;
+                this.inteligencia = 20;
                 this.armadura = 80;
                 this.agilidad = 60;
                 this.imagen = "img/luchador.png";
@@ -78,7 +78,7 @@ public class Personaje {
             case "Luchadora":
                 this.rol = "Luchador";
                 this.fuerza = 100;
-                this.inteligencia = 40;
+                this.inteligencia = 20;
                 this.armadura = 80;
                 this.agilidad = 60;
                 this.imagen = "img/luchadora.png";

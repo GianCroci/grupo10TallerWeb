@@ -14,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,6 +28,7 @@ public class RepositorioPersonajeTest {
 
     @Autowired
     private SessionFactory sessionFactory;
+    private HttpServletRequest request;
     private RepositorioPersonaje repositorioPersonaje;
     private Session session;
     private Personaje personaje;
@@ -35,7 +37,7 @@ public class RepositorioPersonajeTest {
 
     @BeforeEach
     public void init() {
-        repositorioPersonaje = new RepositorioPersonajeImpl(sessionFactory);
+        repositorioPersonaje = new RepositorioPersonajeImpl(sessionFactory, request);
         session = sessionFactory.getCurrentSession();
     }
 
