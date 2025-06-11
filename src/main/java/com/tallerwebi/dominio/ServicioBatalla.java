@@ -1,9 +1,9 @@
 package com.tallerwebi.dominio;
 
 public interface ServicioBatalla {
-    Personaje buscarRival();
+    Personaje buscarRival(Long idPersonaje);
 
-    Object atacarRival(Personaje rivalMockeado, Personaje mockeado);
+    void atacarRival(Personaje personaje, Personaje rival);
 
     String getResultado();
 }

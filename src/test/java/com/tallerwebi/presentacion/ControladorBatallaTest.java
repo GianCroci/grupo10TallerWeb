@@ -43,7 +43,7 @@ public class ControladorBatallaTest {
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
         when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
-        when(servicioBatallaMock.buscarRival()).thenReturn(rivalMockeado);
+        when(servicioBatallaMock.buscarRival(1L)).thenReturn(rivalMockeado);
 
         //ejecucion
         ModelAndView modelAndView = controladorBatalla.irABatalla(requestMock);

@@ -1,5 +1,7 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Equipamiento;
+import com.tallerwebi.dominio.Mercado;
 import com.tallerwebi.dominio.ServicioMercado;
 import com.tallerwebi.dominio.ServicioTaberna;
 import org.springframework.stereotype.Controller;
@@ -15,37 +17,30 @@ import java.util.List;
 @Controller
 public class ControladorMercado {
 
-    private ServicioMercado servicioMercado;
+    private final ServicioMercado servicioMercado;
 
     public ControladorMercado(ServicioMercado servicioMercado) {
-
         this.servicioMercado = servicioMercado;
     }
 
     @GetMapping("/mercado")
     public ModelAndView mostrarMercado() {
+        Mercado mercado = servicioMercado.mostrarMercado();
+
+
         ModelAndView modelAndView = new ModelAndView("mercado");
-
-        modelAndView.addObject("mercado", servicioMercado.mostrarMercado());
-
+        modelAndView.addObject("mercado", mercado);
         modelAndView.addObject("compraExitosa", null);
-
         return modelAndView;
     }
-
 
 
     @PostMapping("/realizar-compra")
     public ModelAndView realizarCompra(@RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados) {
         ModelMap model = new ModelMap();
-
         String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados);
-
         model.put("compraExitosa", mensajeCompra);
         model.put("mercado", servicioMercado.mostrarMercado());
-
         return new ModelAndView("mercado", model);
     }
-
-
 }

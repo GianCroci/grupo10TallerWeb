@@ -23,17 +23,16 @@
         }
 
         h1 {
+            text-align: center;
             font-size: 3em;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-shadow: 2px 2px 5px #000;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 15px;
-            font-size: 1.5em;
-            border-bottom: 2px solid #f4c542;
-            padding-bottom: 5px;
+            font-size: 2em;
             color: #fff;
         }
         h3{
@@ -44,22 +43,52 @@
 </head>
 <body>
 <main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
-      class="container-fluid d-flex flex-column align-items-center">
-    <div th:object="${personaje}" id="personajeBox" style="margin-top:50px;" class="mt-5 row">
-        <div class="col-md-6">
+      class="container-fluid d-flex justify-content-center align-items-start">
+
+    <form class="margin-t" action="#" th:action="@{/atacar-rival}" method="POST">
+        <h1 th:if="${resultado != null}" class="" th:text="'Resultado: ' + ${resultado}">
+        </h1>
+        <div class="row w-100 mt-5" style="margin-left: -100px;">
+        <div th:object="${personaje}" id="personajeBox" class="col-md-5 text-center">
             <h1 th:text="*{nombre}">Nombre del personaje</h1>
-            <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+            <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid w-50">
+        </div>
+        <div th:object="${personaje}" id="personajeBoxStats" class="col-md-1 text-center">
+            <h2>Fuerza:</h2>
+            <h3 th:text="*{fuerza}">Fuerza</h3>
+            <h2>Inteligencia:</h2>
+            <h3 th:text="*{inteligencia}">Inteligencia</h3>
+            <h2>Armadura:</h2>
+            <h3 th:text="*{armadura}">Armadura</h3>
+            <h2>Agilidad:</h2>
+            <h3 th:text="*{agilidad}">Agilidad</h3>
+        </div>
+        <div th:object="${rival}" id="rivalBox" class="col-md-5 text-center">
+            <h1 th:text="*{nombre}">Nombre del rival</h1>
+            <img th:src="*{imagen}" alt="Imagen del rival" class="img-fluid w-50">
+        </div>
+        <div th:object="${rival}" id="rivalBoxStats" class="col-md-1 text-center">
+            <h2>Fuerza:</h2>
+            <h3 th:text="*{fuerza}">Fuerza</h3>
+            <h2>Inteligencia:</h2>
+            <h3 th:text="*{inteligencia}">Inteligencia</h3>
+            <h2>Armadura:</h2>
+            <h3 th:text="*{armadura}">Armadura</h3>
+            <h2>Agilidad:</h2>
+            <h3 th:text="*{agilidad}">Agilidad</h3>
         </div>
     </div>
-    <div th:object="${rival}" id="rivalBox" style="margin-top:50px;" class="mt-5 row">
-        <div class="col-md-6">
-            <h1 th:text="*{nombre}">Nombre del personaje</h1>
-            <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+        <div class="d-flex justify-content-center">
+            <button id="btn-registrarme" class="btn btn-lg bg-warning bg-opacity-75 w-50" type="submit">Atacar</button>
         </div>
-    </div>
+
+    </form>
+
 </main>
+
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{js/main.js}"></script>
 </body>
 </html>

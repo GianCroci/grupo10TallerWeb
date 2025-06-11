@@ -13,11 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.Assert;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -30,6 +35,7 @@ public class RepositorioPersonajeTest {
     private RepositorioPersonaje repositorioPersonaje;
     private Session session;
     private Personaje personaje;
+    private Personaje rival;
     private Long idPersonajeGuardado;
 
     @BeforeEach
@@ -137,5 +143,42 @@ public class RepositorioPersonajeTest {
         Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonajeGuardado);
 
         assertThat(personajeObtenido, is(personajeEsperado));
+    }
+
+    @Test
+    public void queSePuedaBuscarUnRival() {
+        personaje = new Personaje();
+        personaje.setNombre("Arthas");
+        personaje.setGenero("Masculino");
+        personaje.setRol("Guerrero");
+        personaje.setFuerza(10);
+        personaje.setInteligencia(5);
+        personaje.setArmadura(8);
+        personaje.setAgilidad(6);
+        personaje.setImagen("guerrero.png");
+        personaje.setOro(500);
+
+        session.save(personaje);
+
+        rival = new Personaje();
+        rival.setNombre("Arthas");
+        rival.setGenero("Masculino");
+        rival.setRol("Guerrero");
+        rival.setFuerza(10);
+        rival.setInteligencia(5);
+        rival.setArmadura(8);
+        rival.setAgilidad(6);
+        rival.setImagen("guerrero.png");
+        rival.setOro(500);
+
+        session.save(rival);
+
+        session.flush();
+
+        Personaje rivalObtenido = repositorioPersonaje.buscarRival(personaje.getId());
+
+        assertNotEquals(rivalObtenido.getId(), personaje.getId());
+        assertNotNull(rivalObtenido);
+
     }
 }

@@ -9,7 +9,7 @@ INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
 INSERT INTO Personaje(nombre, genero, rol, fuerza, inteligencia, armadura, agilidad, imagen, oro)
-VALUES ( 'Arthas', 'Masculino', 'Guerrero', 10, 5, 8, 6, 'img/luchador.png', 500);
+VALUES ( 'Arthas', 'Masculino', 'Guerrero', 100, 20, 80, 60, 'img/luchador.png', 500);
 
 -- Insertar un usuario asociado al personaje (suponiendo que el personaje tiene ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
@@ -66,3 +66,30 @@ INSERT INTO Arma(id) VALUES (1);
 INSERT INTO Arma(id) VALUES (2);
 INSERT INTO Arma(id) VALUES (3);
 INSERT INTO Casco(id) VALUES (4);
+
+-- Crear el mercado
+INSERT INTO Mercado(id) VALUES (2);
+
+-- Equipamientos para el mercado
+INSERT INTO Equipamiento(
+    id, nombre, fuerza, inteligencia, armadura, agilidad,
+    costoCompra, costoMejora, costoVenta, nivel, equipado,
+    idPersonaje, rol_id, mercado_id, imagen
+) VALUES
+      (10, 'Tunica azul', 0, 10, 5, 5, 150, 20, 100, 1, FALSE, null, 1, 2, 'img/tunica-azul.png'),
+      (11, 'Abrigo gris', 0, 0, 15, 5, 180, 25, 200, 1, FALSE, null, 1, 2, 'img/abrigo-gris.png'),
+      (12, 'Capucha de Sombras', 0, 12, 5, 10, 160, 15, 120, 1, FALSE, null, 1, 2, 'img/capucha-sombras.png'),
+      (13, 'Zapatos grises', 0, 0, 8, 20, 190, 20, 250, 1, FALSE, null, 1, 2, 'img/zapatos-gris.png'),
+      (14, 'Zapatos reforzados', 0, 0, 12, 15, 170, 18, 100, 1, FALSE, null, 1, 2, 'img/zapatos-reforzados.png'),
+      (15, 'Cinturon oro', 5, 0, 10, 10, 200, 22, 250, 1, FALSE, null, 1, 2, 'img/cinturon-oro.png');
+
+-- Subclases (herencia JOINED)
+INSERT INTO Tunica(id) VALUES (10);
+INSERT INTO Abrigo(id) VALUES (11);
+INSERT INTO Capucha(id) VALUES (12);
+INSERT INTO ZapatoUno(id) VALUES (13);
+INSERT INTO ZapatoDos(id) VALUES (14);
+INSERT INTO Cinturon(id) VALUES (15);
+
+
+
