@@ -13,8 +13,8 @@ public class ServicioBatallaImpl implements ServicioBatalla {
     }
 
     @Override
-    public Personaje buscarRival() {
-        return servicioPersonaje.buscarRival();
+    public Personaje buscarRival(Long idPersonaje) {
+        return servicioPersonaje.buscarRival(idPersonaje);
     }
 
     @Override

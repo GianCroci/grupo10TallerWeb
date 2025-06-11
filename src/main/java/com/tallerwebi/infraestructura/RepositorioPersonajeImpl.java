@@ -19,12 +19,10 @@ import java.util.Random;
 public class RepositorioPersonajeImpl implements RepositorioPersonaje {
 
     private SessionFactory sessionFactory;
-    private HttpServletRequest request;
 
     @Autowired
-    public RepositorioPersonajeImpl(SessionFactory sessionFactory, HttpServletRequest request){
+    public RepositorioPersonajeImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
-        this.request = request;
     }
 
     @Override
@@ -46,10 +44,8 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
     }
 
     @Override
-    public Personaje buscarRival() {
+    public Personaje buscarRival(Long idPersonaje) {
         Session session = sessionFactory.getCurrentSession();
-        Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
-
         // Trae todos los personajes
         List<Personaje> personajes = session.createCriteria(Personaje.class).list();
 

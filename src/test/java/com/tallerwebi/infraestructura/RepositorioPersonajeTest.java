@@ -13,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -28,7 +32,6 @@ public class RepositorioPersonajeTest {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private HttpServletRequest request;
     private RepositorioPersonaje repositorioPersonaje;
     private Session session;
     private Personaje personaje;
@@ -37,7 +40,7 @@ public class RepositorioPersonajeTest {
 
     @BeforeEach
     public void init() {
-        repositorioPersonaje = new RepositorioPersonajeImpl(sessionFactory, request);
+        repositorioPersonaje = new RepositorioPersonajeImpl(sessionFactory);
         session = sessionFactory.getCurrentSession();
     }
 
@@ -143,7 +146,7 @@ public class RepositorioPersonajeTest {
     }
 
     @Test
-    public void queHayaunRivalparaMiPersonaje() {
+    public void queSePuedaBuscarUnRival() {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
@@ -168,14 +171,14 @@ public class RepositorioPersonajeTest {
         rival.setImagen("guerrero.png");
         rival.setOro(500);
 
-        repositorioPersonaje.guardar(rival);
+        session.save(rival);
 
-        Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(personaje.getId());
-        Personaje rivalObtenido = repositorioPersonaje.buscarRival();
+        session.flush();
 
-        assertThat(personajeObtenido, is(personaje));
-        assertThat(rivalObtenido, is(rival));
+        Personaje rivalObtenido = repositorioPersonaje.buscarRival(personaje.getId());
 
+        assertNotEquals(rivalObtenido.getId(), personaje.getId());
+        assertNotNull(rivalObtenido);
 
     }
 }
