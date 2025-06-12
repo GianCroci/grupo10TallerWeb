@@ -21,6 +21,7 @@ public class ControladorPersonajeTest {
 
     private HttpSession sessionMock;
     private Personaje personajeMockeado;
+    private PersonajeDTO personajeDtoMockeado;
     private ServicioPersonaje servicioPersonajeMock;
     private ServicioUsuario servicioUsuarioMock;
     private ControladorPersonaje controladorPersonaje;
@@ -30,10 +31,11 @@ public class ControladorPersonajeTest {
     public void init() {
         sessionMock = mock(HttpSession.class);
         personajeMockeado = mock(Personaje.class);
+        personajeDtoMockeado = mock(PersonajeDTO.class);
         usuarioMockeado = mock(Usuario.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioPersonajeMock = mock(ServicioPersonaje.class);
-        controladorPersonaje = new ControladorPersonaje(servicioUsuarioMock);
+        controladorPersonaje = new ControladorPersonaje(servicioUsuarioMock, servicioPersonajeMock);
     }
 
     @Test
@@ -51,9 +53,11 @@ public class ControladorPersonajeTest {
         //preparacion
         when(sessionMock.getAttribute(anyString())).thenReturn(usuarioMockeado);
         when(usuarioMockeado.getPersonaje()).thenReturn(personajeMockeado);
+        when(personajeMockeado.getId()).thenReturn(1l);
+        when(servicioPersonajeMock.crearPersonaje(any(), any(), any(), any())).thenReturn(personajeMockeado);
 
         //ejecucion
-        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeMockeado, sessionMock);
+        ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeDtoMockeado, sessionMock);
 
         String vistaEsperada = "home";
 

@@ -46,13 +46,16 @@ public class RepositorioInventarioTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
-        personaje.setImagen("arthas.png");
+        personaje.setRol(new Guerrero());
+        statsMock = new Estadisticas();
+        statsMock.setFuerza(10);
+        statsMock.setInteligencia(5);
+        statsMock.setArmadura(8);
+        statsMock.setAgilidad(6);
+        personaje.setEstadisticas(statsMock);
+        personaje.setImagen("guerrero.png");
         personaje.setOro(500);
+        session.save(new Guerrero());
         session.save(personaje);
 
         idPersonaje1Mock = personaje.getId();

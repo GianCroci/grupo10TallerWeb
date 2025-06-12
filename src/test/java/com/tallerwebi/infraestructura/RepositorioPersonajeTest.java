@@ -1,7 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.RepositorioPersonaje;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,11 +36,15 @@ public class RepositorioPersonajeTest {
     private Personaje personaje;
     private Personaje rival;
     private Long idPersonajeGuardado;
+    private Estadisticas estadisticas;
+    private Guerrero guerrero;
 
     @BeforeEach
     public void init() {
         repositorioPersonaje = new RepositorioPersonajeImpl(sessionFactory);
         session = sessionFactory.getCurrentSession();
+        estadisticas = new Estadisticas();
+
     }
 
     @Test
@@ -49,14 +52,17 @@ public class RepositorioPersonajeTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
+        guerrero = new Guerrero();
+        personaje.setRol(guerrero);
+        estadisticas.setFuerza(10);
+        estadisticas.setInteligencia(5);
+        estadisticas.setArmadura(8);
+        estadisticas.setAgilidad(6);
+        personaje.setEstadisticas(estadisticas);
         personaje.setImagen("guerrero.png");
         personaje.setOro(500);
 
+        session.save(guerrero);
         repositorioPersonaje.guardar(personaje);
 
         Long idPersonajeGuardado = personaje.getId();
@@ -74,14 +80,17 @@ public class RepositorioPersonajeTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
+        guerrero = new Guerrero();
+        personaje.setRol(guerrero);
+        estadisticas.setFuerza(10);
+        estadisticas.setInteligencia(5);
+        estadisticas.setArmadura(8);
+        estadisticas.setAgilidad(6);
+        personaje.setEstadisticas(estadisticas);
         personaje.setImagen("guerrero.png");
         personaje.setOro(500);
 
+        session.save(guerrero);
         session.save(personaje);
         Long idPersonajeGuardado = personaje.getId();
 
@@ -104,14 +113,17 @@ public class RepositorioPersonajeTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
+        guerrero = new Guerrero();
+        personaje.setRol(guerrero);
+        estadisticas.setFuerza(10);
+        estadisticas.setInteligencia(5);
+        estadisticas.setArmadura(8);
+        estadisticas.setAgilidad(6);
+        personaje.setEstadisticas(estadisticas);
         personaje.setImagen("guerrero.png");
         personaje.setOro(500);
 
+        session.save(guerrero);
         session.save(personaje);
 
         idPersonajeGuardado = personaje.getId();
@@ -127,14 +139,17 @@ public class RepositorioPersonajeTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
+        guerrero = new Guerrero();
+        personaje.setRol(guerrero);
+        estadisticas.setFuerza(10);
+        estadisticas.setInteligencia(5);
+        estadisticas.setArmadura(8);
+        estadisticas.setAgilidad(6);
+        personaje.setEstadisticas(estadisticas);
         personaje.setImagen("guerrero.png");
         personaje.setOro(500);
 
+        session.save(guerrero);
         session.save(personaje);
 
         idPersonajeGuardado = personaje.getId();
@@ -150,24 +165,24 @@ public class RepositorioPersonajeTest {
         personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
-        personaje.setRol("Guerrero");
-        personaje.setFuerza(10);
-        personaje.setInteligencia(5);
-        personaje.setArmadura(8);
-        personaje.setAgilidad(6);
+        guerrero = new Guerrero();
+        personaje.setRol(guerrero);
+        estadisticas.setFuerza(10);
+        estadisticas.setInteligencia(5);
+        estadisticas.setArmadura(8);
+        estadisticas.setAgilidad(6);
+        personaje.setEstadisticas(estadisticas);
         personaje.setImagen("guerrero.png");
         personaje.setOro(500);
 
+        session.save(guerrero);
         session.save(personaje);
 
         rival = new Personaje();
-        rival.setNombre("Arthas");
+        rival.setNombre("nacho");
         rival.setGenero("Masculino");
-        rival.setRol("Guerrero");
-        rival.setFuerza(10);
-        rival.setInteligencia(5);
-        rival.setArmadura(8);
-        rival.setAgilidad(6);
+        rival.setRol(guerrero);
+        rival.setEstadisticas(estadisticas);
         rival.setImagen("guerrero.png");
         rival.setOro(500);
 

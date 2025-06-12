@@ -61,7 +61,7 @@
 
 
             <div class="card bg-secondary text-light h-100 shadow">
-                <img th:src="@{'/img/' + ${equipamientoActual.nombre} + '.png'}" class="card-img-top p-3" th:alt="${equipamientoActual.nombre}" />
+                <img th:src="@{${equipamientoActual.imagen}}" class="card-img-top p-3" th:alt="${equipamientoActual.nombre}" />
                 <div class="card-body">
                     <h5 class="card-title">
                         <span th:text="${equipamientoActual.nombre}"></span>

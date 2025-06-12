@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 @Entity
 public class Guerrero extends Rol {
 
+    public Guerrero() {
+        super(1l, "Guerrero");
+    }
+
     @Override
     public void aplicarMejora(Arma arma) {
         arma.getStats().aumentarFuerza(4);
@@ -36,4 +40,11 @@ public class Guerrero extends Rol {
         botas.getStats().aumentarAgilidad(1);
     }
 
+    @Override
+    public void aplicarStatsBase(Personaje personaje) {
+        personaje.getEstadisticas().setFuerza(100);
+        personaje.getEstadisticas().setArmadura(80);
+        personaje.getEstadisticas().setAgilidad(60);
+        personaje.getEstadisticas().setInteligencia(20);
+    }
 }
