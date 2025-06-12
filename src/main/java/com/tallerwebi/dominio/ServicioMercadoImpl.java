@@ -18,11 +18,6 @@ public class ServicioMercadoImpl implements ServicioMercado {
     @Override
     public Mercado mostrarMercado() {
         Mercado mercado = repositorioMercado.obtenerMercadoConProductos();
-        if (mercado == null) {
-            mercado = new Mercado();
-            mercado.setProductos(new ArrayList<>());
-        }
-
         return mercado;
     }
 
