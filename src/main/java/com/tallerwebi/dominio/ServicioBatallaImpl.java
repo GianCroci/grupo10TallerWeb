@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,8 +14,12 @@ public class ServicioBatallaImpl implements ServicioBatalla {
     }
 
     @Override
-    public Personaje buscarRival(Long idPersonaje) {
-        return servicioPersonaje.buscarRival(idPersonaje);
+    public Personaje buscarRival(Long idPersonaje) throws RivalNoEncontrado {
+        Personaje personaje = servicioPersonaje.buscarRival(idPersonaje);
+        if (personaje == null) {
+            throw new RivalNoEncontrado("No se encontro un rival para la batalla");
+        }
+        return personaje;
     }
 
     @Override
