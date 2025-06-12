@@ -43,6 +43,10 @@
     </style>
 </head>
 <body>
+<div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 9999; width: 50%;">
+    <p th:text="${error}"></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
 <main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
       class="container-fluid d-flex flex-column align-items-center">
 <div th:object="${datosPersonaje}" id="loginbox" style="margin-top:50px;" class="mt-5 row">

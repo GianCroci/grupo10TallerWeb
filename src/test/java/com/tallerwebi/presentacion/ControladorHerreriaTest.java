@@ -27,7 +27,7 @@ public class ControladorHerreriaTest {
     private List<Equipamiento> equipamientosConCosasMock;
     private HttpSession sessionMock;
     private Long idPersonajeMock;
-    RedirectAttributes redirectAttributesMock;
+    private RedirectAttributes redirectAttributesMock;
 
 
     @BeforeEach
