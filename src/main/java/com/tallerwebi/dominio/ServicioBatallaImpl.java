@@ -20,7 +20,7 @@ public class ServicioBatallaImpl implements ServicioBatalla {
     @Override
     public void atacarRival(Personaje personaje, Personaje rival) {
 
-        if (personaje.getFuerza() + personaje.getArmadura() + personaje.getAgilidad() + personaje.getInteligencia() > rival.getFuerza() + rival.getArmadura() + personaje.getAgilidad() + personaje.getInteligencia()) {
+        if (personaje.getEstadisticas().getFuerza() + personaje.getEstadisticas().getArmadura() + personaje.getEstadisticas().getAgilidad() + personaje.getEstadisticas().getInteligencia() > rival.getEstadisticas().getFuerza() + rival.getEstadisticas().getArmadura() + personaje.getEstadisticas().getAgilidad() + personaje.getEstadisticas().getInteligencia()) {
             resultado = "Victoria";
         };
         resultado = "Derrota";

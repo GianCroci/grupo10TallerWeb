@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 @Entity
 public class Mago extends Rol {
 
+    public Mago() {
+        super(2l, "Mago");
+    }
+
     @Override
     public void aplicarMejora(Arma arma) {
         arma.getStats().aumentarInteligencia(3);
@@ -35,5 +39,13 @@ public class Mago extends Rol {
     public void aplicarMejora(Botas botas) {
         botas.getStats().aumentarArmadura(1);
         botas.getStats().aumentarAgilidad(1);
+    }
+
+    @Override
+    public void aplicarStatsBase(Personaje personaje) {
+        personaje.getEstadisticas().setFuerza(30);
+        personaje.getEstadisticas().setArmadura(20);
+        personaje.getEstadisticas().setAgilidad(40);
+        personaje.getEstadisticas().setInteligencia(100);
     }
 }

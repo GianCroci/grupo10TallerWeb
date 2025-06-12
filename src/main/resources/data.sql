@@ -8,8 +8,8 @@ INSERT INTO Mago(id) VALUES (2);
 INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
-INSERT INTO Personaje(nombre, genero, rol, fuerza, inteligencia, armadura, agilidad, imagen, oro)
-VALUES ( 'Arthas', 'Masculino', 'Guerrero', 100, 20, 80, 60, 'img/luchador.png', 500);
+INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro)
+VALUES ( 'Arthas', 'Masculino', 1, 100, 20, 80, 60, 'img/luchador.png', 500);
 
 -- Insertar un usuario asociado al personaje (suponiendo que el personaje tiene ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
@@ -21,43 +21,43 @@ VALUES ('test@unlam.edu.ar', 'test', 'ADMIN', true, 1);
 INSERT INTO Equipamiento(
     nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
-    idPersonaje, rol_id
+    personaje_id, rol_id, imagen
 ) VALUES (
              'espada', 10, 0, 0, 0,
              50, 20, 30, 0, FALSE,
-             1, 1
+             1, 1, 'img/espada.png'
          );
 
 -- Arma 2: Mago
 INSERT INTO Equipamiento(
     nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
-    idPersonaje, rol_id
+    personaje_id, rol_id, imagen
 ) VALUES (
              'baston', 0, 12, 0, 0,
              40, 15, 25, 0, FALSE,
-             1, 2
+             1, 2, 'img/baston.png'
          );
 
 -- Arma 3: Bandido
 INSERT INTO Equipamiento(
     nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
-    idPersonaje, rol_id
+    personaje_id, rol_id, imagen
 ) VALUES (
              'daga', 4, 0, 0, 10,
              35, 10, 20, 0, FALSE,
-             1, 3
+             1, 3, 'img/daga.png'
          );
 
 INSERT INTO Equipamiento(
     nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
-    idPersonaje, rol_id
+    personaje_id, rol_id, imagen
 ) VALUES (
              'casco', 0, 0, 0, 0,
              35, 10, 20, 0, FALSE,
-             1, 1
+             1, 1, 'img/casco.png'
          );
 
 -- Insertar en subtabla Arma (herencia JOINED) para vincular los equipamientos como armas
@@ -74,7 +74,7 @@ INSERT INTO Mercado(id) VALUES (2);
 INSERT INTO Equipamiento(
     id, nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
-    idPersonaje, rol_id, mercado_id, imagen
+    personaje_id, rol_id, mercado_id, imagen
 ) VALUES
       (10, 'Tunica azul', 0, 10, 5, 5, 150, 20, 100, 1, FALSE, null, 1, 2, 'img/tunica-azul.png'),
       (11, 'Abrigo gris', 0, 0, 15, 5, 180, 25, 200, 1, FALSE, null, 1, 2, 'img/abrigo-gris.png'),

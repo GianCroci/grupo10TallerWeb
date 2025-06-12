@@ -24,7 +24,7 @@ public abstract class Equipamiento{
     private Boolean equipado;
     private String imagen;
     @ManyToOne
-    @JoinColumn(name = "idPersonaje") // FK en la tabla equipamiento
+    @JoinColumn(name = "personaje_id") // FK en la tabla equipamiento
     private Personaje personaje;
 
     @ManyToOne
@@ -94,4 +94,8 @@ public abstract class Equipamiento{
     public Personaje getPersonaje() { return personaje; }
 
     public void setPersonaje(Personaje personaje) { this.personaje = personaje; }
+
+    public String getImagen() { return imagen; }
+
+    public void setImagen(String imagen) { this.imagen = imagen; }
 }

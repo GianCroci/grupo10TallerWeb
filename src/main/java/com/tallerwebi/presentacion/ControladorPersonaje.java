@@ -14,36 +14,37 @@ import javax.servlet.http.HttpSession;
 public class ControladorPersonaje {
 
     private ServicioUsuario servicioUsuario;
+    private ServicioPersonaje servicioPersonaje;
 
     @Autowired
-    public ControladorPersonaje(ServicioUsuario servicioUsuario) {
+    public ControladorPersonaje(ServicioUsuario servicioUsuario, ServicioPersonaje servicioPersonaje) {
         this.servicioUsuario = servicioUsuario;
+        this.servicioPersonaje = servicioPersonaje;
     }
 
     @GetMapping("/creacion-personaje")
     public ModelAndView creacionPersonaje() {
 
         ModelMap modelMap = new ModelMap();
-        modelMap.put("datosPersonaje", new Personaje());
+        modelMap.put("datosPersonaje", new PersonajeDTO());
         return new ModelAndView("creacion-personaje", modelMap);
     }
 
     @PostMapping("/guardar-personaje")
-    public ModelAndView guardarPersonaje(@ModelAttribute("datosPersonaje") Personaje personaje, HttpSession session) {
+    public ModelAndView guardarPersonaje(@ModelAttribute("datosPersonaje") PersonajeDTO personajeDTO, HttpSession session) {
         ModelMap modelMap = new ModelMap();
-        Personaje personajeGuardado = new Personaje();
 
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
 
         if (usuarioLogueado != null) {
-            servicioUsuario.setPersonaje(personaje, usuarioLogueado);
+            Personaje personajeCreado = servicioPersonaje.crearPersonaje(personajeDTO.getNombre(), personajeDTO.getGenero(), personajeDTO.getImagen(), personajeDTO.getIdRol());
+            servicioUsuario.setPersonaje(personajeCreado, usuarioLogueado);
             modelMap.put("datosPersonaje", usuarioLogueado.getPersonaje());
             session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
             return new ModelAndView("home", modelMap);
         }
 
-        modelMap.put("datosPersonaje", personajeGuardado);
-        return new ModelAndView("creacion-personaje", modelMap);
+        return new ModelAndView("redirect:/creacion-personaje", modelMap);
     }
 
 

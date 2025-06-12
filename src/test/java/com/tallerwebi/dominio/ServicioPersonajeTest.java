@@ -14,12 +14,14 @@ public class ServicioPersonajeTest {
     private Personaje personajeMockeado;
     private RepositorioPersonaje repoPersonajeMock;
     private ServicioPersonaje servicioPersonaje;
+    private RepositorioRol repositorioRolMock;
 
     @BeforeEach
     public void init(){
         personajeMockeado = mock(Personaje.class);
         repoPersonajeMock = mock(RepositorioPersonaje.class);
-        servicioPersonaje = new ServicioPersonajeImpl(repoPersonajeMock);
+        repositorioRolMock = mock(RepositorioRol.class);
+        servicioPersonaje = new ServicioPersonajeImpl(repoPersonajeMock, repositorioRolMock);
     }
 
    /* @Test
@@ -194,4 +196,95 @@ public class ServicioPersonajeTest {
         verify(repoPersonajeMock, times(1)).modificar(personaje);
         assertThat(personajeObtenido.getGenero(), equalTo("Masculino"));
     }
+
+    @Test
+    public void queAlCrearUnPersonajeLasEstadisticasDeUnPersonajeConRolGuerreroSeSeteenDeFormaCorrecta(){
+
+        doNothing().when(repoPersonajeMock).guardar(any());
+        String nombre = "jorge";
+        String genero = "Masculino";
+        String imagen = "img/jorge";
+        Long idRol = 1L;
+        when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Guerrero());
+        Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
+
+        Integer fuerzaEsperada = 100;
+        Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
+
+        Integer inteligenciaEsperada = 20;
+        Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
+
+        Integer armaduraEsperada = 80;
+        Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
+
+        Integer agilidadEsperada = 60;
+        Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
+
+        assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));
+        assertThat(inteligenciaEsperada, equalTo(inteligenciaObtenida));
+        assertThat(armaduraEsperada, equalTo(armaduraObtenida));
+        assertThat(agilidadEsperada, equalTo(agilidadObtenida));
+
+    }
+
+    @Test
+    public void queAlCrearUnPersonajeLasEstadisticasDeUnPersonajeConRolMagoSeSeteenDeFormaCorrecta(){
+
+        doNothing().when(repoPersonajeMock).guardar(any());
+        String nombre = "jorge";
+        String genero = "Masculino";
+        String imagen = "img/jorge";
+        Long idRol = 2L;
+        when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Mago());
+        Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
+
+        Integer fuerzaEsperada = 30;
+        Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
+
+        Integer inteligenciaEsperada = 100;
+        Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
+
+        Integer armaduraEsperada = 20;
+        Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
+
+        Integer agilidadEsperada = 40;
+        Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
+
+        assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));
+        assertThat(inteligenciaEsperada, equalTo(inteligenciaObtenida));
+        assertThat(armaduraEsperada, equalTo(armaduraObtenida));
+        assertThat(agilidadEsperada, equalTo(agilidadObtenida));
+
+    }
+
+    @Test
+    public void queAlCrearUnPersonajeLasEstadisticasDeUnPersonajeConRolBandidoSeSeteenDeFormaCorrecta(){
+
+        doNothing().when(repoPersonajeMock).guardar(any());
+        String nombre = "jorge";
+        String genero = "Masculino";
+        String imagen = "img/jorge";
+        Long idRol = 3L;
+        when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Bandido());
+        Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
+
+        Integer fuerzaEsperada = 50;
+        Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
+
+        Integer inteligenciaEsperada = 70;
+        Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
+
+        Integer armaduraEsperada = 30;
+        Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
+
+        Integer agilidadEsperada = 100;
+        Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
+
+        assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));
+        assertThat(inteligenciaEsperada, equalTo(inteligenciaObtenida));
+        assertThat(armaduraEsperada, equalTo(armaduraObtenida));
+        assertThat(agilidadEsperada, equalTo(agilidadObtenida));
+
+    }
+
 }
