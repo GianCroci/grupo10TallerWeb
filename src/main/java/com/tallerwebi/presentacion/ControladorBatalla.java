@@ -32,6 +32,10 @@ public class ControladorBatalla {
     public ModelAndView irABatalla(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelMap modelMap = new ModelMap();
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
+        if (idPersonaje == null) {
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista batalla sin haberse logueado");
+            return new ModelAndView("redirect:/login");
+        }
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
         Personaje rival = null;
         try {
@@ -43,11 +47,8 @@ public class ControladorBatalla {
         }
         request.getSession().setAttribute("idRival", rival.getId());
 
-
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
-
-        if (personaje == null) return new ModelAndView("redirect:/creacion-personaje");
 
         return new ModelAndView("batalla", modelMap);
     }
