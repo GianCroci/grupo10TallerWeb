@@ -9,7 +9,7 @@ INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
 INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro)
-VALUES ( 'Arthas', 'Masculino', 1, 100, 20, 80, 60, 'img/luchador.png', 500);
+VALUES ( 'Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500);
 
 -- Insertar un usuario asociado al personaje (suponiendo que el personaje tiene ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
@@ -18,6 +18,9 @@ VALUES ('test@unlam.edu.ar', 'test', 'ADMIN', true, 1);
 -- Insertar 3 equipamientos tipo arma con estadísticas embebidas y distintos roles
 
 -- Arma 1: Guerrero
+-- Arma 2: Mago
+-- Arma 3: Bandido
+-- Casco 4: Guerrero
 INSERT INTO Equipamiento(
     nombre, fuerza, inteligencia, armadura, agilidad,
     costoCompra, costoMejora, costoVenta, nivel, equipado,
@@ -26,35 +29,15 @@ INSERT INTO Equipamiento(
              'espada', 10, 0, 0, 0,
              50, 20, 30, 0, FALSE,
              1, 1, 'img/espada.png'
-         );
-
--- Arma 2: Mago
-INSERT INTO Equipamiento(
-    nombre, fuerza, inteligencia, armadura, agilidad,
-    costoCompra, costoMejora, costoVenta, nivel, equipado,
-    personaje_id, rol_id, imagen
-) VALUES (
+         ),(
              'baston', 0, 12, 0, 0,
              40, 15, 25, 0, FALSE,
              1, 2, 'img/baston.png'
-         );
-
--- Arma 3: Bandido
-INSERT INTO Equipamiento(
-    nombre, fuerza, inteligencia, armadura, agilidad,
-    costoCompra, costoMejora, costoVenta, nivel, equipado,
-    personaje_id, rol_id, imagen
-) VALUES (
+         ),(
              'daga', 4, 0, 0, 10,
              35, 10, 20, 0, FALSE,
              1, 3, 'img/daga.png'
-         );
-
-INSERT INTO Equipamiento(
-    nombre, fuerza, inteligencia, armadura, agilidad,
-    costoCompra, costoMejora, costoVenta, nivel, equipado,
-    personaje_id, rol_id, imagen
-) VALUES (
+         ),(
              'casco', 0, 0, 0, 0,
              35, 10, 20, 0, FALSE,
              1, 1, 'img/casco.png'
@@ -90,6 +73,3 @@ INSERT INTO Capucha(id) VALUES (12);
 INSERT INTO ZapatoUno(id) VALUES (13);
 INSERT INTO ZapatoDos(id) VALUES (14);
 INSERT INTO Cinturon(id) VALUES (15);
-
-
-
