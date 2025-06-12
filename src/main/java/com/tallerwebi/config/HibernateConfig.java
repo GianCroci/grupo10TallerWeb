@@ -14,7 +14,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernateConfig {
 
-    /*
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -48,8 +48,8 @@ public class HibernateConfig {
         return properties;
     }
 
-     */
 
+/*
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -85,4 +85,6 @@ public class HibernateConfig {
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
         return properties;
     }
+    */
+
 }

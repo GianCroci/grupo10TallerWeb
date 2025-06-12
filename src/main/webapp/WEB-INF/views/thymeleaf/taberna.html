@@ -25,7 +25,7 @@
                 </div>
             <p>¿Quieres invitarle un trago?</p>
             <div th:if="${personajeDisponible}">
-                <form action="/spring/invitarTrago" method="POST">
+                <form th:action="@{/invitarTrago}" action="#" method="POST">
                     <label for="personaje">Invitar un trago a:</label>
                     <select name="personaje" id="personaje" class="form-select" style="text-align: center">
                         <option th:value="${personajeDisponible}" th:text="${personajeDisponible}"></option>
