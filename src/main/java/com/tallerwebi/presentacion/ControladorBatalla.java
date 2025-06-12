@@ -47,6 +47,7 @@ public class ControladorBatalla {
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
 
+        if (personaje == null) return new ModelAndView("redirect:/creacion-personaje");
 
         return new ModelAndView("batalla", modelMap);
     }
