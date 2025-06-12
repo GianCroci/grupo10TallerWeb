@@ -27,7 +27,6 @@ public class ControladorMercado {
     public ModelAndView mostrarMercado() {
         Mercado mercado = servicioMercado.mostrarMercado();
 
-
         ModelAndView modelAndView = new ModelAndView("mercado");
         modelAndView.addObject("mercado", mercado);
         modelAndView.addObject("compraExitosa", null);
