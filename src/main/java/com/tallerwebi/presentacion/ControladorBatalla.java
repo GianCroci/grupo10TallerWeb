@@ -33,7 +33,7 @@ public class ControladorBatalla {
         ModelMap modelMap = new ModelMap();
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
         if (idPersonaje == null) {
-            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista batalla sin haberse logueado");
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista batalla sin haber iniciado sesion");
             return new ModelAndView("redirect:/login");
         }
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
@@ -47,8 +47,10 @@ public class ControladorBatalla {
         }
         request.getSession().setAttribute("idRival", rival.getId());
 
+
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
+
 
         return new ModelAndView("batalla", modelMap);
     }

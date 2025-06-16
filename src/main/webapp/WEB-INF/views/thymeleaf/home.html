@@ -49,21 +49,21 @@
 </div>
 <main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
       class="container-fluid d-flex flex-column align-items-center">
-<div th:object="${datosPersonaje}" id="loginbox" style="margin-top:50px;" class="mt-5 row">
+<div id="loginbox" style="margin-top:50px;" class="mt-5 row">
     <div class="col-md-6">
-        <h1 th:text="*{nombre}">Nombre del personaje</h1>
-        <img th:src="*{imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
+        <h1 th:text="${infoPersonaje.nombre}">Nombre del personaje</h1>
+        <img th:src="${infoPersonaje.imagen}" alt="Imagen del personaje" class="img-fluid d-block w-50 mx-auto">
     </div>
     <div class="col-md-6">
         <h2>Estadísticas</h2>
         <h2>Fuerza:</h2>
-        <h3 th:text="*{estadisticas.fuerza}">Fuerza</h3>
+        <h3 th:text="${infoPersonaje.estadisticas.fuerza}">Fuerza</h3>
         <h2>Inteligencia:</h2>
-        <h3 th:text="*{estadisticas.inteligencia}">Inteligencia</h3>
+        <h3 th:text="${infoPersonaje.estadisticas.inteligencia}">Inteligencia</h3>
         <h2>Armadura:</h2>
-        <h3 th:text="*{estadisticas.armadura}">Armadura</h3>
+        <h3 th:text="${infoPersonaje.estadisticas.armadura}">Armadura</h3>
         <h2>Agilidad:</h2>
-        <h3 th:text="*{estadisticas.agilidad}">Agilidad</h3>
+        <h3 th:text="${infoPersonaje.estadisticas.agilidad}">Agilidad</h3>
     </div>
 </div>
 </main>

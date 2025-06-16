@@ -59,10 +59,9 @@ public class ControladorPersonajeTest {
         //ejecucion
         ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeDtoMockeado, sessionMock);
 
-        String vistaEsperada = "home";
+        String vistaEsperada = "redirect:/home";
 
         assertThat(vistaEsperada, equalTo(modelAndView.getViewName()));
-        assertThat(modelAndView.getModel().get("datosPersonaje"), equalTo(personajeMockeado));
         verify(servicioUsuarioMock, times(1)).setPersonaje(personajeMockeado, usuarioMockeado);
 
     }
