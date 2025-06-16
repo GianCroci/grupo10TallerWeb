@@ -39,9 +39,8 @@ public class ControladorPersonaje {
         if (usuarioLogueado != null) {
             Personaje personajeCreado = servicioPersonaje.crearPersonaje(personajeDTO.getNombre(), personajeDTO.getGenero(), personajeDTO.getImagen(), personajeDTO.getIdRol());
             servicioUsuario.setPersonaje(personajeCreado, usuarioLogueado);
-            modelMap.put("datosPersonaje", usuarioLogueado.getPersonaje());
             session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
-            return new ModelAndView("home", modelMap);
+            return new ModelAndView("redirect:/home", modelMap);
         }
 
         return new ModelAndView("redirect:/creacion-personaje", modelMap);

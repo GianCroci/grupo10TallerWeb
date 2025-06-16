@@ -36,7 +36,7 @@
                 <input th:field="*{password}" type="password" id="password" class="form-control" required/>
             </div>
             <button type="submit" class="form-button button-l margin-b">Ingresar</button>
-            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error: ' + ${error}">
             </p>
 
             <p class="text-whitesmoke text-center"><small>No tenes una cuenta?</small></p>

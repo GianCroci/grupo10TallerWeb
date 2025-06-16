@@ -35,8 +35,8 @@ public class ControladorHerreria {
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         if (idPersonaje == null) {
-            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista herreria sin haberse logueado");
-            return new ModelAndView("redirect:/login", model);
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista herreria sin haber iniciado sesion");
+            return new ModelAndView("redirect:/login");
         }
         Integer oroPersonaje = servicioHerreria.obtenerOroDelPersonaje(idPersonaje);
 
