@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sala de chat</title>
+</head>
+<body>
+<header><h1>Chat con <span th:text="${destinatario}"></span></h1></header>
+
+<div id="chat-messages"></div>
+
+<input type="text" id="message" placeholder="Escribí tu mensaje"/>
+<button onclick="sendMessage()">Enviar</button>
+
+<!-- Exponer las variables al JS -->
+<script th:inline="javascript">
+    const usuario = [[${usuario}]];
+    const destinatario = [[${destinatario}]];
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
