@@ -20,10 +20,9 @@ public class ControladorChat {
     @RequestMapping(path = "/sala-chat", method = RequestMethod.GET)
     public ModelAndView irAChat(HttpServletRequest request) {
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
-        Long idRival = (Long) request.getSession().getAttribute("idRival");
 
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
-        Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
+        Personaje rival = servicioPersonaje.buscarRival(idPersonaje);
 
         ModelMap model = new ModelMap();
         model.put("usuario", personaje.getNombre());
