@@ -1,15 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.MensajeRecibido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
-import java.security.Principal;
 
 @Controller
 public class ControladorWebSocket {
@@ -18,16 +14,20 @@ public class ControladorWebSocket {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat")
-    public void enviarMensajePrivado(MensajeRecibido mensaje, Principal principal) {
-        String remitente = principal.getName(); // nombre del usuario logueado
-        MensajeEnviado respuesta = new MensajeEnviado(mensaje.getMensaje(), remitente);
+    public void enviarMensajePrivado(MensajeRecibido mensaje) {
+        System.out.println("Mensaje recibido en backend:");
+        System.out.println("Remitente: " + mensaje.getRemitente());
+        System.out.println("Destinatario: " + mensaje.getDestinatario());
+        System.out.println("Mensaje: " + mensaje.getMensaje());
 
-        messagingTemplate.convertAndSendToUser(
-                mensaje.getDestinatario(),
-                "/queue/messages",
+        MensajeEnviado respuesta = new MensajeEnviado(mensaje.getMensaje(), mensaje.getRemitente());
+
+        messagingTemplate.convertAndSend(
+                "/user/" + mensaje.getDestinatario() + "/queue/messages",
                 respuesta
         );
+
+
+
     }
 }
-
-
