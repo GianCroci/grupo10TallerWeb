@@ -25,25 +25,32 @@ $ mvn clean jetty:run
 
 ### Iniciar el servidor
 ```shell
+# Opcion 1
 $ mvn clean jetty:run
+
+# Opcion 2 -- ver seccion 10 docker-compose
+$ docker-compose up --build
 ```
 ### Correr las pruebas en otra terminal
 ```shell
 $ mvn test -Dtest="VistaLoginE2E"
+$ mvn test -Dtest="VistaLoginE2E#deberiaNavegarAlHomeSiElUsuarioExiste"
 ```
 
 ## 8. Como correr las pruebas unitarias de javascript
 ```shell
 $ cd src/main/webapp/resources/core/js
-// Si es la primera vez debo descargar las dependencias
+# Si es la primera vez debo descargar las dependencias
 $ npm install
-// Ejecuto las pruebas
-$ npm test
+# Ejecuto las pruebas
+$ npm run test
 ```
 
 ## 9. Docker:
+Docker es una plataforma de contenedores que permite empaquetar aplicaciones con todas sus dependencias en contenedores ligeros y portables. Los contenedores se ejecutan de forma aislada y consistente en cualquier entorno que tenga Docker instalado.
+
 Los archivos de docker de este proyecto estan preparados para desplegar un archivo WAR usando el servido Jetty o Tomcat
-El archivo de docker para Jetty y Tomcat esperan que el archivo WAR se debe llamar "tallerwebi-base-1.0-SNAPSHOT" para eso debemos modificar los atributos <artifactId> y <version> del archivo pom.xml 
+El archivo de docker para Jetty y Tomcat esperan que el archivo WAR se debe llamar "tallerwebi-base-1.0-SNAPSHOT" para eso debemos modificar los atributos <artifactId> y <version> del archivo pom.xml
 
 Para generar un archivo WAR debemos ejecutar maven
 ```shell
@@ -97,7 +104,19 @@ docker build -f DockerfileSQL -t mysql .
 docker run --name mysql-container -d -p 3306:3306 mysql # sudo apt install mysql-client
 ```
 
-## 9. Tecnologías:
+## 10. docker-compose
+Docker Compose es una herramienta que permite definir y ejecutar aplicaciones multi-contenedor usando archivos YAML. Simplifica la gestión de múltiples servicios y sus dependencias, permitiendo orquestar todo el stack de la aplicación con un solo comando.
+
+```shell
+mvn clean package
+# Invoco a docker-compose para que me genere contenedores de todos los servicios especificadas
+docker-compose up --build
+
+# Invoco a docker para que elimine los contenedores creados 
+docker-compose down
+```
+
+## Tecnologías:
 * Java 11
 * Spring 5.2.22.RELEASE
 * Thymeleaf 3.0.15.RELEASE
@@ -112,6 +131,7 @@ docker run --name mysql-container -d -p 3306:3306 mysql # sudo apt install mysql
 * Hibernate 5.4.24.Final
 * Mockito 5.3.1
 * Playwright 1.36.0
-* Node 18.16.1 o superior <- Instalación manual desde la [página de node](https://nodejs.org/en) 
+* Node 18.16.1 o superior <- Instalación manual desde la [página de node](https://nodejs.org/en)
+* npm --> npm install -g npm
 
 *_Proyecto modificado en base a: [Spring MVC hello world example (Maven and Thymeleaf)](https://mkyong.com/spring-mvc/spring-mvc-hello-world-example/) _*
