@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tablón de Amistades</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: url('https://i.imgur.com/yKZlXfC.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'MedievalSharp', cursive;
+            color: #f4e9d8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 5px solid #8b5e3c;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #000;
+        }
+
+        h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8b5e3c;
+            padding-bottom: 10px;
+        }
+
+        .amigo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #311f0c;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 2px solid #6b4e1d;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #d8caa8;
+        }
+
+        .amigo.propio {
+            background: #5b3924;
+            border: 2px solid gold;
+            box-shadow: 0 0 10px gold;
+        }
+
+        .amigo span {
+            font-size: 1.1em;
+        }
+
+        .amigo button {
+            background: #6b4e1d;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #d8caa8;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .amigo button:hover {
+            background: #9c7530;
+        }
+
+        .botones {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #8b5e3c;
+            color: #fff8dc;
+            box-shadow: 0 0 10px #000;
+            transition: background 0.3s;
+        }
+        a.btn-link {
+            display: inline-block;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #8b5e3c;
+            color: #fff8dc;
+            text-decoration: none;
+            box-shadow: 0 0 10px #000;
+            transition: background 0.3s;
+        }
+
+        a.btn-link:hover {
+            background: #a97449;
+        }
+
+        button:hover {
+            background: #a97449;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-contenido {
+            background: #3b2f2f;
+            color: #f4e9d8;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            border: 3px solid #c9b28d;
+            box-shadow: 0 0 20px #000;
+        }
+
+        .modal h3, .modal h4 {
+            margin-top: 0;
+            border-bottom: 1px solid #c9b28d;
+            padding-bottom: 5px;
+        }
+
+        .cerrar {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #f4e9d8;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #c9b28d;
+            border-radius: 5px;
+            background: #222;
+            color: #f4e9d8;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        form button {
+            background: #6d4c2f;
+        }
+
+        p strong {
+            color: #ffeaae;
+        }
+
+        .amigo.propio .info-codigo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .amigo-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .amigo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #c9b28d;
+            object-fit: cover;
+        }
+        .boton-solicitudes {
+            position: relative;
+            display: inline-block;
+        }
+
+        .alerta-exclamacion {
+            position: absolute;
+            font-family: 'Arial Black', sans-serif;
+            top: 0px;
+            right: 0px;
+            background: gold;
+            color: #311f0c;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 0 8px gold;
+            animation: pulso 1s infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulso {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-dark text-light"
+      th:style="'background-image: url(' + @{/img/fogata.png} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
+<header th:replace="navbar :: nav"></header>
+
+<div class="container">
+    <h2>Tablón de Amistades</h2>
+
+    <div class="amigo propio">
+        <div class="info-codigo">
+            <i class="fas fa-crown"></i>
+            <span th:text="'Mi Código: ' + ${codigoAmigo}"></span>
+        </div>
+    </div>
+    <div th:each="amigoActual : ${amigos}">
+        <div class="amigo">
+            <div class="amigo-info">
+                <img class="amigo-img" th:src="${amigoActual.imagenAmigo}" alt="Avatar del amigo">
+                <span th:text="${amigoActual.nombre} + ' (Código: ' + ${amigoActual.codigoAmigo} + ')'"></span>
+            </div>
+            <a th:href="@{'/chat/' + ${amigoActual.id}}" class="btn-link"><i class="fas fa-comments"></i> Chat</a>
+        </div>
+    </div>
+
+    <div class="botones">
+        <div class="boton-solicitudes">
+            <button onclick="abrirModal('modalSolicitudes')">
+                <i class="fas fa-scroll"></i> Ver Solicitudes
+            </button>
+            <span class="alerta-exclamacion"
+                  th:if="${not #lists.isEmpty(solicitudesRecibidas)}">!</span>
+        </div>
+        <button onclick="abrirModal('modalAgregar')"><i class="fas fa-user-plus"></i> Agregar Amigo</button>
+    </div>
+</div>
+
+<!-- Modal Solicitudes -->
+<div id="modalSolicitudes" class="modal">
+    <div class="modal-contenido">
+        <span class="cerrar" onclick="cerrarModal('modalSolicitudes')"><i class="fas fa-times"></i></span>
+        <h3>Solicitudes de Amistad</h3>
+
+        <h4>Recibidas:</h4>
+
+        <div th:each="solicitudRecibidaActual : ${solicitudesRecibidas}">
+            <p>
+                <strong th:text="${solicitudRecibidaActual.nombreRemitente}"></strong><br />
+
+            <form th:action="@{/aceptar-solicitud}" method="post" style="display:inline">
+                <input type="hidden" name="idSolicitud" th:value="${solicitudRecibidaActual.idSolicitud}" />
+                <button type="submit">Aceptar</button>
+            </form>
+
+            <form th:action="@{/rechazar-solicitud}" method="post" style="display:inline">
+                <input type="hidden" name="idSolicitud" th:value="${solicitudRecibidaActual.idSolicitud}" />
+                <button type="submit">Rechazar</button>
+            </form>
+            </p>
+        </div>
+
+        <h4>Enviadas:</h4>
+        <div th:each="solicitudesEnviadasActual : ${solicitudesEnviadas}">
+        <p><strong th:text="${solicitudesEnviadasActual.nombreDestinatario}"></strong> (Pendiente)</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Agregar -->
+<div id="modalAgregar" class="modal">
+    <div class="modal-contenido">
+        <span class="cerrar" onclick="cerrarModal('modalAgregar')"><i class="fas fa-times"></i></span>
+        <h3>Enviar Cuervo con Solicitud</h3>
+        <form th:action="@{/enviar-solicitud}" method="post">
+            <label for="codigo">Código del Amigo:</label>
+            <input type="text" id="codigo" name="codigoAmigo" placeholder="Ej: DRG123BM" required />
+            <button type="submit"><i class="fas fa-feather-alt"></i> Enviar Cuervo</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function abrirModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    function cerrarModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        document.querySelectorAll('.modal').forEach(modal => {
+            if (event.target === modal) modal.style.display = "none";
+        });
+    }
+</script>
+
+</body>
+</html>
