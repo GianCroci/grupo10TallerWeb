@@ -28,6 +28,7 @@
             font-size: 2.5em;
             margin-bottom: 30px;
             text-shadow: 2px 2px 5px #000;
+            text-align: center;
         }
 
         .productos-container {
@@ -129,6 +130,26 @@
             background-color: rgba(76, 175, 80, 0.3);
             border: 1px solid #4CAF50;
         }
+        .medieval-alert {
+            border: 3px solid #a77b34;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(167, 123, 52, 0.7);
+            padding: 1rem;
+            font-family: 'MedievalSharp', cursive;
+            text-align: center;
+        }
+
+        .medieval-success {
+            background-color: rgba(48, 73, 40, 0.9);
+            color: #d4f0c0;
+            text-align: center;
+        }
+
+        .medieval-error {
+            background-color: rgba(97, 25, 25, 0.95);
+            color: #f8d7da;
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -136,16 +157,29 @@
 <div th:style="|background-image: url('@{/img/fondo-mercado.png}')|"
      class="container-mercado">
 
-    <h1>Productos Disponibles</h1>
-
     <form th:action="@{/realizar-compra}" method="POST">
-        <p th:if="${compraExitosa != null}" class="alert alert-success">
-            <span th:text="${compraExitosa}"></span>
-            <a th:if="${verInventario}" th:href="@{/inventario}" class="btn btn-link" style="color: white; text-decoration: underline; margin-left: 15px;">
+        <div th:if="${compraExitosa != null}"
+             class="medieval-alert medieval-success position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center gap-3 px-4 py-3"
+             style="top: 1rem; z-index: 9999; max-width: 90vw;">
+            <span th:text="${compraExitosa}" class="mb-0 fs-5"></span>
+            <br>
+            <a th:if="${verInventario}" th:href="@{/inventario}" class="btn btn-sm btn-outline-light"
+               style="color:white;">
                 Ver mi inventario
             </a>
-        </p>
+        </div>
 
+
+        <div th:if="${error != null}"
+             class="medieval-alert medieval-error position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center px-4 py-3"
+             style="top: 1rem; z-index: 9999; max-width: 90vw;">
+            <span th:text="${error}" class="mb-0 fs-5"></span>
+        </div>
+
+
+
+
+        <h1>Productos Disponibles</h1>
         <div class="productos-container">
             <div class="productos-grid">
                 <div th:each="producto : ${mercado.productos}" class="producto-card">

@@ -42,14 +42,26 @@ public class ControladorMercado {
 
 
     @PostMapping("/realizar-compra")
-    public ModelAndView realizarCompra(@RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados,
-                                       HttpSession session) {
+    public ModelAndView realizarCompra(
+            @RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados,
+            HttpSession session) {
+
         ModelMap model = new ModelMap();
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+
+        if (itemsSeleccionados == null || itemsSeleccionados.isEmpty()) {
+            model.put("error", "No seleccionaste ningún objeto.");
+            model.put("mercado", servicioMercado.mostrarMercado());
+            return new ModelAndView("mercado", model);
+        }
+
         String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados, idPersonaje);
         model.put("compraExitosa", mensajeCompra);
-        model.put("mercado", servicioMercado.mostrarMercado());
         model.put("verInventario", true);
+        model.put("mercado", servicioMercado.mostrarMercado());
+
         return new ModelAndView("mercado", model);
     }
+
+
 }
