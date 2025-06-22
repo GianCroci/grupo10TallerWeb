@@ -139,7 +139,13 @@
     <h1>Productos Disponibles</h1>
 
     <form th:action="@{/realizar-compra}" method="POST">
-        <p th:if="${compraExitosa != null}" class="alert alert-success" th:text="${compraExitosa}"></p>
+        <p th:if="${compraExitosa != null}" class="alert alert-success">
+            <span th:text="${compraExitosa}"></span>
+            <a th:if="${verInventario}" th:href="@{/inventario}" class="btn btn-link" style="color: white; text-decoration: underline; margin-left: 15px;">
+                Ver mi inventario
+            </a>
+        </p>
+
         <div class="productos-container">
             <div class="productos-grid">
                 <div th:each="producto : ${mercado.productos}" class="producto-card">
