@@ -33,8 +33,8 @@ public class ControladorInventario {
         model.addAttribute("contenido", servicioInventario.mostrarEquipamiento());
         model.addAttribute("equipoSeleccionado", servicioInventario.mostrarPrimerEquipado());
 
-        List<Equipamiento> compras = repositorioInventario.obtenerComprasDePersonaje(idPersonaje);
-        model.addAttribute("comprasRealizadas", compras);
+        List<Equipamiento> inventario = repositorioInventario.obtenerInventario(idPersonaje);
+        model.addAttribute("inventario", inventario);
         return new ModelAndView("inventario", model);
 
     }

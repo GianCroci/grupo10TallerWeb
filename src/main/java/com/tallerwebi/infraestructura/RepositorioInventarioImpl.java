@@ -46,12 +46,5 @@ public class RepositorioInventarioImpl implements RepositorioInventario {
         sessionFactory.getCurrentSession().save(equipamiento);
     }
 
-    @Override
-    public List<Equipamiento> obtenerComprasDePersonaje(Long idPersonaje) {
-        return sessionFactory.getCurrentSession()
-                .createQuery("FROM Equipamiento WHERE personaje.id = :id", Equipamiento.class)
-                .setParameter("id", idPersonaje)
-                .getResultList();
-    }
 
 }

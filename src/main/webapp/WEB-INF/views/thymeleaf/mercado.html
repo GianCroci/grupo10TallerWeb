@@ -81,7 +81,7 @@
         .producto-btn {
             padding: 10px 20px;
             font-size: 1em;
-            background-color: #f4c542;
+            background-color: #bf9c2b;
             border: none;
             border-radius: 5px;
             color: #ffffff;
@@ -93,7 +93,7 @@
         }
 
         .producto-btn:hover {
-            background-color: #e5b637;
+            background-color: #ffc52b;
         }
 
         .checkbox-hidden {
@@ -112,18 +112,18 @@
         .btn-comprar-todos {
             padding: 14px 35px;
             font-size: 1em;
-            background-color: #4CAF50;
+            background-color: #e1b832;
             border: none;
             border-radius: 8px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 2px 2px 5px #000;
+            box-shadow: 2px 2px 5px #000000;
             transition: background-color 0.3s;
         }
 
         .btn-comprar-todos:hover {
-            background-color: #45a049;
+            background-color: #fdc843;
         }
 
         .producto-card.seleccionado {
@@ -189,13 +189,14 @@
                     <div class="producto-precio" th:text="'$' + ${producto.costoVenta}">Precio</div>
                     <button type="button" class="producto-btn"
                             onclick="const card = this.parentElement;
-                                     const checkbox = card.querySelector('.checkbox-hidden');
-                                     checkbox.checked = !checkbox.checked;
-                                     card.classList.toggle('seleccionado', checkbox.checked);
-                                     this.textContent = checkbox.checked ? 'Añadido' : 'Añadir ';
-                                     this.style.backgroundColor = checkbox.checked ? '#4CAF50' : '#f4c542';">
-                        Añadir
+                             const checkbox = card.querySelector('.checkbox-hidden');
+                             checkbox.checked = !checkbox.checked;
+                             card.classList.toggle('seleccionado', checkbox.checked);
+                             this.lastChild.textContent = checkbox.checked ? 'Añadido' : 'Añadir ';
+                             this.style.backgroundColor = checkbox.checked ? '#4CAF50' : '#f4c542';">
+                        <span>Añadir </span>
                     </button>
+
                 </div>
             </div>
 

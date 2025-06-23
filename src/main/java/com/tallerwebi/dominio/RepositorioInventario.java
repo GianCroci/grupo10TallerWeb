@@ -7,5 +7,4 @@ public interface RepositorioInventario {
     void modificarEquipamiento(Equipamiento equipamiento);
     Equipamiento obtenerEquipamientoPorId(Long idEquipamiento);
     void agregarEquipamiento(Equipamiento equipamiento);
-    List<Equipamiento> obtenerComprasDePersonaje(Long idPersonaje);
 }

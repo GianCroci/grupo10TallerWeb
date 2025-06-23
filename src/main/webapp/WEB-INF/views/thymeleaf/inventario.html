@@ -13,10 +13,10 @@
 <body th:style="'background-image: url(' + @{/img/equipamiento.png} + ')'">
 <header></header>
 <main>
-    <div th:if="${comprasRealizadas != null}">
-        <h3 style="color: white;">Objetos comprados en el mercado:</h3>
+    <div th:if="${inventario != null}">
+        <h3 style="color: white;">Inventario de personaje logueado:</h3>
         <ul>
-            <li th:each="objeto : ${comprasRealizadas}" th:text="${objeto.nombre}" style="color:white;"></li>
+            <li th:each="objeto : ${inventario}" th:text="${objeto.nombre}" style="color:white;"></li>
         </ul>
     </div>
 

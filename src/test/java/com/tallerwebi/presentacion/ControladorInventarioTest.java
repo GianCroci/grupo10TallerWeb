@@ -38,7 +38,6 @@ public class ControladorInventarioTest {
 
         when(servicioInventarioMock.mostrarEquipamiento()).thenReturn(listaFalsa);
         when(servicioInventarioMock.mostrarPrimerEquipado()).thenReturn(equipadoFalso);
-        when(repositorioInventarioMock.obtenerComprasDePersonaje(1L)).thenReturn(listaFalsa);
 
         ModelAndView mav = controlador.verEquipamiento(sessionMock);
 
