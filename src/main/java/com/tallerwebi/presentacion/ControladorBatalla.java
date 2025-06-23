@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.ServicioBatalla;
 import com.tallerwebi.dominio.ServicioPersonaje;
 import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,13 +29,25 @@ public class ControladorBatalla {
     }
 
     @GetMapping("/batalla")
-    public ModelAndView irABatalla(HttpServletRequest request) {
+    public ModelAndView irABatalla(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        ModelMap modelMap = new ModelMap();
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
+        if (idPersonaje == null) {
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista batalla sin haber iniciado sesion");
+            return new ModelAndView("redirect:/login");
+        }
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
-        Personaje rival = servicioBatalla.buscarRival();
+        Personaje rival = null;
+        try {
+            rival = servicioBatalla.buscarRival(idPersonaje);
+        } catch (RivalNoEncontrado e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("datosPersonaje", personaje);
+            return new ModelAndView("redirect:/home", modelMap);
+        }
         request.getSession().setAttribute("idRival", rival.getId());
 
-        ModelMap modelMap = new ModelMap();
+
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
 
@@ -41,7 +55,7 @@ public class ControladorBatalla {
         return new ModelAndView("batalla", modelMap);
     }
 
-    @PostMapping("/batalla")
+    @PostMapping("/atacar-rival")
     public ModelAndView atacarRival(HttpServletRequest request) {
         Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
         Long idRival = (Long) request.getSession().getAttribute("idRival");
@@ -54,22 +68,10 @@ public class ControladorBatalla {
         ModelMap modelMap = new ModelMap();
         modelMap.put("personaje", personaje);
         modelMap.put("rival", rival);
-        modelMap.put("resultado", "Derrota");
+        modelMap.put("resultado", servicioBatalla.getResultado());
 
-        if (servicioBatalla.getResultado() == "Victoria") {
-            modelMap.put("resultado", "Victoria");
-        }
 
         return new ModelAndView("batalla", modelMap);
     }
-    /*
-    when(servicioBatallaMock.getResultado()).thenReturn("Victoria");
 
-        //ejecucion
-        ModelAndView modelAndView = controladorBatalla.atacarRival();
-
-        String vistaEsperada = "victoria";
-
-        //verificacion
-        verify(servicioBatallaMock, times(1)).atacarRival(rivalMockeado); */
 }

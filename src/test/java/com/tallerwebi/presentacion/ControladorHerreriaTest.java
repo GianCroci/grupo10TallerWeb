@@ -27,7 +27,7 @@ public class ControladorHerreriaTest {
     private List<Equipamiento> equipamientosConCosasMock;
     private HttpSession sessionMock;
     private Long idPersonajeMock;
-    RedirectAttributes redirectAttributesMock;
+    private RedirectAttributes redirectAttributesMock;
 
 
     @BeforeEach
@@ -121,7 +121,7 @@ public class ControladorHerreriaTest {
 
         assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
 
-        verify(redirectAttributesMock).addFlashAttribute("error", "No puede acceder a la vista herreria sin haberse logueado");
+        verify(redirectAttributesMock).addFlashAttribute("error", "No puede acceder a la vista herreria sin haber iniciado sesion");
     }
 
     @Test

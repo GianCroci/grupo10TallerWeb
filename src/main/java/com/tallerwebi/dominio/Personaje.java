@@ -17,11 +17,10 @@ public class Personaje {
 
     private String nombre;
     private String genero;
-    private String rol;
-    private Integer fuerza;
-    private Integer inteligencia;
-    private Integer armadura;
-    private Integer agilidad;
+    @OneToOne
+    private Rol rol;
+    @Embedded
+    private Estadisticas estadisticas;
     private String imagen;
     private Integer oro;
     @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -33,20 +32,9 @@ public class Personaje {
 
     public void setEquipamientos(List<Equipamiento> equipamientos) { this.equipamientos = equipamientos; }
 
-    public void setFuerza(Integer fuerza) {
-        this.fuerza = fuerza;
-    }
 
-    public void setInteligencia(Integer inteligencia) {
-        this.inteligencia = inteligencia;
-    }
-
-    public void setArmadura(Integer armadura) {
-        this.armadura = armadura;
-    }
-
-    public void setAgilidad(Integer agilidad) {
-        this.agilidad = agilidad;
+    public void aplicarEstadisticasBase() {
+        getRol().aplicarStatsBase(this);
     }
 
     public String getImagen() {
@@ -65,79 +53,6 @@ public class Personaje {
         return nombre;
     }
 
-    public void setRol(String rol) {
-        switch (rol) {
-            case "Luchador":
-                this.rol = "Luchador";
-                this.fuerza = 100;
-                this.inteligencia = 40;
-                this.armadura = 80;
-                this.agilidad = 60;
-                this.imagen = "img/luchador.png";
-                break;
-            case "Luchadora":
-                this.rol = "Luchador";
-                this.fuerza = 100;
-                this.inteligencia = 40;
-                this.armadura = 80;
-                this.agilidad = 60;
-                this.imagen = "img/luchadora.png";
-                break;
-            case "Mago":
-                this.rol = "Mago";
-                this.fuerza = 30;
-                this.inteligencia = 100;
-                this.armadura = 20;
-                this.agilidad = 40;
-                this.imagen = "img/mago.png";
-                break;
-            case "Bruja":
-                this.rol = "Mago";
-                this.fuerza = 30;
-                this.inteligencia = 100;
-                this.armadura = 20;
-                this.agilidad = 40;
-                this.imagen = "img/bruja.png";
-                break;
-            case "Bandido":
-                this.rol = "Bandido";
-                this.fuerza = 50;
-                this.inteligencia = 70;
-                this.armadura = 30;
-                this.agilidad = 100;
-                this.imagen = "img/bandido.png";
-                break;
-            case "Bandida":
-                this.rol = "Bandido";
-                this.fuerza = 50;
-                this.inteligencia = 70;
-                this.armadura = 30;
-                this.agilidad = 100;
-                this.imagen = "img/bandida.png";
-                break;
-        }
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public Integer getFuerza() {
-        return fuerza;
-    }
-
-    public Integer getInteligencia() {
-        return inteligencia;
-    }
-
-    public Integer getArmadura() {
-        return armadura;
-    }
-
-    public Integer getAgilidad() {
-        return agilidad;
-    }
-
     public void setGenero(String genero) {
         this.genero = genero;
     }
@@ -152,11 +67,19 @@ public class Personaje {
 
     public void setOro(Integer oro) { this.oro = oro; }
 
+    public Rol getRol() { return rol; }
+
+    public void setRol(Rol rol) { this.rol = rol; }
+
+    public Estadisticas getEstadisticas() { return estadisticas; }
+
+    public void setEstadisticas(Estadisticas estadisticas) { this.estadisticas = estadisticas; }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Personaje personaje = (Personaje) o;
-        return Objects.equals(id, personaje.id) && Objects.equals(nombre, personaje.nombre) && Objects.equals(genero, personaje.genero) && Objects.equals(rol, personaje.rol) && Objects.equals(fuerza, personaje.fuerza) && Objects.equals(inteligencia, personaje.inteligencia) && Objects.equals(armadura, personaje.armadura) && Objects.equals(agilidad, personaje.agilidad) && Objects.equals(imagen, personaje.imagen) && Objects.equals(oro, personaje.oro) && Objects.equals(equipamientos, personaje.equipamientos);
+        return Objects.equals(id, personaje.id);
     }
 
     @Override

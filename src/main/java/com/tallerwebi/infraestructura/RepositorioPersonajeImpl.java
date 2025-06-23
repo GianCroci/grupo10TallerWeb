@@ -9,9 +9,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Transactional
 @Repository("repositorioPersonaje")
@@ -43,20 +45,23 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
     }
 
     @Override
-    public Personaje buscarRival() {
+    public Personaje buscarRival(Long idPersonaje) {
         Session session = sessionFactory.getCurrentSession();
-
-        // Trae todos los personajes
         List<Personaje> personajes = session.createCriteria(Personaje.class).list();
 
-        if (personajes.isEmpty()) {
+        // Filtrar los que no sean el personaje actual
+        List<Personaje> rivales = personajes.stream()
+                .filter(p -> !p.getId().equals(idPersonaje))
+                .collect(Collectors.toList());
+
+        if (rivales.isEmpty()) {
             return null;
         }
 
-        // Selecciona uno aleatorio
-        int indexAleatorio = new Random().nextInt(personajes.size());
-        return personajes.get(indexAleatorio);
+        int indexAleatorio = new Random().nextInt(rivales.size());
+        return rivales.get(indexAleatorio);
     }
+
 
     @Override
     public Integer buscarOroPersonaje(Long idPersonaje) {

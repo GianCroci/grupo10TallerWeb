@@ -5,7 +5,5 @@ import java.util.List;
 public interface ServicioMercado {
     Mercado mostrarMercado();
 
-    String procesarCompra(List<String> itemsSeleccionados);
-
-    double aplicarDescuentoMercader(Equipamiento equipamiento);
+    String procesarCompra(List<String> itemsSeleccionados, Long idPersonaje);
 }

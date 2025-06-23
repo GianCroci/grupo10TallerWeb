@@ -17,7 +17,7 @@
 </head>
 
 
-<body>
+
 <body class="main-bg">
 <main th:style="'background-image: url(' + @{/img/fondo-login.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
       class="container-fluid d-flex flex-column align-items-center">
@@ -36,7 +36,7 @@
                 <input th:field="*{password}" type="password" id="password" class="form-control" required/>
             </div>
             <button type="submit" class="form-button button-l margin-b">Ingresar</button>
-            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error: ' + ${error}">
             </p>
 
             <p class="text-whitesmoke text-center"><small>No tenes una cuenta?</small></p>

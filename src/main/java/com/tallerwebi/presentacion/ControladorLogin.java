@@ -48,9 +48,7 @@ public class ControladorLogin {
             }
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
             request.getSession().setAttribute("idPersonaje", usuarioBuscado.getPersonaje().getId());
-            Usuario usuarioEncontrado = servicioUsuario.buscar(datosLogin.getEmail());
-            model.put("datosPersonaje", usuarioEncontrado.getPersonaje());
-            return new ModelAndView("home", model);
+            return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
@@ -78,11 +76,6 @@ public class ControladorLogin {
         ModelMap model = new ModelMap();
         model.put("usuario", new Usuario());
         return new ModelAndView("nuevo-usuario", model);
-    }
-
-    @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("home");
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

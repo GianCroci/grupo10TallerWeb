@@ -13,6 +13,15 @@ public abstract class Rol {
     private Long id;
     private String tipo;
 
+    public Rol(Long id, String tipo) {
+        this.id = id;
+        this.tipo = tipo;
+    }
+
+    public Rol() {
+
+    }
+
     public abstract void aplicarMejora(Arma arma);
     public abstract void aplicarMejora(Escudo escudo);
     public abstract void aplicarMejora(Casco casco);
@@ -27,4 +36,6 @@ public abstract class Rol {
     public String getTipo() { return tipo; }
 
     public void setTipo(String nombre) { this.tipo = nombre; }
+
+    public abstract void aplicarStatsBase(Personaje personaje);
 }

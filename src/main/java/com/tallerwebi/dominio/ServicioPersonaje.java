@@ -4,7 +4,7 @@ public interface ServicioPersonaje {
 
     public String getNombre(Personaje personaje);
 
-    String getRol(Personaje personaje);
+    Rol getRol(Personaje personaje);
 
     Integer getFuerza(Personaje personaje);
 
@@ -22,5 +22,7 @@ public interface ServicioPersonaje {
 
     void modificar(Personaje personaje);
 
-    Personaje buscarRival();
+    Personaje buscarRival(Long idPersonaje);
+
+    Personaje crearPersonaje(String nombre, String genero, String imagen, Long idRol);
 }

@@ -1,9 +1,11 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +24,7 @@ public class ControladorBatallaTest {
     private HttpSession sessionMock;
     private Personaje personajeMockeado;
     private Personaje rivalMockeado;
+    private RedirectAttributes redirectAttributesMock;
 
     @BeforeEach
     public void init(){
@@ -35,18 +38,19 @@ public class ControladorBatallaTest {
         sessionMock = mock(HttpSession.class);
         personajeMockeado = mock(Personaje.class);
         rivalMockeado = mock(Personaje.class);
+        redirectAttributesMock = mock(RedirectAttributes.class);
     }
 
     @Test
-    public void queMeMuestreUnaVistaDeArenaDeBatallaConDosPersonajes(){
+    public void queMeMuestreUnaVistaDeArenaDeBatallaConDosPersonajes() throws RivalNoEncontrado {
         //preparacion
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
         when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
-        when(servicioBatallaMock.buscarRival()).thenReturn(rivalMockeado);
+        when(servicioBatallaMock.buscarRival(1L)).thenReturn(rivalMockeado);
 
         //ejecucion
-        ModelAndView modelAndView = controladorBatalla.irABatalla(requestMock);
+        ModelAndView modelAndView = controladorBatalla.irABatalla(requestMock, redirectAttributesMock);
 
         String vistaEsperada = "batalla";
 

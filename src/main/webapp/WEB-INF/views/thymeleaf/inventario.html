@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/inventario.css}">
+    <header th:replace="navbar :: nav"></header>
+    <title>Inventario</title>
+</head>
+<body th:style="'background-image: url(' + @{/img/equipamiento.png} + ')'">
+<header></header>
+<main>
+    <div th:if="${inventario != null}">
+        <h3 style="color: white;">Inventario de personaje logueado:</h3>
+        <ul>
+            <li th:each="objeto : ${inventario}" th:text="${objeto.nombre}" style="color:white;"></li>
+        </ul>
+    </div>
+
+    <div class="contenedor-principal" th:style="'background-image: url(' + @{/img/contenedor-equipamiento.png} + ')'">
+
+        <div class="contenedor-armas">
+            <a th:each="equipo : ${contenido}"
+               th:href="@{'/inventario/' + ${equipo.id}}"
+               class="imagen-arma">
+                <img th:src="@{'/img/' + ${equipo.nombre} + '.png'}"
+                     th:alt="${equipo.nombre}">
+            </a>
+        </div>
+
+        <div class="contenedor-informacion" th:if="${equipoSeleccionado != null}">
+            <div class="nombre-equipo">
+                <h2 th:text="${equipoSeleccionado.nombre.toUpperCase()}"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Fuerza</h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getFuerza()})"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Inteligencia</h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.stats.getInteligencia()})"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Resistencia</h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getArmadura()})"></h2>
+            </div>
+            <div class="estadistica">
+                <h2>Agilidad</h2>
+                <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getAgilidad()})"></h2>
+            </div>
+            <div>
+                <a class="boton" th:classappend="${equipoSeleccionado.equipado} ? 'equipado' : ''"
+                   th:href="@{'/inventario/equipar/' + ${equipoSeleccionado.id}}"
+                   th:text="${equipoSeleccionado.equipado} ? 'Equipado' : 'Equipar'"></a>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

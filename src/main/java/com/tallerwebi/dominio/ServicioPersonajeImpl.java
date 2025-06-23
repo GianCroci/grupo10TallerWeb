@@ -6,70 +6,86 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServicioPersonajeImpl implements ServicioPersonaje {
 
-    private RepositorioPersonaje repoPersonaje;
+    private RepositorioPersonaje repositorioPersonaje;
+    private RepositorioRol repositorioRol;
 
     @Autowired
-    public ServicioPersonajeImpl(RepositorioPersonaje repoPersonaje) {
-        this.repoPersonaje = repoPersonaje;
-        //Personaje personaje = new Personaje();
+    public ServicioPersonajeImpl(RepositorioPersonaje repositorioPersonaje, RepositorioRol repositorioRol) {
+        this.repositorioPersonaje = repositorioPersonaje;
+        this.repositorioRol = repositorioRol;
     }
 
     @Override
     public String getNombre(Personaje personaje) {
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getNombre();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getNombre();
     }
 
     @Override
-    public String getRol(Personaje personaje) {
+    public Rol getRol(Personaje personaje) {
 
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getRol();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getRol();
     }
 
     @Override
     public Integer getFuerza(Personaje personaje) {
 
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getFuerza();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getEstadisticas().getFuerza();
     }
 
     @Override
     public Integer getInteligencia(Personaje personaje) {
 
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getInteligencia();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getEstadisticas().getInteligencia();
     }
 
     @Override
     public Integer getArmadura(Personaje personaje) {
 
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getArmadura();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getEstadisticas().getArmadura();
     }
 
     @Override
     public Integer getAgilidad(Personaje personaje) {
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getAgilidad();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getEstadisticas().getAgilidad();
     }
 
     @Override
     public void guardarPersonaje(Personaje personaje) {
-        repoPersonaje.guardar(personaje);
+        repositorioPersonaje.guardar(personaje);
     }
 
     @Override
     public String getGenero(Personaje personaje) {
-        return repoPersonaje.buscarPersonaje(personaje.getId()).getGenero();
+        return repositorioPersonaje.buscarPersonaje(personaje.getId()).getGenero();
     }
 
     @Override
     public Personaje buscarPersonaje(Long id) {
-        return repoPersonaje.buscarPersonaje(id);
+        return repositorioPersonaje.buscarPersonaje(id);
     }
 
     @Override
     public void modificar(Personaje personaje) {
-        repoPersonaje.modificar(personaje);
+        repositorioPersonaje.modificar(personaje);
     }
 
     @Override
-    public Personaje buscarRival() {
-        return repoPersonaje.buscarRival();
+    public Personaje buscarRival(Long idPersonaje) {
+        return repositorioPersonaje.buscarRival(idPersonaje);
+    }
+
+    @Override
+    public Personaje crearPersonaje(String nombre, String genero, String imagen, Long idRol) {
+        Rol rolObtenido = repositorioRol.obtenerRolPorId(idRol);
+        Personaje personajeCreado = new Personaje();
+        personajeCreado.setNombre(nombre);
+        personajeCreado.setGenero(genero);
+        personajeCreado.setImagen(imagen);
+        personajeCreado.setRol(rolObtenido);
+        personajeCreado.setOro(0);
+        personajeCreado.setEstadisticas(new Estadisticas());
+        personajeCreado.aplicarEstadisticasBase();
+        repositorioPersonaje.guardar(personajeCreado);
+        return personajeCreado;
     }
 }

@@ -47,27 +47,29 @@
                     <div class="carousel-inner">
                         <div>
                             <div class="carousel-item active">
-                                 <img th:src="@{/img/luchador.png}" class="d-block w-50 mx-auto" alt="Luchador" data-rol="Luchador">
+                                 <img th:src="@{/img/luchador.png}" class="d-block w-50 mx-auto" alt="Guerrero" data-idrol="1">
                              </div>
                             <div class="carousel-item">
-                                <img th:src="@{/img/luchadora.png}" class="d-block w-50 mx-auto" alt="Luchadora" data-rol="Luchadora">
+                                <img th:src="@{/img/luchadora.png}" class="d-block w-50 mx-auto" alt="Guerrera" data-idrol="1">
                             </div>
                             <div class="carousel-item">
-                                <img th:src="@{/img/mago.png}" class="d-block w-50 mx-auto" alt="Mago" data-rol="Mago">
+                                <img th:src="@{/img/mago.png}" class="d-block w-50 mx-auto" alt="Mago" data-idrol="2">
                              </div>
                             <div class="carousel-item">
-                                <img th:src="@{/img/bruja.png}" class="d-block w-50 mx-auto" alt="Bruja" data-rol="Bruja">
+                                <img th:src="@{/img/bruja.png}" class="d-block w-50 mx-auto" alt="Maga" data-idrol="2">
                             </div>
                             <div class="carousel-item">
-                                <img th:src="@{/img/bandido.png}" class="d-block w-50 mx-auto" alt="Bandido" data-rol="Bandido">
+                                <img th:src="@{/img/bandido.png}" class="d-block w-50 mx-auto" alt="Bandido" data-idrol="3">
                             </div>
                             <div class="carousel-item">
-                                <img th:src="@{/img/bandida.png}" class="d-block w-50 mx-auto" alt="Bandida" data-rol="Bandida">
+                                <img th:src="@{/img/bandida.png}" class="d-block w-50 mx-auto" alt="Bandida" data-idrol="3">
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" name="genero" th:field="*{genero}" id="genero" required>
                     <!-- Campo oculto para almacenar el rol seleccionado -->
-                    <input type="hidden" name="rol" th:field="*{rol}" id="rol" required>
+                    <input type="hidden" name="idRol" th:field="*{idRol}" id="idRol" required>
                     <!-- Campo oculto para almacenar la imagen seleccionada -->
                     <input type="hidden" name="imagen" th:field="*{imagen}" id="imagen" required>
 
@@ -94,15 +96,19 @@
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const hiddenRoleInput = document.getElementById('rol');
+        const hiddenRoleInput = document.getElementById('idRol');
         const hiddenImageInput = document.getElementById('imagen');
+        const hiddenGeneroInput = document.getElementById('genero');
         const carouselElement = document.getElementById('carouselExampleFade');
 
         // Función para actualizar los datos del personaje
         const updateCharacterData = () => {
             const activeItem = carouselElement.querySelector('.carousel-item.active img');
-            hiddenRoleInput.value = activeItem.getAttribute('data-rol');
+            const alt = activeItem.getAttribute('alt');
+            hiddenRoleInput.value = activeItem.getAttribute('data-idrol');
             hiddenImageInput.value = activeItem.getAttribute('src');  // Guarda la ruta de la imagen
+
+            hiddenGeneroInput.value = alt.toLowerCase().endsWith("a") ? "Femenino" : "Masculino";
         };
 
         // Actualiza al cargar la página

@@ -1,46 +1,81 @@
 package com.tallerwebi.dominio;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import com.tallerwebi.dominio.Personaje;
+
+import javax.transaction.Transactional;
 
 @Service("servicioMercado")
+@Transactional
 public class ServicioMercadoImpl implements ServicioMercado {
 
     private final RepositorioMercado repositorioMercado;
+    private final RepositorioInventario repositorioInventario;
+    private final RepositorioPersonaje repositorioPersonaje;
 
-    private  ServicioTaberna servicioTaberna;
-
-    public ServicioMercadoImpl(RepositorioMercado repositorioMercado, @Lazy ServicioTaberna servicioTaberna) {
+    public ServicioMercadoImpl(RepositorioMercado repositorioMercado, RepositorioInventario repositorioInventario, RepositorioPersonaje repositorioPersonaje) {
         this.repositorioMercado = repositorioMercado;
-        this.servicioTaberna = servicioTaberna;
+        this.repositorioInventario = repositorioInventario;
+        this.repositorioPersonaje = repositorioPersonaje;
     }
 
 
     @Override
     public Mercado mostrarMercado() {
-        repositorioMercado.inicializarProductos();
         return repositorioMercado.obtenerMercadoConProductos();
-        //Mercado mercado = new Mercado();
-        //mercado.getProductos().addAll(repositorioMercado.obtenerProductos());
-        //return mercado;
     }
 
+
     @Override
-    public String procesarCompra(List<String> itemsSeleccionados) {
+    public String procesarCompra(List<String> itemsSeleccionados, Long idPersonaje) {
         if (itemsSeleccionados == null || itemsSeleccionados.isEmpty()) {
             return "No seleccionaste ningún objeto";
         }
+
+        Mercado mercado = repositorioMercado.obtenerMercadoConProductos();
+        List<Equipamiento> equipamientos = mercado.getProductos();
+
+        for (String nombre : itemsSeleccionados) {
+            equipamientos.stream()
+                    .filter(e -> e.getNombre().equals(nombre))
+                    .findFirst()
+                    .ifPresent(original -> {
+                        Equipamiento copia = clonarPorTipo(original);
+                        Personaje personaje = repositorioPersonaje.buscarPersonaje(idPersonaje);
+                        copia.setPersonaje(personaje);
+                        repositorioInventario.agregarEquipamiento(copia);
+
+                    });
+        }
+
         return "¡Compra realizada con éxito! Has comprado: " + String.join(", ", itemsSeleccionados);
     }
 
-    @Override
-    public double aplicarDescuentoMercader(Equipamiento equipamiento) {
-        if (servicioTaberna.obtenerBeneficioMercader() == true) {
-            return equipamiento.getCostoVenta() * 0.8; // Aplica un descuento del 20%
-        }else{
-            return equipamiento.getCostoVenta() * 1.0; // No aplica descuento
-        }
+    private Equipamiento clonarPorTipo(Equipamiento original) {
+        Equipamiento copia;
+        if (original instanceof Abrigo) copia = new Abrigo();
+        else if (original instanceof Capucha) copia = new Capucha();
+        else if (original instanceof ZapatoUno) copia = new ZapatoUno();
+        else if (original instanceof ZapatoDos) copia = new ZapatoDos();
+        else if (original instanceof Tunica) copia = new Tunica();
+        else if (original instanceof Cinturon) copia = new Cinturon();
+        else copia = new Equipamiento() {
+                @Override public void mejorar() {}
+            };
+
+        copia.setNombre(original.getNombre());
+        copia.setStats(original.getStats());
+        copia.setRol(original.getRol());
+        copia.setCostoCompra(original.getCostoCompra());
+        copia.setCostoMejora(original.getCostoMejora());
+        copia.setCostoVenta(original.getCostoVenta());
+        copia.setNivel(original.getNivel());
+        copia.setEquipado(false);
+        copia.setImagen(original.getImagen());
+        return copia;
     }
 }
+

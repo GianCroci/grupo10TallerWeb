@@ -1,9 +1,11 @@
 package com.tallerwebi.dominio;
 
-public interface ServicioBatalla {
-    Personaje buscarRival();
+import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 
-    Object atacarRival(Personaje rivalMockeado, Personaje mockeado);
+public interface ServicioBatalla {
+    Personaje buscarRival(Long idPersonaje) throws RivalNoEncontrado;
+
+    void atacarRival(Personaje personaje, Personaje rival);
 
     String getResultado();
 }

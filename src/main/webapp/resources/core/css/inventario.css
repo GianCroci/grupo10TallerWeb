@@ -1,0 +1,114 @@
+*{
+    padding: 0%;
+    margin: 0%;
+}
+
+body{
+    background-position: center;
+    background-attachment: fixed;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    font-family: Macondo;
+}
+
+.contenedor-principal{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    row-gap: 2em;
+    border-style: ridge;
+    border-color: #1c110b;
+}
+
+.contenedor-armas {
+    display: flex;
+    background-color: #3B2417;
+    align-items: center;
+    column-gap: 0.3em;
+    padding: 0.5em;
+    border-style: ridge;
+    border-color: #1c110b;
+}
+
+.imagen-arma {
+    display: flex;
+    height: fit-content;
+    background-color: #090604 ;
+    border-style: ridge;
+    border-radius: 5px;
+    border-color: #090604 ;
+    transition: transform 0.5s, background-color 0.5s ease-in-out;
+}
+
+.imagen-arma:hover {
+    transform: scale(0.96);
+    background-color: #1f130d;
+}
+
+img{
+    width: 120px;
+    height: auto;
+}
+
+.contenedor-informacion{
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    row-gap: 1em;
+    background-color: #c99868;
+    border-style: ridge;
+    border-color: #3B2417;
+}
+
+.contenedor-informacion > div:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.estadistica{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 200;
+
+    padding: 0.3em;
+}
+
+.nombre-equipo{
+    text-align: center;
+}
+
+.boton{
+    width: 30%;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #3B2417;
+    color: white;
+    transition: all 0.6s ease-in-out;
+}
+
+.boton.equipado{
+    background-color: #5a3813;
+}
+
+.boton:hover{
+    background-color: #1b120c;
+    transform: translateY(-2px);
+}
