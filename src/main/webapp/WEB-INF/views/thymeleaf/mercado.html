@@ -189,13 +189,14 @@
                     <div class="producto-precio" th:text="'$' + ${producto.costoVenta}">Precio</div>
                     <button type="button" class="producto-btn"
                             onclick="const card = this.parentElement;
-                             const checkbox = card.querySelector('.checkbox-hidden');
-                             checkbox.checked = !checkbox.checked;
-                             card.classList.toggle('seleccionado', checkbox.checked);
-                             this.lastChild.textContent = checkbox.checked ? 'Añadido' : 'Añadir ';
-                             this.style.backgroundColor = checkbox.checked ? '#4CAF50' : '#f4c542';">
-                        <span>Añadir </span>
+                                     const checkbox = card.querySelector('.checkbox-hidden');
+                                     checkbox.checked = !checkbox.checked;
+                                     card.classList.toggle('seleccionado', checkbox.checked);
+                                     this.textContent = checkbox.checked ? 'Añadido' : 'Añadir ';
+                                     this.style.backgroundColor = checkbox.checked ? '#4CAF50' : '#f4c542';">
+                        Añadir
                     </button>
+
 
                 </div>
             </div>

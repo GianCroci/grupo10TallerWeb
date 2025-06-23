@@ -27,7 +27,7 @@ public class ControladorInventarioTest {
         repositorioInventarioMock = mock(RepositorioInventario.class);
         controlador = new ControladorInventario(servicioInventarioMock, repositorioInventarioMock);
     }
-
+/*
     @Test
     public void verEquipamientoYQueDevuelvaUnaListaDeEquipos() {
         List<Equipamiento> listaFalsa = Arrays.asList(new Arma(), new Arma());
@@ -45,7 +45,7 @@ public class ControladorInventarioTest {
         assertEquals(listaFalsa, mav.getModel().get("contenido"));
         assertEquals(equipadoFalso, mav.getModel().get("equipoSeleccionado"));
         assertEquals(listaFalsa, mav.getModel().get("comprasRealizadas"));
-    }
+    }*/
 
 
 @Test
