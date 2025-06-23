@@ -3,6 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Sala de chat</title>
+    <style>
+        #chat-messages {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 200px;
+            font-family: Arial, sans-serif;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin: 5px 0;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            max-width: 70%;
+            clear: both;
+        }
+
+        .yo {
+            background-color: #dcf8c6;
+            float: right;
+            text-align: right;
+        }
+
+        .otro {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            float: left;
+            text-align: left;
+        }
+    </style>
+
 </head>
 <body>
 <header><h1>Chat con <span th:text="${destinatario}"></span></h1></header>
