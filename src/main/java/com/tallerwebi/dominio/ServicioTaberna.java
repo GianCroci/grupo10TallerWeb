@@ -19,4 +19,6 @@ public interface ServicioTaberna {
     boolean obtenerBeneficioHerrero();
 
     boolean obtenerBeneficioGuardia();
+
+    void mejorarArmaEquipada(Arma armaEquipada);
 }

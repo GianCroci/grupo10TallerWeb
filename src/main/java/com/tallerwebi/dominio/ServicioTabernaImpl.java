@@ -99,6 +99,19 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         }
     }
 
+    public void mejorarArmaEquipada(Arma armaEquipada) {
+        if (obtenerBeneficioHerrero() == true ){
+            //Personaje personaje = repositorioPersonaje.buscar(idPersonaje)
+            //Equipamiento armaEquipada = personaje.getEquipamiento().getArmaEquipada();
+           int estadisticaFuerza= armaEquipada.getStats().getFuerza() + 10;
+            armaEquipada.getStats().setFuerza(estadisticaFuerza);
+        }
+        if (obtenerBeneficioHerrero() == true ){
+            int estadisticaInteligencia = armaEquipada.getStats().getInteligencia() + 10;
+            armaEquipada.getStats().setInteligencia(estadisticaInteligencia);
+        }
+    }
+
         /*
     //condicion de que si el personaje es el guardia y tiene 5 tragos, le da un arma especial
     public void obtenerArmaEspecial() {
