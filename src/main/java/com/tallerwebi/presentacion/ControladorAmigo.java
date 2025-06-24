@@ -42,12 +42,9 @@ public class ControladorAmigo {
         String codigoAmigo = servicioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
         List<SolicitudAmistadDTO> solicitudesRecibidas = servicioAmigo.obtenerSolicitudesRecibidas(idPersonaje);
         List<SolicitudAmistadDTO> solicitudesEnviadas = servicioAmigo.obtenerSolicitudesEnviadas(idPersonaje);
-        try {
-            List<AmigoDTO> amigos = servicioAmigo.obtenerAmigos(idPersonaje);
-            model.put("amigos", amigos);
-        } catch (AmigoInexistenteException e) {
-            model.put("error", e.getMessage());
-        }
+        List<AmigoDTO> amigos = servicioAmigo.obtenerAmigos(idPersonaje);
+
+        model.put("amigos", amigos);
         model.put("solicitudesRecibidas", solicitudesRecibidas);
         model.put("solicitudesEnviadas", solicitudesEnviadas);
         model.put("codigoAmigo", codigoAmigo);
