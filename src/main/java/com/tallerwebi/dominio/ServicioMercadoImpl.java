@@ -56,12 +56,13 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
     private Equipamiento clonarPorTipo(Equipamiento original) {
         Equipamiento copia;
-        if (original instanceof Abrigo) copia = new Abrigo();
-        else if (original instanceof Capucha) copia = new Capucha();
-        else if (original instanceof ZapatoUno) copia = new ZapatoUno();
-        else if (original instanceof ZapatoDos) copia = new ZapatoDos();
-        else if (original instanceof Tunica) copia = new Tunica();
-        else if (original instanceof Cinturon) copia = new Cinturon();
+
+        if (original instanceof Arma) copia = new Arma();
+        else if (original instanceof Botas) copia = new Botas();
+        else if (original instanceof Casco) copia = new Casco();
+        else if (original instanceof Escudo) copia = new Escudo();
+        else if (original instanceof Pechera) copia = new Pechera();
+        else if (original instanceof Pantalones) copia = new Pantalones();
         else copia = new Equipamiento() {
                 @Override public void mejorar() {}
             };
@@ -75,7 +76,9 @@ public class ServicioMercadoImpl implements ServicioMercado {
         copia.setNivel(original.getNivel());
         copia.setEquipado(false);
         copia.setImagen(original.getImagen());
+
         return copia;
     }
+
 }
 
