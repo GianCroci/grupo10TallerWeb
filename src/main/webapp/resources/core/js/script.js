@@ -24,16 +24,6 @@ stompClient.onConnect = (frame) => {
     });
 
 };
-/*stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', (m) => {
-        console.log(JSON.parse(m.body).content);
-        const messagesContainer = document.getElementById("chat-messages");
-        const newMessage = document.createElement("p")
-        newMessage.textContent = JSON.parse(m.body).content;
-        messagesContainer.appendChild(newMessage);
-    });
-};*/
 
 stompClient.activate();
 
