@@ -13,6 +13,12 @@
 <body th:style="'background-image: url(' + @{/img/equipamiento.png} + ')'">
 <header></header>
 <main>
+    <div th:if="${inventario != null}">
+        <h3 style="color: white;">Inventario de personaje logueado:</h3>
+        <ul>
+            <li th:each="objeto : ${inventario}" th:text="${objeto.nombre}" style="color:white;"></li>
+        </ul>
+    </div>
 
     <div class="contenedor-principal" th:style="'background-image: url(' + @{/img/contenedor-equipamiento.png} + ')'">
 
