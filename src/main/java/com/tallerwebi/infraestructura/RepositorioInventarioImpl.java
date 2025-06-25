@@ -41,4 +41,10 @@ public class RepositorioInventarioImpl implements RepositorioInventario {
                 .add(Restrictions.eq("id", idEquipamiento))
                 .uniqueResult();
     }
+    @Override
+    public void agregarEquipamiento(Equipamiento equipamiento) {
+        sessionFactory.getCurrentSession().save(equipamiento);
+    }
+
+
 }
