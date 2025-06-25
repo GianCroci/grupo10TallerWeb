@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -19,6 +18,13 @@ public class ControladorChat {
 
     @Autowired
     private ServicioPersonaje servicioPersonaje;
+
+
+    public ControladorChat(ServicioPersonaje servicioPersonaje) {
+        this.servicioPersonaje = servicioPersonaje;
+
+    }
+
 
     @RequestMapping(path = "/chat/{idAmigo}", method = RequestMethod.GET)
     public ModelAndView chatearConAmigo(HttpSession session, @PathVariable Long idAmigo) {
@@ -31,10 +37,11 @@ public class ControladorChat {
         Personaje yo = servicioPersonaje.buscarPersonaje(idPersonaje);
         Personaje amigo = servicioPersonaje.buscarPersonaje(idAmigo);
 
+
         ModelMap model = new ModelMap();
         model.put("usuario", yo.getNombre());
         model.put("destinatario", amigo.getNombre());
-        model.put("historial", List.of()); // por ahora vacío
+        model.put("historial", List.of());
 
         return new ModelAndView("sala-chat", model);
     }
