@@ -32,11 +32,14 @@ public class ControladorMercado {
             redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al mercado.");
             return new ModelAndView("redirect:/login");
         }
+        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
 
         Mercado mercado = servicioMercado.mostrarMercado();
         ModelAndView modelAndView = new ModelAndView("mercado");
         modelAndView.addObject("mercado", mercado);
         modelAndView.addObject("compraExitosa", null);
+        modelAndView.addObject("oroPersonaje", oroPersonaje);
+
         return modelAndView;
     }
 
@@ -49,19 +52,28 @@ public class ControladorMercado {
         ModelMap model = new ModelMap();
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
 
-        if (itemsSeleccionados == null || itemsSeleccionados.isEmpty()) {
-            model.put("error", "No seleccionaste ningún objeto.");
-            model.put("mercado", servicioMercado.mostrarMercado());
-            return new ModelAndView("mercado", model);
+        if (idPersonaje == null) {
+            model.put("error", "Debes iniciar sesión.");
+            return new ModelAndView("redirect:/login");
         }
 
         String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados, idPersonaje);
-        model.put("compraExitosa", mensajeCompra);
-        model.put("verInventario", true);
+
+        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
+
+        model.put("oroPersonaje", oroPersonaje);
         model.put("mercado", servicioMercado.mostrarMercado());
+
+        if (mensajeCompra.startsWith("¡Compra realizada")) {
+            model.put("compraExitosa", mensajeCompra);
+            model.put("verInventario", true);
+        } else {
+            model.put("error", mensajeCompra);
+        }
 
         return new ModelAndView("mercado", model);
     }
+
 
 
 }

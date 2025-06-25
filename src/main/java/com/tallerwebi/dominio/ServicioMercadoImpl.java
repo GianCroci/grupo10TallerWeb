@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import com.tallerwebi.dominio.Personaje;
 
 import javax.transaction.Transactional;
@@ -37,22 +39,40 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
         Mercado mercado = repositorioMercado.obtenerMercadoConProductos();
         List<Equipamiento> equipamientos = mercado.getProductos();
+        Personaje personaje = repositorioPersonaje.buscarPersonaje(idPersonaje);
+
+        int oroDisponible = personaje.getOro();
+        int totalCompra = 0;
+        List<Equipamiento> comprasRealizadas = new ArrayList<>();
 
         for (String nombre : itemsSeleccionados) {
-            equipamientos.stream()
+            Optional<Equipamiento> item = equipamientos.stream()
                     .filter(e -> e.getNombre().equals(nombre))
-                    .findFirst()
-                    .ifPresent(original -> {
-                        Equipamiento copia = clonarPorTipo(original);
-                        Personaje personaje = repositorioPersonaje.buscarPersonaje(idPersonaje);
-                        copia.setPersonaje(personaje);
-                        repositorioInventario.agregarEquipamiento(copia);
+                    .findFirst();
 
-                    });
+            if (item.isPresent()) {
+                Equipamiento original = item.get();
+                totalCompra += original.getCostoCompra();
+                comprasRealizadas.add(original);
+            }
+        }
+
+        if (totalCompra > oroDisponible) {
+            return "No tienes suficiente oro para comprar los objetos seleccionados.";
+        }
+
+        personaje.setOro(oroDisponible - totalCompra);
+        repositorioPersonaje.modificar(personaje);
+
+        for (Equipamiento original : comprasRealizadas) {
+            Equipamiento copia = clonarPorTipo(original);
+            copia.setPersonaje(personaje);
+            repositorioInventario.agregarEquipamiento(copia);
         }
 
         return "¡Compra realizada con éxito! Has comprado: " + String.join(", ", itemsSeleccionados);
     }
+
 
     private Equipamiento clonarPorTipo(Equipamiento original) {
         Equipamiento copia;
@@ -79,6 +99,10 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
         return copia;
     }
-
+    @Override
+    public Integer obtenerOroDelPersonaje(Long idPersonaje) {
+        Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
+        return oroPersonaje;
+    }
 }
 
