@@ -72,4 +72,30 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
                 .uniqueResult();
     }
 
+    @Override
+    public Personaje buscarPersonajePorCodigoAmigo(String codigoAmigo) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Personaje) session.createCriteria(Personaje.class)
+                .add(Restrictions.eq("codigoAmigo", codigoAmigo))
+                .uniqueResult();
+    }
+
+    @Override
+    public List<Personaje> obtenerAmigos(Long idPersonaje) {
+        Session session = sessionFactory.getCurrentSession();
+        Personaje obtenido = (Personaje) session.createCriteria(Personaje.class)
+                .add(Restrictions.eq("id", idPersonaje))
+                .uniqueResult();
+        return obtenido.getAmigos();
+    }
+
+    @Override
+    public String obtenerCodigoAmigoPropio(Long idPersonaje) {
+        Session session = sessionFactory.getCurrentSession();
+        return (String) session.createCriteria(Personaje.class)
+                .add(Restrictions.eq("id", idPersonaje))
+                .setProjection(Projections.property("codigoAmigo"))
+                .uniqueResult();
+    }
+
 }
