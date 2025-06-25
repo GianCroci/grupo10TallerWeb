@@ -40,12 +40,12 @@ INSERT INTO Equipamiento(
     costoCompra, costoMejora, costoVenta, nivel, equipado,
     personaje_id, rol_id, mercado_id, imagen
 ) VALUES
-      (10, 'Tunica azul', 0, 10, 5, 5, 150, 20, 100, 1, FALSE, null, 2, 2, 'img/tunica-azul.png'),
-      (11, 'Abrigo gris', 0, 0, 15, 5, 180, 25, 200, 1, FALSE, null, 2, 2, 'img/abrigo-gris.png'),
-      (12, 'Capucha de Sombras', 0, 12, 5, 10, 160, 15, 120, 1, FALSE, null, 2, 2, 'img/capucha-sombras.png'),
-      (13, 'Zapatos grises', 0, 0, 8, 20, 190, 20, 250, 1, FALSE, null, 2, 2, 'img/zapatos-gris.png'),
-      (14, 'Zapatos reforzados', 0, 0, 12, 15, 170, 18, 100, 1, FALSE, null, 2, 2, 'img/zapatos-reforzados.png'),
-      (15, 'Cinturon dorado', 5, 0, 10, 10, 200, 22, 250, 1, FALSE, null, 2, 2, 'img/cinturon-oro.png');
+      (10, 'Tunica azul', 0, 10, 5, 5, 50, 20, 100, 1, FALSE, null, 2, 2, 'img/tunica-azul.png'),
+      (11, 'Abrigo gris', 0, 0, 15, 5, 80, 25, 200, 1, FALSE, null, 2, 2, 'img/abrigo-gris.png'),
+      (12, 'Capucha de Sombras', 0, 12, 5, 10, 60, 15, 120, 1, FALSE, null, 2, 2, 'img/capucha-sombras.png'),
+      (13, 'Zapatos grises', 0, 0, 8, 20, 20, 20, 250, 1, FALSE, null, 2, 2, 'img/zapatos-gris.png'),
+      (14, 'Zapatos reforzados', 0, 0, 12, 15, 50, 18, 100, 1, FALSE, null, 2, 2, 'img/zapatos-reforzados.png'),
+      (15, 'Cinturon dorado', 5, 0, 10, 10, 30, 22, 250, 1, FALSE, null, 2, 2, 'img/cinturon-oro.png');
 
 -- Subclases
 INSERT INTO Pechera(id) VALUES (10);
