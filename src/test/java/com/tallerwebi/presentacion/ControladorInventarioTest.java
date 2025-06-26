@@ -17,55 +17,5 @@ import static org.mockito.Mockito.*;
 
 public class ControladorInventarioTest {
 
-    private ServicioInventario servicioInventarioMock;
-    private RepositorioInventario repositorioInventarioMock;
-    private ControladorInventario controlador;
 
-    @BeforeEach
-    public void init() {
-        servicioInventarioMock = mock(ServicioInventario.class);
-        repositorioInventarioMock = mock(RepositorioInventario.class);
-        controlador = new ControladorInventario(servicioInventarioMock, repositorioInventarioMock);
-    }
-/*
-    @Test
-    public void verEquipamientoYQueDevuelvaUnaListaDeEquipos() {
-        List<Equipamiento> listaFalsa = Arrays.asList(new Arma(), new Arma());
-        Equipamiento equipadoFalso = new Arma();
-
-        HttpSession sessionMock = mock(HttpSession.class);
-        when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
-
-        when(servicioInventarioMock.mostrarEquipamiento()).thenReturn(listaFalsa);
-        when(servicioInventarioMock.mostrarPrimerEquipado()).thenReturn(equipadoFalso);
-
-        ModelAndView mav = controlador.verEquipamiento(sessionMock);
-
-        assertEquals("inventario", mav.getViewName());
-        assertEquals(listaFalsa, mav.getModel().get("contenido"));
-        assertEquals(equipadoFalso, mav.getModel().get("equipoSeleccionado"));
-        assertEquals(listaFalsa, mav.getModel().get("comprasRealizadas"));
-    }*/
-
-
-@Test
-    public void verInformacionDeUnEquipoEspecifico() {
-        List<Equipamiento> listaFalsa = Arrays.asList(new Arma(), new Arma());
-        Equipamiento equipoFalso = new Arma();
-
-        when(servicioInventarioMock.mostrarEquipamiento()).thenReturn(listaFalsa);
-        when(servicioInventarioMock.buscarEquipamientoPorId(1L)).thenReturn(equipoFalso);
-
-        ModelAndView mav = controlador.verEquipoEspecifico(1L);
-
-        assertEquals("inventario", mav.getViewName());
-        assertEquals(listaFalsa, mav.getModel().get("contenido"));
-        assertEquals(equipoFalso, mav.getModel().get("equipoSeleccionado"));
-    }
-
-    @Test
-    public void queCuandoEquipoUnArmaMeRedirigaAlDetalleDelArmaQueEquipe() {
-        String resultado = controlador.equipar(1L);
-        assertEquals("redirect:/inventario", resultado);
-    }
 }

@@ -46,5 +46,14 @@ public class RepositorioInventarioImpl implements RepositorioInventario {
         sessionFactory.getCurrentSession().save(equipamiento);
     }
 
+    @Override
+    public Equipamiento obtenerEquipoDePersonajePorId(Long idPersonaje, Long idEquipamiento) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Equipamiento) session.createCriteria(Equipamiento.class)
+                .add(Restrictions.eq("id", idEquipamiento))
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .uniqueResult();
+    }
+
 
 }
