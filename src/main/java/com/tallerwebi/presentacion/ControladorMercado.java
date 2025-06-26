@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,22 +26,54 @@ public class ControladorMercado {
     }
 
     @GetMapping("/mercado")
-    public ModelAndView mostrarMercado() {
-        Mercado mercado = servicioMercado.mostrarMercado();
+    public ModelAndView mostrarMercado(HttpSession session, RedirectAttributes redirectAttributes) {
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        if (idPersonaje == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al mercado.");
+            return new ModelAndView("redirect:/login");
+        }
+        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
 
+        Mercado mercado = servicioMercado.mostrarMercado();
         ModelAndView modelAndView = new ModelAndView("mercado");
         modelAndView.addObject("mercado", mercado);
         modelAndView.addObject("compraExitosa", null);
+        modelAndView.addObject("oroPersonaje", oroPersonaje);
+
         return modelAndView;
     }
 
 
     @PostMapping("/realizar-compra")
-    public ModelAndView realizarCompra(@RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados) {
+    public ModelAndView realizarCompra(
+            @RequestParam(name = "itemsSeleccionados", required = false) List<String> itemsSeleccionados,
+            HttpSession session) {
+
         ModelMap model = new ModelMap();
-        String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados);
-        model.put("compraExitosa", mensajeCompra);
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+
+        if (idPersonaje == null) {
+            model.put("error", "Debes iniciar sesión.");
+            return new ModelAndView("redirect:/login");
+        }
+
+        String mensajeCompra = servicioMercado.procesarCompra(itemsSeleccionados, idPersonaje);
+
+        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
+
+        model.put("oroPersonaje", oroPersonaje);
         model.put("mercado", servicioMercado.mostrarMercado());
+
+        if (mensajeCompra.startsWith("¡Compra realizada")) {
+            model.put("compraExitosa", mensajeCompra);
+            model.put("verInventario", true);
+        } else {
+            model.put("error", mensajeCompra);
+        }
+
         return new ModelAndView("mercado", model);
     }
+
+
+
 }
