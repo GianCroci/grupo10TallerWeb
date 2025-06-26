@@ -25,4 +25,6 @@ public interface ServicioPersonaje {
     Personaje buscarRival(Long idPersonaje);
 
     Personaje crearPersonaje(String nombre, String genero, String imagen, Long idRol);
+
+    String obtenerCodigoAmigoPropio(Long idPersonaje);
 }
