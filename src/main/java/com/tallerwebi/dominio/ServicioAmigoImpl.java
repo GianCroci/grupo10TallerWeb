@@ -125,4 +125,9 @@ public class ServicioAmigoImpl implements ServicioAmigo {
         }
         return solicitudesEnviadasPendientesDTO;
     }
+
+    @Override
+    public String obtenerCodigoAmigoPropio(Long idPersonaje) {
+        return repositorioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
+    }
 }

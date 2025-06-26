@@ -89,9 +89,4 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
         repositorioPersonaje.guardar(personajeCreado);
         return personajeCreado;
     }
-
-    @Override
-    public String obtenerCodigoAmigoPropio(Long idPersonaje) {
-        return repositorioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
-    }
 }

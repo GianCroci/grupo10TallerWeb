@@ -20,4 +20,6 @@ public interface ServicioAmigo {
     List<SolicitudAmistadDTO> obtenerSolicitudesRecibidas(Long idPersonaje);
 
     List<SolicitudAmistadDTO> obtenerSolicitudesEnviadas(Long idPersonaje);
+
+    String obtenerCodigoAmigoPropio(Long idPersonaje);
 }
