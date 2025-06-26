@@ -180,22 +180,22 @@
 
     <form th:action="@{/realizar-compra}" method="POST">
         <div th:if="${compraExitosa != null}"
-             class="medieval-alert medieval-success position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center gap-3 px-4 py-3">
+             class="alert alert-success alert-dismissible fade show medieval-alert medieval-success position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center gap-3 px-4 py-3"
+             role="alert"
+             style="z-index: 9999; width: 50%;">
             <span th:text="${compraExitosa}" class="mb-0 fs-5"></span>
-            <br>
-            <a th:if="${verInventario}" th:href="@{/inventario}" class="btn btn-sm btn-outline-light">
-                Ver mi inventario
-            </a>
+            <a th:if="${verInventario}" th:href="@{/inventario}" class="btn btn-sm btn-outline-light ms-3">Ver mi inventario</a>
+            <button type="button" class="btn-close btn-close-white ms-3 align-self-center" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
 
 
         <div th:if="${error != null}"
-             class="medieval-alert medieval-error position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center px-4 py-3">
+             class="alert alert-danger alert-dismissible fade show medieval-alert medieval-error position-fixed start-50 translate-middle-x d-flex justify-content-center align-items-center px-4 py-3"
+             role="alert"
+             style="z-index: 9999; width: 50%;">
             <span th:text="${error}" class="mb-0 fs-5"></span>
+            <button type="button" class="btn-close btn-close-white ms-3 align-self-center" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
-
-
-
 
         <h1>Productos Disponibles</h1>
         <div class="d-flex justify-content-center mb-4">
