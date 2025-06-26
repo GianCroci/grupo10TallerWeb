@@ -33,6 +33,9 @@ public class ServicioAmigoImpl implements ServicioAmigo {
         if (remitente.equals(destinatario)) {
             throw new PersonajeInvalidoException("No puede añadirse a si mismo como amigo");
         }
+        if (remitente.getAmigos().contains(destinatario)) {
+            throw new PersonajeInvalidoException("Este personaje ya se encuentra como amigo");
+        }
 
         SolicitudAmistad solicitud = new SolicitudAmistad();
         solicitud.setRemitente(remitente);
@@ -82,12 +85,9 @@ public class ServicioAmigoImpl implements ServicioAmigo {
     }
 
     @Override
-    public List<AmigoDTO> obtenerAmigos(Long idPersonaje) throws AmigoInexistenteException {
+    public List<AmigoDTO> obtenerAmigos(Long idPersonaje) {
         List<Personaje> amigos = repositorioPersonaje.obtenerAmigos(idPersonaje);
 
-        if (amigos.isEmpty()) {
-            throw new AmigoInexistenteException("No tiene amigos agregados");
-        }
         List<AmigoDTO> amigosDTO = new ArrayList<>();
         for (Personaje personajeActual : amigos) {
             AmigoDTO amigoDTO = new AmigoDTO();
@@ -124,5 +124,10 @@ public class ServicioAmigoImpl implements ServicioAmigo {
             solicitudesEnviadasPendientesDTO.add(solicitudAmistadDTO);
         }
         return solicitudesEnviadasPendientesDTO;
+    }
+
+    @Override
+    public String obtenerCodigoAmigoPropio(Long idPersonaje) {
+        return repositorioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
     }
 }

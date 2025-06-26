@@ -119,9 +119,10 @@
 <div class="container pt-4">
 
     <div th:if="${error != null}"
-         class="custom-alert error medieval-shadow position-fixed top-0 start-50 translate-middle-x mt-3 d-flex align-items-center justify-content-center px-3 py-3"
+         th:class="'alert alert-error alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3 medieval-alert d-flex align-items-center justify-content-center px-3 py-3 medieval-error'"
+         role="alert"
          style="z-index: 9999; width: 50%;">
-        <span th:text="${error}" class="flex-grow-1 fs-5"></span>
+        <p th:text="${error}" class="flex-grow-1 mb-0 fs-5"></p>
         <button type="button" class="btn-close btn-close-white ms-3 align-self-center" data-bs-dismiss="alert" aria-label="Cerrar"></button>
     </div>
 
