@@ -41,7 +41,7 @@ public class ControladorChat {
         ModelMap model = new ModelMap();
         model.put("usuario", yo.getNombre());
         model.put("destinatario", amigo.getNombre());
-        model.put("historial", List.of());
+        //model.put("historial", List.of());
 
         return new ModelAndView("sala-chat", model);
     }
