@@ -21,7 +21,7 @@ INSERT INTO Equipamiento(
     personaje_id, rol_id, imagen
 ) VALUES
       ('Espada', 10, 0, 0, 0, 50, 20, 30, 0, FALSE, 1, 1, 'img/espada.png'),
-      ('Bastón', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/baston.png'),
+      ('Bastón', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/bastón.png'),
       ('Daga', 4, 0, 0, 10, 35, 10, 20, 0, FALSE, 1, 3, 'img/daga.png'),
       ('Casco', 0, 0, 5, 0, 35, 10, 20, 0, FALSE, 1, 1, 'img/casco.png');
 
