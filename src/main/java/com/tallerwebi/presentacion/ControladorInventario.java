@@ -1,8 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.RepositorioInventario;
-import com.tallerwebi.dominio.ServicioInventario;
+import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.InventarioNoExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,39 +17,64 @@ import java.util.List;
 public class ControladorInventario {
 
     private final ServicioInventario servicioInventario;
-    private final RepositorioInventario repositorioInventario;
 
     @Autowired
-    public ControladorInventario(ServicioInventario servicioInventario, RepositorioInventario repositorioInventario) {
+    public ControladorInventario(ServicioInventario servicioInventario, ServicioPersonaje servicioPersonaje) {
         this.servicioInventario = servicioInventario;
-        this.repositorioInventario = repositorioInventario;
     }
 
     @GetMapping("/inventario")
     public ModelAndView verEquipamiento(HttpSession session) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         ModelMap model = new ModelMap();
-        model.addAttribute("contenido", servicioInventario.mostrarEquipamiento());
-        model.addAttribute("equipoSeleccionado", servicioInventario.mostrarPrimerEquipado());
 
-        List<Equipamiento> inventario = repositorioInventario.obtenerInventario(idPersonaje);
-        model.addAttribute("inventario", inventario);
+        if (idPersonaje == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        try {
+            List<Equipamiento> inventario = servicioInventario.obtenerInventario(idPersonaje);
+
+            model.addAttribute("inventario", inventario);
+
+            if (servicioInventario.obtenerPrimerEquipado(idPersonaje) != null) {
+                model.addAttribute("equipoSeleccionado", servicioInventario.obtenerPrimerEquipado(idPersonaje));
+            } else {
+                model.addAttribute("equipoSeleccionado", inventario.get(0));
+            }
+
+        } catch (InventarioNoExistente e) {
+            model.addAttribute("mensajeError", e.getMessage());
+        }
+
         return new ModelAndView("inventario", model);
-
     }
 
-    @GetMapping("/inventario/{id}")
-    public ModelAndView verEquipoEspecifico(@PathVariable Long id) {
+
+    @GetMapping("/inventario/{idEquipo}")
+    public ModelAndView verEquipoEspecifico(HttpSession session, @PathVariable Long idEquipo) {
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+
+        if (idPersonaje == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         ModelMap model = new ModelMap();
-        model.addAttribute("contenido", servicioInventario.mostrarEquipamiento());
-        model.addAttribute("equipoSeleccionado", servicioInventario.buscarEquipamientoPorId(id));
+        model.addAttribute("inventario", servicioInventario.obtenerInventario(idPersonaje));
+        model.addAttribute("equipoSeleccionado", servicioInventario.obtenerEquipamientoPorId(idPersonaje, idEquipo));
+
         return new ModelAndView("inventario", model);
     }
 
-    @GetMapping("/inventario/equipar/{id}")
-    public String equipar(@PathVariable Long id) {
-        servicioInventario.equipar(id);
+
+    @GetMapping("/inventario/equipar/{idEquipo}")
+    public String equipar(HttpSession session,@PathVariable Long idEquipo) {
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        servicioInventario.equipar(idPersonaje,idEquipo);
         return "redirect:/inventario";
     }
+
+
+
 
 }

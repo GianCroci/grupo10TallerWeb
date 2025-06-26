@@ -29,22 +29,47 @@ main{
 
 .contenedor-armas {
     display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
     background-color: #3B2417;
     align-items: center;
-    column-gap: 0.3em;
+    column-gap: 0.5em;
     padding: 0.5em;
     border-style: ridge;
     border-color: #1c110b;
+    max-width: 100%;
+    scrollbar-width: thin;
 }
 
+
+.contenedor-armas::-webkit-scrollbar {
+    height: 8px;
+}
+
+.contenedor-armas::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.contenedor-armas::-webkit-scrollbar-thumb {
+    background-color: #5a3813;
+    border-radius: 4px;
+}
+
+
 .imagen-arma {
+    width: 120px;
+    height: 120px;
     display: flex;
-    height: fit-content;
-    background-color: #090604 ;
+    justify-content: center;
+    align-items: center;
+    background-color: #090604;
     border-style: ridge;
     border-radius: 5px;
-    border-color: #090604 ;
+    border-color: #090604;
     transition: transform 0.5s, background-color 0.5s ease-in-out;
+    overflow: hidden;
+    flex: 0 0 auto;
 }
 
 .imagen-arma:hover {
@@ -52,10 +77,13 @@ main{
     background-color: #1f130d;
 }
 
-img{
-    width: 120px;
-    height: auto;
+.imagen-arma img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
+
 
 .contenedor-informacion{
     display: flex;
@@ -112,3 +140,72 @@ img{
     background-color: #1b120c;
     transform: translateY(-2px);
 }
+
+.contenedor-armas::-webkit-scrollbar {
+    height: 10px;
+}
+
+.contenedor-armas::-webkit-scrollbar-track {
+    background: #3B2417;
+    border-radius: 5px;
+}
+
+.contenedor-armas::-webkit-scrollbar-thumb {
+    background: #5a3813;
+    border-radius: 10px;
+    border: 2px solid #3B2417;
+}
+
+.contenedor-armas::-webkit-scrollbar-thumb:hover {
+    background: #7d4c24;
+}
+
+
+.contenedor-armas {
+    scrollbar-color: #5a3813 #3B2417;
+    scrollbar-width: thin;
+}
+
+.contenedor-armas::-webkit-scrollbar {
+    height: 8px;
+}
+
+.contenedor-armas:hover::-webkit-scrollbar {
+    height: 10px;
+}
+
+.mensaje-error {
+    background-color: #5a3813;
+    border: 4px ridge #1c110b;
+    color: #f4e2c6;
+    font-size: 1.2rem;
+    padding: 1em 1.5em;
+    margin: 1em auto;
+    width: fit-content;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    border-radius: 10px;
+    position: relative;
+    animation: aparecer 0.6s ease-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.mensaje-error::before {
+    position: absolute;
+    left: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5em;
+}
+
