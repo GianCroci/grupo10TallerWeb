@@ -22,12 +22,10 @@ import java.util.List;
 public class ControladorAmigo {
 
     private final ServicioAmigo servicioAmigo;
-    private final ServicioPersonaje servicioPersonaje;
 
     @Autowired
-    public ControladorAmigo(ServicioAmigo servicioAmigo, ServicioPersonaje servicioPersonaje) {
+    public ControladorAmigo(ServicioAmigo servicioAmigo) {
         this.servicioAmigo = servicioAmigo;
-        this.servicioPersonaje = servicioPersonaje;
     }
 
     @RequestMapping("/amigos")
@@ -39,15 +37,12 @@ public class ControladorAmigo {
             redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista amigos sin haber iniciado sesion");
             return new ModelAndView("redirect:/login");
         }
-        String codigoAmigo = servicioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
+        String codigoAmigo = servicioAmigo.obtenerCodigoAmigoPropio(idPersonaje);
         List<SolicitudAmistadDTO> solicitudesRecibidas = servicioAmigo.obtenerSolicitudesRecibidas(idPersonaje);
         List<SolicitudAmistadDTO> solicitudesEnviadas = servicioAmigo.obtenerSolicitudesEnviadas(idPersonaje);
-        try {
-            List<AmigoDTO> amigos = servicioAmigo.obtenerAmigos(idPersonaje);
-            model.put("amigos", amigos);
-        } catch (AmigoInexistenteException e) {
-            model.put("error", e.getMessage());
-        }
+        List<AmigoDTO> amigos = servicioAmigo.obtenerAmigos(idPersonaje);
+
+        model.put("amigos", amigos);
         model.put("solicitudesRecibidas", solicitudesRecibidas);
         model.put("solicitudesEnviadas", solicitudesEnviadas);
         model.put("codigoAmigo", codigoAmigo);
@@ -57,7 +52,6 @@ public class ControladorAmigo {
 
     @RequestMapping("/enviar-solicitud")
     public ModelAndView enviarSolicitudAmistad(@RequestParam(name = "codigoAmigo") String codigoAmigo, HttpSession session, RedirectAttributes redirectAttributes) {
-        ModelMap model = new ModelMap();
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
 

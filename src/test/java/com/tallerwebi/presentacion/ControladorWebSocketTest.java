@@ -1,10 +1,12 @@
 package com.tallerwebi.presentacion;
 
+
 import com.tallerwebi.dominio.Mensaje;
 import com.tallerwebi.dominio.MensajeRecibido;
 import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.ServicioChat;
 import com.tallerwebi.presentacion.ControladorWebSocket;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.*;
 public class ControladorWebSocketTest {
 
     private ControladorWebSocket controladorWebSocket;
+
     private SimpMessagingTemplate messagingTemplateMock;
     private ServicioChat servicioChatMock;
 
@@ -25,20 +28,25 @@ public class ControladorWebSocketTest {
         messagingTemplateMock = mock(SimpMessagingTemplate.class);
         servicioChatMock = mock(ServicioChat.class);
         controladorWebSocket = new ControladorWebSocket(messagingTemplateMock, servicioChatMock);
+
     }
 
     @Test
     public void queSePuedaEnviarMensajePrivado() {
+
         //preparacion
+
         MensajeRecibido mensajeMock = mock(MensajeRecibido.class);
         when(mensajeMock.getRemitente()).thenReturn("Gian");
         when(mensajeMock.getDestinatario()).thenReturn("Tomas");
         when(mensajeMock.getMensaje()).thenReturn("Hola Tomas");
 
+
         //ejecucion
         controladorWebSocket.enviarMensajePrivado(mensajeMock);
 
         //verificacion
+
         ArgumentCaptor<Mensaje> captorMensaje = ArgumentCaptor.forClass(Mensaje.class);
         verify(servicioChatMock).guardarMensaje(captorMensaje.capture());
 
@@ -46,6 +54,7 @@ public class ControladorWebSocketTest {
         assertThat(mensajeGuardado.getRemitente(), equalTo("Gian"));
         assertThat(mensajeGuardado.getDestinatario(), equalTo("Tomas"));
         assertThat(mensajeGuardado.getMensaje(), equalTo("Hola Tomas"));
+
 
         ArgumentCaptor<MensajeEnviado> captorRespuesta = ArgumentCaptor.forClass(MensajeEnviado.class);
 
@@ -56,4 +65,5 @@ public class ControladorWebSocketTest {
         assertThat(respuestaEnviada.getMensaje(), equalTo("Hola Tomas"));
 
     }
+
 }

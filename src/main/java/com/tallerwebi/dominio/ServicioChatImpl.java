@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public class ServicioChatImpl implements ServicioChat {
 
-    @Autowired
     private RepositorioMensaje repositorioMensaje;
+
 
     public ServicioChatImpl(RepositorioMensaje repositorioMensaje) {
         this.repositorioMensaje = repositorioMensaje;

@@ -75,7 +75,7 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
 
     private Equipamiento clonarPorTipo(Equipamiento original) {
-        Equipamiento copia;
+        Equipamiento copia = null;
 
         if (original instanceof Arma) copia = new Arma();
         else if (original instanceof Botas) copia = new Botas();
@@ -83,9 +83,7 @@ public class ServicioMercadoImpl implements ServicioMercado {
         else if (original instanceof Escudo) copia = new Escudo();
         else if (original instanceof Pechera) copia = new Pechera();
         else if (original instanceof Pantalones) copia = new Pantalones();
-        else copia = new Equipamiento() {
-                @Override public void mejorar() {}
-            };
+
 
         copia.setNombre(original.getNombre());
         copia.setStats(original.getStats());
@@ -99,6 +97,8 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
         return copia;
     }
+
+
     @Override
     public Integer obtenerOroDelPersonaje(Long idPersonaje) {
         Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
