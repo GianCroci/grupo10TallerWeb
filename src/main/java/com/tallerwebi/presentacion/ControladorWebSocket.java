@@ -18,6 +18,11 @@ public class ControladorWebSocket {
     @Autowired
     private ServicioChat servicioChat;
 
+    public ControladorWebSocket(ServicioChat servicioChat, SimpMessagingTemplate messagingTemplate) {
+        this.servicioChat = servicioChat;
+        this.messagingTemplate = messagingTemplate;
+    }
+
     @MessageMapping("/chat")
     public void enviarMensajePrivado(MensajeRecibido mensaje) {
         System.out.println("Recibido: " + mensaje.getMensaje());

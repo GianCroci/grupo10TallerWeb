@@ -20,16 +20,13 @@ public class ControladorChat {
 
     @Autowired
     private ServicioPersonaje servicioPersonaje;
+    private ServicioChat servicioChat;
 
-
-    public ControladorChat(ServicioPersonaje servicioPersonaje) {
+    public ControladorChat(ServicioPersonaje servicioPersonaje, ServicioChat servicioChat) {
         this.servicioPersonaje = servicioPersonaje;
+        this.servicioChat = servicioChat;
 
     }
-
-
-    @Autowired
-    private ServicioChat servicioChat;
 
     @RequestMapping(path = "/chat/{idAmigo}", method = RequestMethod.GET)
     public ModelAndView chatearConAmigo(HttpSession session, @PathVariable Long idAmigo) {
