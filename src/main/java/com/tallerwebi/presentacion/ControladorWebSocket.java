@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Mensaje;
 import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.MensajeRecibido;
+import com.tallerwebi.dominio.ServicioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,12 +15,24 @@ public class ControladorWebSocket {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private ServicioChat servicioChat;
+
+    public ControladorWebSocket(ServicioChat servicioChat, SimpMessagingTemplate messagingTemplate) {
+        this.servicioChat = servicioChat;
+        this.messagingTemplate = messagingTemplate;
+    }
+
     @MessageMapping("/chat")
     public void enviarMensajePrivado(MensajeRecibido mensaje) {
-        System.out.println("Mensaje recibido en backend:");
-        System.out.println("Remitente: " + mensaje.getRemitente());
-        System.out.println("Destinatario: " + mensaje.getDestinatario());
-        System.out.println("Mensaje: " + mensaje.getMensaje());
+        System.out.println("Recibido: " + mensaje.getMensaje());
+
+        Mensaje nuevo = new Mensaje(
+                mensaje.getRemitente(),
+                mensaje.getDestinatario(),
+                mensaje.getMensaje()
+        );
+        servicioChat.guardarMensaje(nuevo);
 
         MensajeEnviado respuesta = new MensajeEnviado(mensaje.getMensaje(), mensaje.getRemitente());
 
@@ -26,8 +40,6 @@ public class ControladorWebSocket {
                 "/user/" + mensaje.getDestinatario() + "/queue/messages",
                 respuesta
         );
-
-
-
     }
+
 }
