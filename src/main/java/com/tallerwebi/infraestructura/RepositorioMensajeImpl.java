@@ -14,6 +14,10 @@ public class RepositorioMensajeImpl implements RepositorioMensaje {
     @Autowired
     private SessionFactory sessionFactory;
 
+    public RepositorioMensajeImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public void guardar(Mensaje mensaje) {
         sessionFactory.getCurrentSession().save(mensaje);

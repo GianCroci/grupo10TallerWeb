@@ -13,6 +13,10 @@ public class ServicioChatImpl implements ServicioChat {
     @Autowired
     private RepositorioMensaje repositorioMensaje;
 
+    public ServicioChatImpl(RepositorioMensaje repositorioMensaje) {
+        this.repositorioMensaje = repositorioMensaje;
+    }
+
     @Override
     public void guardarMensaje(Mensaje mensaje) {
         repositorioMensaje.guardar(mensaje);
