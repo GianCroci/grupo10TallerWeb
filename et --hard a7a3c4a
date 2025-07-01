@@ -1,0 +1,142 @@
+[33m2e92ac1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msocial[m[33m)[m Merge branch 'social' of https://github.com/GianCroci/grupo10TallerWeb into social
+[33mfeaf9a5[m cambios en chat social
+[33m3efe475[m[33m ([m[1;31morigin/social[m[33m)[m Merge branch 'main' into social
+[33ma7a3c4a[m test completos del chat
+[33m17192d8[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #31 from GianCroci/social
+[33m0e43911[m Merge branch 'main' of https://github.com/GianCroci/grupo10TallerWeb into social
+[33mf38e3dc[m cambios antes del pull
+[33m3681e3c[m tests completos Mercado
+[33mcc85317[m Merge pull request #30 from GianCroci/agus
+[33m25040ed[m codigo amigo a personaje en data.sql
+[33m1f235e0[m merge main a agus
+[33m9298498[m test amigos, faltan test servicio y repositorio
+[33mbaf2a20[m Chat con historial
+[33m04b9241[m boton cerrar mensaje
+[33mfc6f9d2[m Actualización inventario!
+[33m4bc435e[m Actualización del inventario -> Integración del repositorio + modificación de estadísticas (falta subir los test)
+[33mf94bc31[m Merge pull request #27 from GianCroci/social
+[33me5e15d8[m chat con amigos sin persistencia 1.1
+[33m43dacfd[m chat con amigos sin persistencia
+[33m5b57b7e[m merge con social
+[33m637a9d9[m cambios en data
+[33mb2f329b[m ControladorChatTest
+[33mbca3e4c[m merge main a agus
+[33mc50a0a3[m social 1.2
+[33mb4707e5[m Merge branch 'main' of https://github.com/GianCroci/grupo10TallerWeb into social
+[33maa23956[m agrego logica de oro al comprar
+[33m46604ce[m actualizacion de docker
+[33m3c684e3[m merge main a agus
+[33m19117ea[m cambio a clases con logica mercado
+[33mac55e7a[m arreglo amigos duplicados y arreglo de vista
+[33m11c8481[m conectado el chat con vista amigos
+[33mb38ac45[m Resuelto el merge pendiente
+[33maa2c3d7[m social1.1
+[33m172f421[m corrijo error test
+[33m8750bf8[m refactorizacion mercado
+[33me84a324[m estilos mercado
+[33m9f6186b[m que las compras por personaje se reflejen en su vista inventario y se guarden en equipamiento del personaje
+[33mf6a5e74[m[33m ([m[1;31morigin/agus[m[33m)[m funcionalidad agregar amigos funcionando, faltan test
+[33m65b6c74[m Merge pull request #26 from GianCroci/agus
+[33m9aae6c1[m cambios para levantar con docker-compose
+[33m7a047c7[m chat social 1a1
+[33m83573bc[m pruebas chat social
+[33mfcc8a0b[m Merge pull request #25 from GianCroci/Herreria
+[33m1377b48[m actualizacion estilo herreria
+[33m4685a6c[m armado de social
+[33m98bb1cf[m Merge pull request #24 from GianCroci/agus
+[33ma1ec090[m user y pass de bd en memoria comentado
+[33mcaba7c0[m merge main a rama agus
+[33m18866cc[m nuevo controlador home y validacion de inicio de sesion para batalla
+[33m774a602[m[33m ([m[1;32marena[m[33m)[m correcion bdd
+[33mf402e2f[m ruta invitarTrago en taberna.html arreglado
+[33m62fab2c[m actualizacion de redireccion en batalla
+[33m339c6f0[m redireccion a creacion de personaje en controladorBatalla
+[33m14fcd68[m Merge pull request #23 from GianCroci/agus
+[33m33d526a[m merge main a rama agus
+[33m982ba21[m arreglado nullpointer en batalla
+[33ma6533e7[m Merge pull request #22 from GianCroci/agus
+[33mc2e8162[m merge main a rama agus
+[33m7e8f45d[m reformateo del data.sql
+[33meff4708[m correccion stats batalla
+[33m0f54f99[m Agrego test del controlador y servicio inventario.
+[33m9f527a9[m Test que faltaban
+[33m7546f88[m merge main a rama agus
+[33m1247d19[m cambio personaje para que tenga atributo rol de clase rol y todo lo necesario para que siga funcionando
+[33m0d53ca6[m test controlador y servicio mercado
+[33m19d93c8[m merge main a herreria
+[33mb8ac1f6[m configuracion para levantar con base de datos externa
+[33m57118d9[m Merge pull request #20 from GianCroci/arena
+[33ma9df7d3[m[33m ([m[1;31morigin/arena[m[33m)[m correccion tests batalla
+[33m4fc2ad0[m batalla con logica
+[33m6d08303[m Merge branch 'main' of https://github.com/GianCroci/grupo10TallerWeb into arena
+[33mbc3e1bc[m Adapté la vista del inventario a la actualización del equipamiento (la suma del rol y las estadísticas). Aún sin implementación del repositorio
+[33m1f6aab6[m Actualización de vista
+[33m845f5a6[m cambio a clase equipamiento
+[33m1ba3898[m Cambios chiquitos en la vista y el servicio
+[33m13d843b[m prueba bd docker
+[33mb732b5a[m mantencion del rival al atacar
+[33m29e5420[m armado de batalla
+[33m42cd34a[m mercado con equipamiento sin bdd
+[33mf6c12c3[m Cambios de lógica para poder implementar el repositorio
+[33m94fa602[m Se agregan imagenes a cada producto del mercado
+[33m70d5fbb[m Se agregan nuevos productos al mercado, y estilos
+[33m9e2a28f[m creacion de clases y repositorios para Mercado
+[33mf8e09b8[m Merge pull request #18 from GianCroci/Herreria
+[33m74290e5[m redirect a creacion de personaje al loguearse si no fue creado anteriormente
+[33m57f47a3[m Repos sin mock y idPersonaje en httpsession dinamico
+[33me70c99e[m merge main a herreria y testRepo sin mock
+[33m70befcd[m Herreria completa funcionando
+[33mc0a4322[m Merge pull request #17 from GianCroci/arena
+[33m7d2ac53[m test controlador batalla
+[33mbe8b011[m Merge branch 'main' of https://github.com/GianCroci/grupo10TallerWeb into arena
+[33mde4c596[m Merge pull request #13 from GianCroci/gian
+[33m9bed8a3[m pruebas en vista batalla
+[33m90a7e4a[m correcion servicioUsuario
+[33m3e76c65[m controladorBatalla
+[33mac0c933[m Merge branch 'gian' of https://github.com/GianCroci/grupo10TallerWeb into arena
+[33me8e2d07[m guardado de rama provisorio
+[33m26b4fea[m Merge pull request #15 from GianCroci/Herreria
+[33mb29678a[m[33m ([m[1;31morigin/Herreria[m[33m)[m arreglado login y nullpointer en validar login
+[33mb07ca06[m Merge pull request #14 from GianCroci/Herreria
+[33m86edd92[m merge main con todos los test funcionando
+[33m3c975d0[m merge con los ultimos cambios
+[33m5a0819c[m[33m ([m[1;31morigin/attino[m[33m)[m Probando si anda
+[33m3d3257b[m[33m ([m[1;31morigin/gian[m[33m)[m mockito en los test de Personaje y Usuario
+[33m6f8a2da[m merge main con todos los test funcionando (revisar constructor ServicioEquipamientoImpl)
+[33mf10fa49[m merge main con todos los test funcionando (revisar constructor ServicioEquipamientoImpl)
+[33md2c0405[m test ControladorHerreria
+[33m1523ebc[m test controlador herreria
+[33ma812104[m Logica de beneficios
+[33ma16ef88[m Merge main
+[33mcb76d9a[m Actualizacion de rama
+[33m7f7619e[m roles y equipamientos @Entity
+[33m3d9d16f[m Logica para las mejoras de cada equipamiento de los tres roles diferentes
+[33m5dfb889[m Merge branch 'attino'
+[33mc8ce458[m Taberna+modal
+[33mde1599d[m commit para merge
+[33m3b766cd[m Merge pull request #12 from GianCroci/main
+[33mcb71a06[m guardo cambios para pull
+[33m94c25ac[m Merge pull request #11 from GianCroci/inventario
+[33m9008cb8[m[33m ([m[1;31morigin/inventario[m[33m)[m Actualización de servicio, controlador y vista de equipamiento
+[33mfec0066[m Merge pull request #10 from GianCroci/gian
+[33ma6cbec0[m mapa con usuarios creado
+[33m2031498[m servicioPersonaje
+[33m8229c60[m Merge branch 'main' into attino
+[33m69a5552[m Update guardia.png
+[33m4963b1d[m Update guardia.png
+[33m309d32a[m lógica del servicio equioamiento actualizada + test
+[33m0a04b5a[m Update herreria.html
+[33m3aa39a9[m Merge pull request #9 from GianCroci/Herreria
+[33m2a53cfd[m vista mergeada
+[33mec34607[m comentarios borrados
+[33mdcf83a9[m navbar
+[33m0dfcf2a[m nuevos cambios
+[33m01f782b[m Merge branch 'main' into attino
+[33m27750b8[m taberna funcionalidadles
+[33m6cd0936[m taberna
+[33m1c3cba1[m Merge pull request #8 from GianCroci/gian
+[33m84b2343[m vistas login 1.3
+[33m024351b[m Merge pull request #7 from GianCroci/gian
+[33m7558455[m vistas login 1.2
+[33mc8c0cc1[m Update taberna.html
+[33m5802c94[m vistas login
