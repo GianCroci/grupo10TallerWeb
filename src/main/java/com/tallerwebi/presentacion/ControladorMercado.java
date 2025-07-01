@@ -26,15 +26,18 @@ public class ControladorMercado {
     }
 
     @GetMapping("/mercado")
-    public ModelAndView mostrarMercado(HttpSession session, RedirectAttributes redirectAttributes) {
+    public ModelAndView mostrarMercado(HttpSession session) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
-        if (idPersonaje == null) {
-            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al mercado.");
-            return new ModelAndView("redirect:/login");
-        }
-        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
 
+        if (idPersonaje == null) {
+            ModelAndView errorRedirect = new ModelAndView("redirect:/login");
+            errorRedirect.addObject("error", "Debes iniciar sesión para acceder al mercado.");
+            return errorRedirect;
+        }
+
+        Integer oroPersonaje = servicioMercado.obtenerOroDelPersonaje(idPersonaje);
         Mercado mercado = servicioMercado.mostrarMercado();
+
         ModelAndView modelAndView = new ModelAndView("mercado");
         modelAndView.addObject("mercado", mercado);
         modelAndView.addObject("compraExitosa", null);
@@ -42,6 +45,7 @@ public class ControladorMercado {
 
         return modelAndView;
     }
+
 
 
     @PostMapping("/realizar-compra")

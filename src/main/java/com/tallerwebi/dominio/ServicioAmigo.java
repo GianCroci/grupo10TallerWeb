@@ -15,9 +15,11 @@ public interface ServicioAmigo {
 
     void rechazarSolicitud(Long idSolicitud) throws SolicitudInvalidaException;
 
-    List<AmigoDTO> obtenerAmigos(Long idPersonaje) throws AmigoInexistenteException;
+    List<AmigoDTO> obtenerAmigos(Long idPersonaje);
 
     List<SolicitudAmistadDTO> obtenerSolicitudesRecibidas(Long idPersonaje);
 
     List<SolicitudAmistadDTO> obtenerSolicitudesEnviadas(Long idPersonaje);
+
+    String obtenerCodigoAmigoPropio(Long idPersonaje);
 }
