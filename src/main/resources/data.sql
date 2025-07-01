@@ -75,14 +75,3 @@ INSERT INTO ZapatoDos(id) VALUES (14);
 INSERT INTO Cinturon(id) VALUES (15);
 
 
-
-----Tabla de taberna---
-CREATE TABLE taberna (
-                                  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                  id_personaje BIGINT NOT NULL,
-                                  personaje_taberna VARCHAR(50) NOT NULL,
-                                  cervezas_invitadas INT NOT NULL,
-                                  ultima_invitacion DATE,
-                                  CONSTRAINT unique_personaje_taberna UNIQUE (id_personaje, personaje_taberna),
-                                  CONSTRAINT fk_taberna_personaje FOREIGN KEY (id_personaje) REFERENCES personaje(id)
-);
