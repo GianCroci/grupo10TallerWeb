@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import com.tallerwebi.dominio.Personaje;
 
 import javax.transaction.Transactional;
@@ -37,34 +39,51 @@ public class ServicioMercadoImpl implements ServicioMercado {
 
         Mercado mercado = repositorioMercado.obtenerMercadoConProductos();
         List<Equipamiento> equipamientos = mercado.getProductos();
+        Personaje personaje = repositorioPersonaje.buscarPersonaje(idPersonaje);
+
+        int oroDisponible = personaje.getOro();
+        int totalCompra = 0;
+        List<Equipamiento> comprasRealizadas = new ArrayList<>();
 
         for (String nombre : itemsSeleccionados) {
-            equipamientos.stream()
+            Optional<Equipamiento> item = equipamientos.stream()
                     .filter(e -> e.getNombre().equals(nombre))
-                    .findFirst()
-                    .ifPresent(original -> {
-                        Equipamiento copia = clonarPorTipo(original);
-                        Personaje personaje = repositorioPersonaje.buscarPersonaje(idPersonaje);
-                        copia.setPersonaje(personaje);
-                        repositorioInventario.agregarEquipamiento(copia);
+                    .findFirst();
 
-                    });
+            if (item.isPresent()) {
+                Equipamiento original = item.get();
+                totalCompra += original.getCostoCompra();
+                comprasRealizadas.add(original);
+            }
+        }
+
+        if (totalCompra > oroDisponible) {
+            return "No tienes suficiente oro para comprar los objetos seleccionados.";
+        }
+
+        personaje.setOro(oroDisponible - totalCompra);
+        repositorioPersonaje.modificar(personaje);
+
+        for (Equipamiento original : comprasRealizadas) {
+            Equipamiento copia = clonarPorTipo(original);
+            copia.setPersonaje(personaje);
+            repositorioInventario.agregarEquipamiento(copia);
         }
 
         return "¡Compra realizada con éxito! Has comprado: " + String.join(", ", itemsSeleccionados);
     }
 
+
     private Equipamiento clonarPorTipo(Equipamiento original) {
-        Equipamiento copia;
-        if (original instanceof Abrigo) copia = new Abrigo();
-        else if (original instanceof Capucha) copia = new Capucha();
-        else if (original instanceof ZapatoUno) copia = new ZapatoUno();
-        else if (original instanceof ZapatoDos) copia = new ZapatoDos();
-        else if (original instanceof Tunica) copia = new Tunica();
-        else if (original instanceof Cinturon) copia = new Cinturon();
-        else copia = new Equipamiento() {
-                @Override public void mejorar() {}
-            };
+        Equipamiento copia = null;
+
+        if (original instanceof Arma) copia = new Arma();
+        else if (original instanceof Botas) copia = new Botas();
+        else if (original instanceof Casco) copia = new Casco();
+        else if (original instanceof Escudo) copia = new Escudo();
+        else if (original instanceof Pechera) copia = new Pechera();
+        else if (original instanceof Pantalones) copia = new Pantalones();
+
 
         copia.setNombre(original.getNombre());
         copia.setStats(original.getStats());
@@ -75,7 +94,15 @@ public class ServicioMercadoImpl implements ServicioMercado {
         copia.setNivel(original.getNivel());
         copia.setEquipado(false);
         copia.setImagen(original.getImagen());
+
         return copia;
+    }
+
+
+    @Override
+    public Integer obtenerOroDelPersonaje(Long idPersonaje) {
+        Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
+        return oroPersonaje;
     }
 }
 

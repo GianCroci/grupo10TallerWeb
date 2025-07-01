@@ -85,6 +85,7 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
         personajeCreado.setOro(0);
         personajeCreado.setEstadisticas(new Estadisticas());
         personajeCreado.aplicarEstadisticasBase();
+        personajeCreado.inicializarCodigoAmigo();
         repositorioPersonaje.guardar(personajeCreado);
         return personajeCreado;
     }
