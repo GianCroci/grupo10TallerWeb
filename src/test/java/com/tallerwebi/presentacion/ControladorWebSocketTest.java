@@ -2,9 +2,11 @@ package com.tallerwebi.presentacion;
 
 
 import com.tallerwebi.dominio.Mensaje;
-import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.MensajeRecibido;
+import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.ServicioChat;
+import com.tallerwebi.presentacion.ControladorWebSocket;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,28 +19,34 @@ import static org.mockito.Mockito.*;
 public class ControladorWebSocketTest {
 
     private ControladorWebSocket controladorWebSocket;
-    private ServicioChat servicioChatMock;
+
     private SimpMessagingTemplate messagingTemplateMock;
+    private ServicioChat servicioChatMock;
 
     @BeforeEach
-    public void init(){
-        servicioChatMock = mock(ServicioChat.class);
+    public void init() {
         messagingTemplateMock = mock(SimpMessagingTemplate.class);
-        controladorWebSocket = new ControladorWebSocket(servicioChatMock, messagingTemplateMock);
+        servicioChatMock = mock(ServicioChat.class);
+        controladorWebSocket = new ControladorWebSocket(messagingTemplateMock, servicioChatMock);
+
     }
 
     @Test
     public void queSePuedaEnviarMensajePrivado() {
-        // preparacion
+
+        //preparacion
+
         MensajeRecibido mensajeMock = mock(MensajeRecibido.class);
         when(mensajeMock.getRemitente()).thenReturn("Gian");
         when(mensajeMock.getDestinatario()).thenReturn("Tomas");
         when(mensajeMock.getMensaje()).thenReturn("Hola Tomas");
 
-        // ejecucion
+
+        //ejecucion
         controladorWebSocket.enviarMensajePrivado(mensajeMock);
 
-        // verificacion
+        //verificacion
+
         ArgumentCaptor<Mensaje> captorMensaje = ArgumentCaptor.forClass(Mensaje.class);
         verify(servicioChatMock).guardarMensaje(captorMensaje.capture());
 

@@ -15,7 +15,7 @@ public class RepositorioMensajeImpl implements RepositorioMensaje {
 
     private SessionFactory sessionFactory;
 
-    @Autowired
+
     public RepositorioMensajeImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

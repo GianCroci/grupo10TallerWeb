@@ -22,6 +22,7 @@ public class ControladorChat {
     private ServicioPersonaje servicioPersonaje;
     private ServicioChat servicioChat;
 
+
     public ControladorChat(ServicioPersonaje servicioPersonaje, ServicioChat servicioChat) {
         this.servicioPersonaje = servicioPersonaje;
         this.servicioChat = servicioChat;

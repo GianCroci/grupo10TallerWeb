@@ -18,9 +18,11 @@ public class ControladorWebSocket {
     @Autowired
     private ServicioChat servicioChat;
 
-    public ControladorWebSocket(ServicioChat servicioChat, SimpMessagingTemplate messagingTemplate) {
-        this.servicioChat = servicioChat;
+
+    public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat) {
         this.messagingTemplate = messagingTemplate;
+        this.servicioChat = servicioChat;
+
     }
 
     @MessageMapping("/chat")

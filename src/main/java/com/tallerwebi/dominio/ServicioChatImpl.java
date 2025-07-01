@@ -12,7 +12,7 @@ public class ServicioChatImpl implements ServicioChat {
 
     private RepositorioMensaje repositorioMensaje;
 
-    @Autowired
+
     public ServicioChatImpl(RepositorioMensaje repositorioMensaje) {
         this.repositorioMensaje = repositorioMensaje;
     }
