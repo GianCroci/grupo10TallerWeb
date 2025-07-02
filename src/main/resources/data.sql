@@ -58,7 +58,7 @@ INSERT INTO Pantalones(id) VALUES (15);
 
 
 ----Tabla de taberna---
-CREATE TABLE taberna (
+CREATE TABLE IF NOT EXISTS taberna (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                          id_personaje BIGINT NOT NULL,
                          personaje_taberna VARCHAR(50) NOT NULL,
