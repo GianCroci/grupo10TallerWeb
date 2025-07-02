@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Personaje;
 import com.tallerwebi.dominio.PersonajeTaberna;
 import com.tallerwebi.dominio.RepositorioTaberna;
 import com.tallerwebi.dominio.Taberna;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -23,9 +24,10 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
 
     @Override
     public int getCantidadCervezasInvitadas(Personaje personaje, PersonajeTaberna personajeTaberna) {
+        Session session= sessionFactory.getCurrentSession();
+
         String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna) sessionFactory.getCurrentSession()
-                .createQuery(hql)
+        Taberna registro = (Taberna) session.createQuery(hql)
                 .setParameter("personaje", personaje)
                 .setParameter("personajeTaberna", personajeTaberna)
                 .uniqueResult();
@@ -36,9 +38,13 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
 
     @Override
     public void invitarCerveza(Personaje personaje, PersonajeTaberna personajeTaberna) {
+        if (!puedeInvitar(personaje, personajeTaberna)) {
+            return;
+        }
+
+        Session session= sessionFactory.getCurrentSession();
         String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna) sessionFactory.getCurrentSession()
-                .createQuery(hql)
+        Taberna registro = (Taberna)session.createQuery(hql)
                 .setParameter("personaje", personaje)
                 .setParameter("personajeTaberna", personajeTaberna)
                 .uniqueResult();
@@ -61,9 +67,9 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
 
     @Override
     public boolean puedeInvitar(Personaje personaje, PersonajeTaberna personajeTaberna) {
+        Session session= sessionFactory.getCurrentSession();
         String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna) sessionFactory.getCurrentSession()
-                .createQuery(hql)
+        Taberna registro = (Taberna) session.createQuery(hql)
                 .setParameter("personaje", personaje)
                 .setParameter("personajeTaberna", personajeTaberna)
                 .uniqueResult();
