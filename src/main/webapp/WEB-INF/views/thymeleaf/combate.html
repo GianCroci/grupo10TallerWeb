@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Combate en tiempo real</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+</head>
+<body class="container">
+
+<h1 class="text-center mt-4">Combate en Tiempo Real</h1>
+
+<div class="row mt-5">
+    <div class="col-md-6 text-center">
+        <h2>Tu personaje</h2>
+        <p id="nombre-jugador">Jugador</p>
+        <select id="accion" class="form-select w-75 mx-auto">
+            <option value="atacar">Atacar</option>
+            <option value="defender">Defender</option>
+            <option value="pocion">Usar Poción</option>
+        </select>
+        <button id="enviarAccion" class="btn btn-primary mt-3">Enviar Acción</button>
+    </div>
+    <div class="col-md-6 text-center">
+        <h2>Acción del Rival</h2>
+        <p id="accion-rival">Esperando...</p>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <p id="resultado-turno" class="fw-bold fs-4 text-success"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+    const socket = new SockJS('/wschat');
+    const stompClient = Stomp.over(socket);
+
+    let jugador = ${personaje.Nombre} 'jugador';
+    document.getElementById("nombre-jugador").innerText = jugador;
+
+    stompClient.connect({}, function () {
+        // Te unís a la cola de turnos
+        stompClient.send("/app/unirse", {}, jugador);
+
+        // Escuchás los mensajes
+        stompClient.subscribe("/user/" + jugador + "/queue/turno", function (mensaje) {
+            const data = JSON.parse(mensaje.body);
+            document.getElementById("accion-rival").innerText = data.accionRival;
+            document.getElementById("resultado-turno").innerText = data.resultado;
+        });
+    });
+
+    document.getElementById("enviarAccion").addEventListener("click", function () {
+        const accion = document.getElementById("accion").value;
+        stompClient.send("/app/accion", {}, JSON.stringify({
+            jugador: jugador,
+            accion: accion
+        }));
+    });
+</script>
+</body>
+</html>

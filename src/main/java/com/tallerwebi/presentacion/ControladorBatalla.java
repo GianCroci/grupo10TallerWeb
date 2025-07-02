@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.ServicioBatalla;
-import com.tallerwebi.dominio.ServicioPersonaje;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller
 public class ControladorBatalla {
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    private Queue<String> jugadoresEsperando = new LinkedList<>();
+    private Map<String, EstadoBatalla> batallas = new HashMap<>();
+    private List<String> accionesDisponibles = Arrays.asList("atacar", "defender", "poción");
 
     private ServicioPersonaje servicioPersonaje;
     private ServicioBatalla servicioBatalla;
@@ -73,5 +80,7 @@ public class ControladorBatalla {
 
         return new ModelAndView("batalla", modelMap);
     }
+
+
 
 }
