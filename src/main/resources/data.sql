@@ -40,20 +40,44 @@ INSERT INTO Equipamiento(
     costoCompra, costoMejora, costoVenta, nivel, equipado,
     personaje_id, rol_id, mercado_id, imagen
 ) VALUES
-      (10, 'Tunica azul', 0, 10, 5, 5, 50, 20, 100, 1, FALSE, null, 2, 2, 'img/tunica-azul.png'),
+      (10, 'Cinturon dorado', 5, 0, 10, 10, 30, 22, 250, 1, FALSE, null, 2, 2, 'img/cinturon-oro.png'),
       (11, 'Abrigo gris', 0, 0, 15, 5, 80, 25, 200, 1, FALSE, null, 2, 2, 'img/abrigo-gris.png'),
-      (12, 'Capucha de Sombras', 0, 12, 5, 10, 60, 15, 120, 1, FALSE, null, 2, 2, 'img/capucha-sombras.png'),
+      (12, 'Capucha Sombras', 0, 12, 5, 10, 60, 15, 120, 1, FALSE, null, 2, 2, 'img/capucha-sombras.png'),
       (13, 'Zapatos grises', 0, 0, 8, 20, 20, 20, 250, 1, FALSE, null, 2, 2, 'img/zapatos-gris.png'),
       (14, 'Zapatos reforzados', 0, 0, 12, 15, 50, 18, 100, 1, FALSE, null, 2, 2, 'img/zapatos-reforzados.png'),
-      (15, 'Cinturon dorado', 5, 0, 10, 10, 30, 22, 250, 1, FALSE, null, 2, 2, 'img/cinturon-oro.png');
+      (15, 'Tunica azul', 0, 10, 5, 5, 50, 20, 100, 1, FALSE, null, 2, 2, 'img/tunica-azul.png'),
+
+      (16, 'Chaleco oscuro', 4, 2, 9, 4, 55, 20, 130, 1, FALSE, null, 2, 2, 'img/chaleco-oscuro.png'),
+      (17, 'Capucha runica', 0, 10, 4, 3, 55, 15, 110, 1, FALSE, null, 2, 2, 'img/capucha-runica.png'),
+      (18, 'Mascara encapuchada', 2, 8, 5, 6, 60, 17, 120, 1, FALSE, null, 2, 2, 'img/mascara-encapuchada.png'),
+      (19, 'Botas sigilosas', 0, 0, 6, 25, 45, 17, 95, 1, FALSE, null, 2, 2, 'img/botas-sigilosas.png'),
+      (20, 'Pantalones de sombra', 0, 6, 8, 10, 55, 19, 115, 1, FALSE, null, 2, 2, 'img/pantalones-sombra.png'),
+      (21, 'Pantalones reforzados', 4, 0, 10, 6, 50, 18, 105, 1, FALSE, null, 2, 2, 'img/pantalones-reforzados.png'),
+      (22, 'Escudo de Hierro', 4, 0, 12, 2, 65, 20, 130, 1, FALSE, null, 1, 2, 'img/escudo-hierro.png'),
+      (23, 'Escudo Encantado', 0, 8, 10, 5, 70, 22, 140, 1, FALSE, null, 2, 2, 'img/escudo-encantado.png'),
+      (24, 'Escudo Ligero', 2, 0, 8, 8, 55, 18, 110, 1, FALSE, null, 3, 2, 'img/escudo-ligero.png');
 
 -- Subclases
 INSERT INTO Pechera(id) VALUES (10);
 INSERT INTO Pechera(id) VALUES (11);
+INSERT INTO Pechera(id) VALUES (16);
+
 INSERT INTO Casco(id) VALUES (12);
+INSERT INTO Casco(id) VALUES (17);
+INSERT INTO Casco(id) VALUES (18);
+
 INSERT INTO Botas(id) VALUES (13);
 INSERT INTO Botas(id) VALUES (14);
+INSERT INTO Botas(id) VALUES (19);
+
 INSERT INTO Pantalones(id) VALUES (15);
+INSERT INTO Pantalones(id) VALUES (20);
+INSERT INTO Pantalones(id) VALUES (21);
+
+INSERT INTO Escudo(id) VALUES (22);
+INSERT INTO Escudo(id) VALUES (23);
+INSERT INTO Escudo(id) VALUES (24);
+
 
 
 
