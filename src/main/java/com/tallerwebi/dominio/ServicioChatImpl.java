@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class ServicioChatImpl implements ServicioChat {
 
+    @Autowired
     private RepositorioMensaje repositorioMensaje;
 
-    @Autowired
     public ServicioChatImpl(RepositorioMensaje repositorioMensaje) {
         this.repositorioMensaje = repositorioMensaje;
     }
@@ -27,4 +27,3 @@ public class ServicioChatImpl implements ServicioChat {
         return repositorioMensaje.obtenerHistorial(usuario1, usuario2);
     }
 }
-

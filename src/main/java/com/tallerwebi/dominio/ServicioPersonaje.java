@@ -26,4 +26,5 @@ public interface ServicioPersonaje {
 
     Personaje crearPersonaje(String nombre, String genero, String imagen, Long idRol);
 
+    String obtenerCodigoAmigoPropio(Long idPersonaje);
 }

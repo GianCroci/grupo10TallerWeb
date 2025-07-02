@@ -6,16 +6,14 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
-@Repository("repositorioMensaje")
+@Repository
 public class RepositorioMensajeImpl implements RepositorioMensaje {
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
     public RepositorioMensajeImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -38,4 +36,3 @@ public class RepositorioMensajeImpl implements RepositorioMensaje {
                 .getResultList();
     }
 }
-
