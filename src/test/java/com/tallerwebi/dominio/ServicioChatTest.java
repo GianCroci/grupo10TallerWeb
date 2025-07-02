@@ -41,4 +41,6 @@ public class ServicioChatTest {
         // Ejecución
         verify(repoMensajeMock, times(1)).obtenerHistorial(usuario1, usuario2);
     }
+
 }
+
