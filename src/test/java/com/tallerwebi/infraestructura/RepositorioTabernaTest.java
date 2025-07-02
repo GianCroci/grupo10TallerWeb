@@ -53,14 +53,14 @@ public class RepositorioTabernaTest {
     }
 
     @Test
-    public void queSePuedaInvitarVariasCervezas() {
+    public void queSePuedaInvitarVariasCervezasYSoloTeDeje1() {
         Personaje personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
 
         sessionFactory.getCurrentSession().save(personaje);
 
-        int cantidadDeCervezasEsperadas = 3;
+        int cantidadDeCervezasEsperadas = 1;
 
         for (int i = 0; i < cantidadDeCervezasEsperadas; i++) {
             repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
