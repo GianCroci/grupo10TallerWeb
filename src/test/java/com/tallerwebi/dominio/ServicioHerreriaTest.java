@@ -105,8 +105,7 @@ public class ServicioHerreriaTest {
 
     @Test
     public void quePuedaObtenerElOroDelPersonaje() {
-        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(equipamientoMock);
-        when(servicioHerreria.obtenerOroDelPersonaje(anyLong())).thenReturn(50);
+        when(repositorioPersonaje.buscarOroPersonaje(idPersonajeMock)).thenReturn(50);
         Integer oroObtenido = servicioHerreria.obtenerOroDelPersonaje(idPersonajeMock);
         Integer oroEsperado = 50;
 
