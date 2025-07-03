@@ -105,6 +105,41 @@ public class RepositorioInventarioTest {
         assertThat(equipamientoObtenido.getNombre(), equalToIgnoringCase("baston"));
     }
 
+    @Test
+    public void queSePuedaAgregarUnEquipamiento() {
+        Equipamiento nuevoEquipamiento = new Arma();
+        nuevoEquipamiento.setNombre("Hacha");
+        nuevoEquipamiento.setPersonaje(personaje);
 
+        repositorioInventario.agregarEquipamiento(nuevoEquipamiento);
+
+        Equipamiento equipamientoObtenido = (Equipamiento) sessionFactory.getCurrentSession()
+                .createQuery("from Equipamiento where id = :id")
+                .setParameter("id", nuevoEquipamiento.getId())
+                .uniqueResult();
+
+        assertThat(equipamientoObtenido.getNombre(), equalToIgnoringCase("Hacha"));
+        assertThat(equipamientoObtenido.getPersonaje().getId(), is(idPersonaje1Mock));
+    }
+
+    @Test
+    public void queSePuedaObtenerEquipamientoPorIdYPersonaje() {
+        Equipamiento equipamientoObtenido = repositorioInventario.obtenerEquipoDePersonajePorId(idPersonaje1Mock, idEquipamientoMock);
+
+        assertThat(equipamientoObtenido, is(equipamiento2));
+        assertThat(equipamientoObtenido.getNombre(), equalToIgnoringCase("baston"));
+        assertThat(equipamientoObtenido.getPersonaje().getId(), is(idPersonaje1Mock));
+    }
+
+    @Test
+    public void queSePuedaModificarUnEquipamientoExistente() {
+        Equipamiento equipamientoAModificar = repositorioInventario.obtenerEquipamientoPorId(idEquipamientoMock);
+        equipamientoAModificar.setNombre("Espada de Fuego");
+
+        repositorioInventario.modificarEquipamiento(equipamientoAModificar);
+        Equipamiento equipamientoModificado = repositorioInventario.obtenerEquipamientoPorId(idEquipamientoMock);
+
+        assertThat(equipamientoModificado.getNombre(), equalToIgnoringCase("Espada de Fuego"));
+    }
 
 }
