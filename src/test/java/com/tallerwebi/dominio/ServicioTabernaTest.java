@@ -1,90 +1,149 @@
 package com.tallerwebi.dominio;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ServicioTabernaTest {
 
+    private ServicioTaberna servicioTaberna;
+
     private ServicioTaberna servicioTabernaMock;
 
-    private ServicioHerreria servicioHerreria;
+    private RepositorioTaberna repositorioTabernaMock;
 
-    private RepositorioInventario repositorioInventarioMock;
-
-    private ServicioInventario servicioInventarioMock;
-
-    private Taberna tabernaMock;
-
+    private Personaje personajeMock;
 
     @BeforeEach
     public void init() {
+        repositorioTabernaMock = mock(RepositorioTaberna.class);
         servicioTabernaMock = mock(ServicioTaberna.class);
-        repositorioInventarioMock = mock(RepositorioInventario.class);
-       // servicioHerreria = new ServicioHerreriaImpl(repositorioInventarioMock, servicioTabernaMock);
-        servicioInventarioMock = mock(ServicioInventario.class);
-        tabernaMock = mock(Taberna.class);
-
+        servicioTaberna = new ServicioTabernaImpl(repositorioTabernaMock);
+        personajeMock = mock(Personaje.class);
     }
 
-
-    /*
+/*-----------------------------------VALIDACION Y EJECUCION DE BENEFICIO----------------------------------------------*/
     @Test
-    public void queAlDar5TragosOMasAlMercaderTeHagaUnDescuentoDel20PorcientoAlComprar() {
-        // Aquí deberías implementar la lógica de prueba para verificar el descuento del 20%
-        // al comprar 5 tragos o más al herrero.
-        // Por ejemplo, podrías simular una compra y verificar que el precio final sea correcto.
-        when(servicioTaberna.getCervezasInvitadas(PersonajeTaberna.MERCADER)).thenReturn(5);
+    public void queAlDar5TragosOMasAlMercaderTeValideElBeneficio(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER)).thenReturn(5);
 
-    }
-    */
+        servicioTaberna.validarBeneficioMercader(personajeMock);
 
-    /*
-
-    @Test
-    public void queAlDar5TragosOMasAlHerreroTeDejeMejorarLasArmas(){
-
-        // Simulamos que el herrero ha recibido 5 tragos
-        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(5);
-
-
-        boolean sePuedeMejorar = servicioHerreria.sePuedeMejorar();
-
-        // Assert
-        assertTrue(sePuedeMejorar);
-        verify(servicioTabernaMock).getCervezasInvitadas(PersonajeTaberna.HERRERO);
+        assertTrue(servicioTaberna.validarBeneficioMercader(personajeMock));
     }
 
     @Test
-    public void queAlDarMenosDe5TragosAlHerreroNoDejeMejorarLasArmas(){
+    public void queAlDar5TragosOMasAlHerreroTeValideElBeneficio(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO)).thenReturn(5);
 
-        // Simulamos que el herrero ha recibido 4 tragos
-        when(servicioTabernaMock.getCervezasInvitadas(PersonajeTaberna.HERRERO)).thenReturn(4);
+        servicioTaberna.validarBeneficioHerrero(personajeMock);
 
+        assertTrue(servicioTaberna.validarBeneficioHerrero(personajeMock));
+    }
 
-        assertThrows(IllegalArgumentException.class, () -> {
-           servicioHerreria.sePuedeMejorar();
+    @Test
+    public void queAlDar5TragosOMasAlGuardiaTeValideElBeneficio(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA)).thenReturn(5);
+
+        servicioTaberna.validarBeneficioGuardia(personajeMock);
+
+        assertTrue(servicioTaberna.validarBeneficioGuardia(personajeMock));
+    }
+
+    @Test
+    public void queAlValidarElBeneficioDelMercaderObtengas100DeOro(){
+        Personaje personajePrueba= new Personaje();
+        personajePrueba.setOro(0);
+
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.MERCADER)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioMercader(personajePrueba)).thenReturn(true);
+
+        int oroEsperado= 100;
+
+        servicioTaberna.obtenerBeneficioMercader(personajePrueba);
+
+        int oroFinal = personajePrueba.getOro();
+
+        assertEquals(oroEsperado,oroFinal);
+
+    }
+
+    @Test
+    public void queNoValideQueSeInvito5TragosAlMercaderYTireException(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER)).thenReturn(4);
+
+        assertThrows(IllegalStateException.class, () -> {
+            servicioTaberna.obtenerBeneficioMercader(personajeMock);
         });
-        verify(servicioTabernaMock).getCervezasInvitadas(PersonajeTaberna.HERRERO);
+
+        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER);
     }
 
-    /*
     @Test
-    public void queAlDarAlMenos5TragosAlGuardiaTeDeUnArmaEspecial() {
+    public void queAlDar5TragosOMasAlHerreroTeMejoreLasEstadisticasDeInteligenciaYDeFuerza(){
+        Personaje personajePrueba= new Personaje();
+        personajePrueba.setEstadisticas(new Estadisticas());
+        personajePrueba.getEstadisticas().setFuerza(0);
+        personajePrueba.getEstadisticas().setInteligencia(0);
+        int fuerzaEsperada = 10;
+        int inteligenciaEsperada = 10;
 
-            // Simulamos que el guardia recibió 5 tragos
-            when(tabernaMock.getCantidadCervezasInvitadas(PersonajeTaberna.GUARDIA)).thenReturn(5);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.HERRERO)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioHerrero(personajePrueba)).thenReturn(true);
 
-             ServicioTabernaImpl servicioTaberna = new ServicioTabernaImpl();
+        servicioTaberna.obtenerBeneficioHerrero(personajePrueba);
 
-            servicioTaberna.obtenerBeneficio();
-
-            verify(servicioInventarioMock).darArmaEspecial();
-            verify(tabernaMock).getCantidadCervezasInvitadas(PersonajeTaberna.GUARDIA);
-        }
-
-
-     */
+        assertEquals(fuerzaEsperada, personajePrueba.getEstadisticas().getFuerza());
+        assertEquals(inteligenciaEsperada, personajePrueba.getEstadisticas().getInteligencia());
 
     }
+
+    @Test
+    public void queNoValideQueSeInvito5TragosAlHerreroYTireException(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO)).thenReturn(4);
+
+        assertThrows(IllegalStateException.class, () -> {
+            servicioTaberna.obtenerBeneficioHerrero(personajeMock);
+        });
+
+        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO);
+    }
+
+
+    @Test
+    public void queAlDar5TragosOMasAlGuardiaTeRegaleUnArma(){
+        Personaje personajePrueba= new Personaje();
+        personajePrueba.setEquipamientos(new ArrayList<>());
+
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.GUARDIA)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioGuardia(personajePrueba)).thenReturn(true);
+
+        int cantidadDeObjetosEsperada = 1;
+
+        servicioTaberna.obtenerBeneficioGuardia(personajePrueba);
+
+        int cantidadDeObjetosFinal = personajePrueba.getEquipamientos().size();
+
+        assertEquals(cantidadDeObjetosEsperada,cantidadDeObjetosFinal);
+
+    }
+
+    @Test
+    public void queAlDarMenosDe5TragosAlGuardiaTireException(){
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA)).thenReturn(4);
+
+        assertThrows(IllegalStateException.class, () -> {
+            servicioTaberna.obtenerBeneficioGuardia(personajeMock);
+        });
+
+        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA);
+    }
+
+
+}
 

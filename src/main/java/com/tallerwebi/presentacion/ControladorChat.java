@@ -1,6 +1,8 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Mensaje;
 import com.tallerwebi.dominio.Personaje;
+import com.tallerwebi.dominio.ServicioChat;
 import com.tallerwebi.dominio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +20,14 @@ public class ControladorChat {
 
     @Autowired
     private ServicioPersonaje servicioPersonaje;
+    private ServicioChat servicioChat;
 
 
-    public ControladorChat(ServicioPersonaje servicioPersonaje) {
+    public ControladorChat(ServicioPersonaje servicioPersonaje, ServicioChat servicioChat) {
         this.servicioPersonaje = servicioPersonaje;
+        this.servicioChat = servicioChat;
 
     }
-
 
     @RequestMapping(path = "/chat/{idAmigo}", method = RequestMethod.GET)
     public ModelAndView chatearConAmigo(HttpSession session, @PathVariable Long idAmigo) {
@@ -37,13 +40,15 @@ public class ControladorChat {
         Personaje yo = servicioPersonaje.buscarPersonaje(idPersonaje);
         Personaje amigo = servicioPersonaje.buscarPersonaje(idAmigo);
 
+        List<Mensaje> historial = servicioChat.obtenerHistorial(yo.getNombre(), amigo.getNombre());
 
         ModelMap model = new ModelMap();
         model.put("usuario", yo.getNombre());
         model.put("destinatario", amigo.getNombre());
-        //model.put("historial", List.of());
+        model.put("historial", historial);
 
         return new ModelAndView("sala-chat", model);
     }
+
 
 }

@@ -1,19 +1,15 @@
 package com.tallerwebi.presentacion;
 
 
-import com.tallerwebi.dominio.PersonajeTaberna;
-import com.tallerwebi.dominio.ServicioTaberna;
-import com.tallerwebi.dominio.Taberna;
+import com.tallerwebi.dominio.*;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,17 +28,18 @@ public class ControladorTaberna {
 
     //muestra la vista de la taberna
     @GetMapping("/taberna")
-    public ModelAndView mostrarTaberna() {
+    public ModelAndView mostrarTaberna(Personaje personaje) {
         ModelMap modelMap = new ModelMap();
+
         //Personajes disponibles
         PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
+
         //Imagen del personaje
         String imagenParcial = servicioTaberna.obtenerVistaSegunPersonaje(personajeDisponible);
+
         //Cantidad de cervezas invitadas por cada personaje
-        Map<PersonajeTaberna, Integer> personajes = new HashMap<>();
-        for (PersonajeTaberna personaje : PersonajeTaberna.values()) {
-            personajes.put(personaje, servicioTaberna.getCervezasInvitadas(personaje));
-        }
+        Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(personaje);
+
 
         modelMap.put("personajeDisponible", personajeDisponible);
         modelMap.put("imagenParcial", imagenParcial);
@@ -54,7 +51,7 @@ public class ControladorTaberna {
 
 
     @PostMapping("/invitarTrago")
-    public ModelAndView invitarTrago(@RequestParam("personaje") String personajeInvitacion) {
+    public ModelAndView invitarTrago(@ModelAttribute("personaje") Personaje personaje, @RequestParam("personaje") String personajeInvitacion) {
         ModelMap modelMap = new ModelMap();
 
         PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
@@ -65,11 +62,17 @@ public class ControladorTaberna {
             PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personajeInvitacion);
 
             if (personajeEnum.equals(personajeDisponible)) {
-                servicioTaberna.invitarTrago(personajeEnum);
-                modelMap.put("mensaje", "Has invitado un trago a " + personajeEnum.name() + ". Total de cervezas invitadas:" + servicioTaberna.getCervezasInvitadas(personajeEnum));
+                if (servicioTaberna.puedeInvitar(personaje, personajeEnum)) {
+                    servicioTaberna.invitarCerveza(personaje, personajeEnum);
+                    int cantidad = servicioTaberna.getCantidadCervezasInvitadas(personaje, personajeEnum);
+                    modelMap.put("mensaje", "Has invitado un trago a " + personajeEnum.name() + ". Total de cervezas invitadas: " + cantidad);
+                } else {
+                    modelMap.put("mensaje", "Ya se invitó a este personaje hoy.");
+                }
             } else {
                 modelMap.put("mensaje", "No puedes invitar un trago a " + personajeEnum.name() + " en este momento.");
             }
+
 
         } catch (IllegalArgumentException e) {
             String mensaje = e.getMessage();
@@ -80,13 +83,11 @@ public class ControladorTaberna {
             }
         }
 
-        Map<PersonajeTaberna, Integer> personajes = new HashMap<>();
+        Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(personaje);
 
-        for (PersonajeTaberna personaje : PersonajeTaberna.values()) {
-            personajes.put(personaje, servicioTaberna.getCervezasInvitadas(personaje));
-        }
 
         String vistaParcial = servicioTaberna.mostrarTaberna();
+
         modelMap.put("vistaParcial", vistaParcial);
         modelMap.put("imagenParcial", imagenParcial);
         modelMap.put("personajeDisponible", personajeDisponible);
@@ -96,6 +97,11 @@ public class ControladorTaberna {
         return new ModelAndView("taberna", modelMap);
     }
 
+
+    @ModelAttribute("personaje")
+    public Personaje obtenerPersonajeActivo(HttpSession session) {
+        return (Personaje) session.getAttribute("personaje");
+    }
 
 
 }
