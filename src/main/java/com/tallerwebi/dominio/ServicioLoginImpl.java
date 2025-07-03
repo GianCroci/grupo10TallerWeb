@@ -29,6 +29,9 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     @Override
     public void registrar(Usuario usuario) throws UsuarioExistente {
+        if (repositorioUsuario.buscar(usuario.getEmail()) != null) {
+            throw new UsuarioExistente("El usuario con ese email ya existe");
+        }
         repositorioUsuario.guardar(usuario);
     }
 
