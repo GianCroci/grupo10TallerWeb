@@ -56,9 +56,6 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
         return oroPersonaje;
     }
-
-
-
 }
 
 
