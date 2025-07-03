@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class SolicitudAmistad {
@@ -35,4 +36,16 @@ public class SolicitudAmistad {
     public EstadoSolicitud getEstado() { return estado; }
 
     public void setEstado(EstadoSolicitud estado) { this.estado = estado; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SolicitudAmistad that = (SolicitudAmistad) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
