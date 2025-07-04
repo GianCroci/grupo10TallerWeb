@@ -21,7 +21,7 @@ INSERT INTO Equipamiento(
     personaje_id, rol_id, imagen
 ) VALUES
       ('Espada', 10, 0, 0, 0, 50, 20, 30, 0, FALSE, 1, 1, 'img/espada.png'),
-      ('Bastón', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/bastón.png'),
+      ('Bastón', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/baston.png'),
       ('Daga', 4, 0, 0, 10, 35, 10, 20, 0, FALSE, 1, 3, 'img/daga.png'),
       ('Casco', 0, 0, 5, 0, 35, 10, 20, 0, FALSE, 1, 1, 'img/casco.png');
 
@@ -77,17 +77,3 @@ INSERT INTO Pantalones(id) VALUES (21);
 INSERT INTO Escudo(id) VALUES (22);
 INSERT INTO Escudo(id) VALUES (23);
 INSERT INTO Escudo(id) VALUES (24);
-
-
-
-
-----Tabla de taberna---
-CREATE TABLE IF NOT EXISTS taberna (
-                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                         id_personaje BIGINT NOT NULL,
-                         personaje_taberna VARCHAR(50) NOT NULL,
-                         cervezas_invitadas INT NOT NULL,
-                         ultima_invitacion DATE,
-                         CONSTRAINT unique_personaje_taberna UNIQUE (id_personaje, personaje_taberna),
-                         CONSTRAINT fk_taberna_personaje FOREIGN KEY (id_personaje) REFERENCES personaje(id)
-);

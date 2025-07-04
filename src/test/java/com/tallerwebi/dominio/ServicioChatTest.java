@@ -1,5 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Mensaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMensaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

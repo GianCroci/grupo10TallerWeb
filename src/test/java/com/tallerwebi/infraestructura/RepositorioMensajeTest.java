@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Mensaje;
-import com.tallerwebi.dominio.RepositorioMensaje;
+import com.tallerwebi.dominio.entidad.Mensaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMensaje;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

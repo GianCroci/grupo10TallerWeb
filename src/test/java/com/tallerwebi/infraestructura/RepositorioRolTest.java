@@ -1,6 +1,10 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Bandido;
+import com.tallerwebi.dominio.entidad.Guerrero;
+import com.tallerwebi.dominio.entidad.Mago;
+import com.tallerwebi.dominio.entidad.Rol;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioRol;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

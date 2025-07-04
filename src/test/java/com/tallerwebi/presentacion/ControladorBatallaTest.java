@@ -1,7 +1,11 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;

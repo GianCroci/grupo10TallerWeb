@@ -1,11 +1,10 @@
 package com.tallerwebi.presentacion;
 
 
-import com.tallerwebi.dominio.Mensaje;
+import com.tallerwebi.dominio.entidad.Mensaje;
 import com.tallerwebi.dominio.MensajeRecibido;
 import com.tallerwebi.dominio.MensajeEnviado;
-import com.tallerwebi.dominio.ServicioChat;
-import com.tallerwebi.presentacion.ControladorWebSocket;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

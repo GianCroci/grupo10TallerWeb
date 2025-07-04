@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.RepositorioRol;
-import com.tallerwebi.dominio.Rol;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioRol;
+import com.tallerwebi.dominio.entidad.Rol;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

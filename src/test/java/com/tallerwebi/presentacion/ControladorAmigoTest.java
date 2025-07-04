@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Arma;
-import com.tallerwebi.dominio.ServicioAmigo;
-import com.tallerwebi.dominio.ServicioHerreria;
-import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioAmigo;
 import com.tallerwebi.dominio.excepcion.PersonajeInvalidoException;
 import com.tallerwebi.dominio.excepcion.SolicitudInvalidaException;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,10 +1,13 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.SolicitudAmistad;
 import com.tallerwebi.dominio.excepcion.PersonajeInvalidoException;
 import com.tallerwebi.dominio.excepcion.SolicitudInvalidaException;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioSolicitudAmistad;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioAmigo;
 import com.tallerwebi.presentacion.AmigoDTO;
-import com.tallerwebi.presentacion.MejoraDto;
 import com.tallerwebi.presentacion.SolicitudAmistadDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

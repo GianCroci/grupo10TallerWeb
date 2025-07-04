@@ -1,5 +1,10 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.Rol;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioRol;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,10 +93,5 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
         personajeCreado.inicializarCodigoAmigo();
         repositorioPersonaje.guardar(personajeCreado);
         return personajeCreado;
-    }
-
-    @Override
-    public String obtenerCodigoAmigoPropio(Long idPersonaje) {
-        return repositorioPersonaje.obtenerCodigoAmigoPropio(idPersonaje);
     }
 }

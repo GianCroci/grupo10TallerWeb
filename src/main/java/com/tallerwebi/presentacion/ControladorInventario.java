@@ -1,7 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Equipamiento;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioInventario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

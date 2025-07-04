@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.ServicioPersonaje;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
