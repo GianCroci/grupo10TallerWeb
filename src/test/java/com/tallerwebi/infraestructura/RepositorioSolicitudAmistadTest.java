@@ -1,6 +1,9 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.SolicitudAmistad;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioSolicitudAmistad;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

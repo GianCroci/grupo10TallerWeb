@@ -1,9 +1,8 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.EstadoSolicitud;
-import com.tallerwebi.dominio.Personaje;
-import com.tallerwebi.dominio.RepositorioSolicitudAmistad;
-import com.tallerwebi.dominio.SolicitudAmistad;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioSolicitudAmistad;
+import com.tallerwebi.dominio.entidad.SolicitudAmistad;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

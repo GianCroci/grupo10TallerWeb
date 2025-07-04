@@ -1,11 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.excepcion.AmigoInexistenteException;
-import com.tallerwebi.dominio.excepcion.PersonajeInexistenteException;
 import com.tallerwebi.dominio.excepcion.PersonajeInvalidoException;
 import com.tallerwebi.dominio.excepcion.SolicitudInvalidaException;
-import com.tallerwebi.infraestructura.RepositorioPersonajeImpl;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioAmigo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -94,6 +91,4 @@ public class ControladorAmigo {
 
         return new ModelAndView("redirect:/amigos");
     }
-
-
 }

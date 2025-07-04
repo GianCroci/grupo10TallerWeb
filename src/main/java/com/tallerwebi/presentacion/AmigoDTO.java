@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Personaje;
+import com.tallerwebi.dominio.entidad.Personaje;
 
 public class AmigoDTO {
 

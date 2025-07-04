@@ -1,10 +1,12 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioTaberna;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

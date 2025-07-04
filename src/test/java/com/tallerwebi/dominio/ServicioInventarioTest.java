@@ -1,9 +1,15 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.Arma;
+import com.tallerwebi.dominio.entidad.Rol;
+import com.tallerwebi.dominio.entidad.Guerrero;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioInventario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 

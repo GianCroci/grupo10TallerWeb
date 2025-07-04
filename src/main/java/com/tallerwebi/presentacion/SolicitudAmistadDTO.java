@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.SolicitudAmistad;
+import com.tallerwebi.dominio.entidad.SolicitudAmistad;
 
 public class SolicitudAmistadDTO {
 

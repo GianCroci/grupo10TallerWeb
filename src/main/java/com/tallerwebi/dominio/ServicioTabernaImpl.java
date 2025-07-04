@@ -1,6 +1,10 @@
 package com.tallerwebi.dominio;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tallerwebi.dominio.entidad.Arma;
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioTaberna;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;

@@ -1,6 +1,9 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.stereotype.Service;
 
 @Service

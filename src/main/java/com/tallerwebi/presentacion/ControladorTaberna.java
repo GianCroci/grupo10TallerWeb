@@ -2,15 +2,16 @@ package com.tallerwebi.presentacion;
 
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.Taberna;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller

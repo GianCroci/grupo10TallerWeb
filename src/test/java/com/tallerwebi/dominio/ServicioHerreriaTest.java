@@ -1,8 +1,14 @@
 package com.tallerwebi.dominio;
 
+
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioHerreria;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import com.tallerwebi.presentacion.MejoraDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Personaje;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.PersonajeTaberna;
-import com.tallerwebi.dominio.RepositorioTaberna;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioTaberna;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;

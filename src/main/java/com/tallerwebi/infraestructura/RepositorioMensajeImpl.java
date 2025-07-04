@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Mensaje;
-import com.tallerwebi.dominio.RepositorioMensaje;
+import com.tallerwebi.dominio.entidad.Mensaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMensaje;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.ServicioHerreria;
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioHerreria;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -57,8 +56,6 @@ public class ControladorHerreria {
 
     @RequestMapping(path = "/mejorar-equipamiento", method = RequestMethod.POST)
     public ModelAndView mejorarEquipamiento(@ModelAttribute("mejoraDto") MejoraDto mejoraDto, HttpSession session, RedirectAttributes redirectAttributes) {
-
-        ModelMap model = new ModelMap();
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         try {
             servicioHerreria.mejorarEquipamiento(mejoraDto.getIdEquipamiento(), mejoraDto.getOroUsuario(), idPersonaje);
@@ -67,25 +64,8 @@ public class ControladorHerreria {
         } catch (NivelDeEquipamientoMaximoException | OroInsuficienteException e) {
             redirectAttributes.addFlashAttribute("estadoMejora", e.getMessage());
             redirectAttributes.addFlashAttribute("tipoEstadoMejora", "danger");
-            return new ModelAndView("redirect:/herreria", model);
         }
 
-        return new ModelAndView("redirect:/herreria", model);
+        return new ModelAndView("redirect:/herreria");
     }
 }
-
-
-/*
-<input type="hidden" th:field="*{equipamiento.id}" th:value="${equipamientoActual.id}"/>
-                <input type="hidden" th:field="*{equipamiento.nombre}" th:value="${equipamientoActual.nombre}"/>
-                <input type="hidden" th:field="*{equipamiento.fuerza}" th:value="${equipamientoActual.fuerza}"/>
-                <input type="hidden" th:field="*{equipamiento.armadura}" th:value="${equipamientoActual.armadura}"/>
-                <input type="hidden" th:field="*{equipamiento.inteligencia}" th:value="${equipamientoActual.inteligencia}"/>
-                <input type="hidden" th:field="*{equipamiento.agilidad}" th:value="${equipamientoActual.agilidad}" />
-                <input type="hidden" th:field="*{equipamiento.costoMejora}" th:value="${equipamientoActual.costoMejora}"/>
-                <input type="hidden" th:field="*{equipamiento.costoCompra}" th:value="${equipamientoActual.costoCompra}"/>
-                <input type="hidden" th:field="*{equipamiento.costoVenta}" th:value="${equipamientoActual.costoVenta}"/>
-                <input type="hidden" th:field="*{equipamiento.equipado}" th:value="${equipamientoActual.equipado}"/>
-                <input type="hidden" th:field="*{oroUsuario}" th:value="1000.0" />
-
- */

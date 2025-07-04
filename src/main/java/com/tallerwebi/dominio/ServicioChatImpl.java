@@ -1,5 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Mensaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMensaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

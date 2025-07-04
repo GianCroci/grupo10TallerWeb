@@ -1,9 +1,9 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Mensaje;
+import com.tallerwebi.dominio.entidad.Mensaje;
 import com.tallerwebi.dominio.MensajeEnviado;
 import com.tallerwebi.dominio.MensajeRecibido;
-import com.tallerwebi.dominio.ServicioChat;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
