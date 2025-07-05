@@ -213,16 +213,16 @@ public class ServicioPersonajeTest {
         when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Guerrero());
         Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
 
-        Integer fuerzaEsperada = 100;
+        Integer fuerzaEsperada = 30;
         Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
 
-        Integer inteligenciaEsperada = 20;
+        Integer inteligenciaEsperada = 0;
         Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
 
-        Integer armaduraEsperada = 80;
+        Integer armaduraEsperada = 15;
         Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
 
-        Integer agilidadEsperada = 60;
+        Integer agilidadEsperada = 5;
         Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
 
         assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));
@@ -243,16 +243,16 @@ public class ServicioPersonajeTest {
         when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Mago());
         Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
 
-        Integer fuerzaEsperada = 30;
+        Integer fuerzaEsperada = 0;
         Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
 
-        Integer inteligenciaEsperada = 100;
+        Integer inteligenciaEsperada = 30;
         Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
 
-        Integer armaduraEsperada = 20;
+        Integer armaduraEsperada = 10;
         Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
 
-        Integer agilidadEsperada = 40;
+        Integer agilidadEsperada = 10;
         Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
 
         assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));
@@ -273,16 +273,16 @@ public class ServicioPersonajeTest {
         when(repositorioRolMock.obtenerRolPorId(idRol)).thenReturn(new Bandido());
         Personaje personajeCreado = servicioPersonaje.crearPersonaje(nombre, genero, imagen, idRol);
 
-        Integer fuerzaEsperada = 50;
+        Integer fuerzaEsperada = 10;
         Integer fuerzaObtenida = personajeCreado.getEstadisticas().getFuerza();
 
-        Integer inteligenciaEsperada = 70;
+        Integer inteligenciaEsperada = 5;
         Integer inteligenciaObtenida = personajeCreado.getEstadisticas().getInteligencia();
 
-        Integer armaduraEsperada = 30;
+        Integer armaduraEsperada = 5;
         Integer armaduraObtenida = personajeCreado.getEstadisticas().getArmadura();
 
-        Integer agilidadEsperada = 100;
+        Integer agilidadEsperada = 30;
         Integer agilidadObtenida = personajeCreado.getEstadisticas().getAgilidad();
 
         assertThat(fuerzaEsperada, equalTo(fuerzaObtenida));

@@ -2,6 +2,10 @@ package com.tallerwebi.dominio.interfaz.servicio;
 
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
+import com.tallerwebi.presentacion.BatallaDTO;
+import com.tallerwebi.presentacion.EnemigoDTO;
+
+import java.util.List;
 
 public interface ServicioBatalla {
     Personaje buscarRival(Long idPersonaje) throws RivalNoEncontrado;
@@ -9,4 +13,8 @@ public interface ServicioBatalla {
     void atacarRival(Personaje personaje, Personaje rival);
 
     String getResultado();
+
+    List<EnemigoDTO> buscarEnemigosParaTablon();
+
+    BatallaDTO comenzarBatalla(Long idPersonaje, Long idEnemigo);
 }

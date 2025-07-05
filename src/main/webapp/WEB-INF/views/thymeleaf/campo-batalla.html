@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Batalla</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'MedievalSharp', cursive;
+            background-size: cover;
+            color: #f5e9c3;
+        }
+
+        .battle-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .character {
+            flex: 1;
+            text-align: center;
+        }
+
+        .character h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            color: #ffd700;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+        .character .level {
+            font-weight: bold;
+            color: #ffa500;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+        .health-bar {
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px auto 15px;
+            width: 70%;
+            border: 2px solid #555;
+        }
+
+        .health-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(to right, #ff0000, #a80000);
+        }
+
+        .character img {
+            width: 300px;       /* Aumentamos el tamaño */
+            height: 300px;
+            object-fit: contain; /* Muestra toda la imagen sin recortar */
+            border: none;
+            box-shadow: none;
+        }
+
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .action-buttons button {
+            background-color: #8b0000;
+            color: #fff8dc;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.1em;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #a52a2a;
+        }
+    </style>
+</head>
+<body th:style="'background-image: url(' + @{${batallaDTO.imagenFondo}} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
+<header th:replace="navbar :: nav"></header>
+<div class="overlay">
+    <div class="battle-area">
+        <!-- Jugador -->
+        <div class="character">
+            <h2 th:text="${batallaDTO.nombrePersonaje}"></h2>
+            <div class="level" th:text="'Nivel: ' + ${batallaDTO.nivelPersonaje}"></div>
+            <div class="health-bar">
+                <div class="health-fill" id="player-health"></div>
+            </div>
+            <img th:src="${batallaDTO.imagenPersonaje}" th:alt="${batallaDTO.nombrePersonaje}">
+        </div>
+
+        <!-- Enemigo -->
+        <div class="character">
+            <h2 th:text="${batallaDTO.nombreEnemigo}"></h2>
+            <div class="level" th:text="'Nivel: ' + ${batallaDTO.nivelEnemigo}"></div>
+            <div class="health-bar">
+                <div class="health-fill" id="enemy-health"></div>
+            </div>
+            <img th:src="${batallaDTO.imagenEnemigo}" th:alt="${batallaDTO.nombreEnemigo}">
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+        <button>⚔️ Golpe</button>
+        <button>✨ Magia</button>
+        <button>🛡️ Defender</button>
+        <button>💨 Esquivar</button>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const vidaActualPersonaje = /*[[${batallaDTO.vidaActualPersonaje}]]*/ 0;
+    const vidaTotalPersonaje = /*[[${batallaDTO.vidaTotalPersonaje}]]*/ 100;
+
+    const porcentajeVidaPersonaje = (vidaActualPersonaje / vidaTotalPersonaje) * 100;
+    document.getElementById("player-health").style.width = porcentajeVidaPersonaje + "%";
+
+    const vidaActualEnemigo = /*[[${batallaDTO.vidaActualEnemigo}]]*/ 0;
+    const vidaTotalEnemigo = /*[[${batallaDTO.vidaTotalEnemigo}]]*/ 100;
+
+    const porcentajeVidaEnemigo = (vidaActualEnemigo / vidaTotalEnemigo) * 100;
+    document.getElementById("enemy-health").style.width = porcentajeVidaEnemigo + "%";
+    /*]]>*/
+</script>
+</body>
+</html>

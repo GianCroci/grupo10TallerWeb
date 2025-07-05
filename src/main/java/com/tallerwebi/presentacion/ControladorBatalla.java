@@ -7,12 +7,13 @@ import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ControladorBatalla {
@@ -72,4 +73,38 @@ public class ControladorBatalla {
         return new ModelAndView("batalla", modelMap);
     }
 
+    @RequestMapping("/tablon-enemigos")
+    public ModelAndView irATablonEnemigos(HttpSession session, RedirectAttributes redirectAttributes) {
+
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        if (idPersonaje == null) {
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista tablon de enemigos sin haber iniciado sesion");
+            return new ModelAndView("redirect:/login");
+        }
+
+
+        ModelMap model = new ModelMap();
+
+        List<EnemigoDTO> enemigosDTO = servicioBatalla.buscarEnemigosParaTablon();
+
+        model.put("enemigos", enemigosDTO);
+
+        return new ModelAndView("tablon-enemigos", model);
+    }
+
+    @RequestMapping(path = "/comenzar-batalla", method = RequestMethod.POST)
+    public ModelAndView comenzarBatalla(@RequestParam Long idEnemigo, HttpSession session) {
+
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+
+        ModelMap model = new ModelMap();
+        BatallaDTO batallaDTO = servicioBatalla.comenzarBatalla(idPersonaje, idEnemigo);
+        model.put("batallaDTO", batallaDTO);
+        return new ModelAndView("campo-batalla", model);
+    }
+
+    @RequestMapping("/campobatalla")
+    public ModelAndView a() {
+        return new ModelAndView("campo-batalla");
+    }
 }

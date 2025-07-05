@@ -7,8 +7,8 @@ INSERT INTO Mago(id) VALUES (2);
 INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
-INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo)
-VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01');
+INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo, nivel, vida)
+VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01', 26, 390);
 
 -- Insertar un usuario asociado al personaje (ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
@@ -77,3 +77,12 @@ INSERT INTO Pantalones(id) VALUES (21);
 INSERT INTO Escudo(id) VALUES (22);
 INSERT INTO Escudo(id) VALUES (23);
 INSERT INTO Escudo(id) VALUES (24);
+
+INSERT INTO Enemigo(id, nombre, descripcion, imagenEnemigo, imagenFondo, fuerza, inteligencia, armadura, agilidad, nivel, vida)
+VALUES (1, 'Slime', 'Baboso', 'img/slime.png', 'img/calabozo.png', 20, 5, 15, 15, 5, 75),
+(2, 'Lobo', 'Auuuuu', 'img/lobo.png', 'img/bosque.png', 40, 40, 10, 60, 15, 225),
+(3, 'Trol', 'Trolaso', 'img/trol.png', 'img/caverna.png', 250, 0, 150, 100, 50, 750);
+
+INSERT INTO Slime (id) VALUES (1);
+INSERT INTO Lobo (id) VALUES (2);
+INSERT INTO Trol (id) VALUES (3);

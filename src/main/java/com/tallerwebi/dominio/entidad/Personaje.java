@@ -21,6 +21,8 @@ public class Personaje {
     private Rol rol;
     @Embedded
     private Estadisticas estadisticas;
+    private Integer nivel;
+    private Integer vida;
     private String imagen;
     private Integer oro;
     @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -86,8 +88,17 @@ public class Personaje {
 
     public void setAmigos(List<Personaje> amigos) { this.amigos = amigos; }
 
+    public Integer getNivel() { return nivel; }
+
+    public void setNivel(Integer nivel) { this.nivel = nivel; }
+
+    public Integer getVida() { return vida; }
+
+    public void setVida(Integer vida) { this.vida = vida; }
+
     public void aplicarEstadisticasBase() {
         getRol().aplicarStatsBase(this);
+
     }
 
     public void inicializarCodigoAmigo() {
@@ -104,5 +115,21 @@ public class Personaje {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public void calcularNivel() {
+        Integer sumaEstadisticas = obtenerTotalEstadisticas();
+        this.nivel = sumaEstadisticas / 10;
+    }
+
+    private Integer obtenerTotalEstadisticas() {
+        return this.estadisticas.getAgilidad()
+                + this.estadisticas.getInteligencia()
+                + this.estadisticas.getArmadura()
+                + this.estadisticas.getFuerza();
+    }
+
+    public void calcularVida() {
+        this.vida = this.nivel * 15;
     }
 }

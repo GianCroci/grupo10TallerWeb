@@ -43,9 +43,9 @@ public class Bandido extends Rol {
 
     @Override
     public void aplicarStatsBase(Personaje personaje) {
-        personaje.getEstadisticas().setFuerza(50);
-        personaje.getEstadisticas().setArmadura(30);
-        personaje.getEstadisticas().setAgilidad(100);
-        personaje.getEstadisticas().setInteligencia(70);
+        personaje.getEstadisticas().setFuerza(10);
+        personaje.getEstadisticas().setArmadura(5);
+        personaje.getEstadisticas().setAgilidad(30);
+        personaje.getEstadisticas().setInteligencia(5);
     }
 }
