@@ -5,13 +5,13 @@ import java.util.Map;
 
 public interface ServicioTaberna {
 
-    void invitarCerveza(Personaje personaje, PersonajeTaberna personajeTaberna);
+    void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    boolean puedeInvitar(Personaje personaje, PersonajeTaberna personajeTaberna);
+    boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    int getCantidadCervezasInvitadas(Personaje personaje, PersonajeTaberna personajeTaberna);
+    int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    Map<PersonajeTaberna, Integer> obtenerCervezasInvitadasPorPersonaje(Personaje personaje);
+    Map<PersonajeTaberna, Integer> obtenerCervezasInvitadasPorPersonaje(Long idPersonaje);
 
     String mostrarTaberna();
 
@@ -21,15 +21,17 @@ public interface ServicioTaberna {
 
     PersonajeTaberna obtenerPersonajeDisponible();
 
-    void obtenerBeneficioMercader(Personaje personaje);
 
-    boolean validarBeneficioMercader(Personaje personaje);
-    boolean validarBeneficioHerrero(Personaje personaje);
-    boolean validarBeneficioGuardia(Personaje personaje);
 
-    boolean obtenerBeneficioHerrero(Personaje personaje);
+    boolean validarBeneficioMercader(Long idPersonaje);
+    boolean validarBeneficioHerrero(Long idPersonaje);
+    boolean validarBeneficioGuardia(Long idPersonaje);
+    void obtenerBeneficioMercader(Long idPersonaje);
+    boolean obtenerBeneficioHerrero(Long idPersonaje);
 
-    boolean obtenerBeneficioGuardia(Personaje personaje);
+    boolean obtenerBeneficioGuardia(Long idPersonaje);
 
-    void mejorarEstadisticas(Personaje personaje);
+    void mejorarEstadisticas(Long idPersonaje);
+
+
 }

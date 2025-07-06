@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.RepositorioTaberna;
 import com.tallerwebi.dominio.Taberna;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -23,13 +24,13 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
     }
 
     @Override
-    public int getCantidadCervezasInvitadas(Personaje personaje, PersonajeTaberna personajeTaberna) {
+    public int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+
         Session session= sessionFactory.getCurrentSession();
 
-        String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna) session.createQuery(hql)
-                .setParameter("personaje", personaje)
-                .setParameter("personajeTaberna", personajeTaberna)
+        Taberna registro = (Taberna) session.createCriteria(Taberna.class)
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .add(Restrictions.eq("personajeTaberna", personajeTaberna))
                 .uniqueResult();
 
         return registro != null ? registro.getCervezasInvitadas() : 0;
@@ -37,47 +38,54 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
 
 
     @Override
-    public void invitarCerveza(Personaje personaje, PersonajeTaberna personajeTaberna) {
-        if (!puedeInvitar(personaje, personajeTaberna)) {
-            return;
-        }
+    public void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+        Session session = sessionFactory.getCurrentSession();
 
-        Session session= sessionFactory.getCurrentSession();
-        String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna)session.createQuery(hql)
-                .setParameter("personaje", personaje)
-                .setParameter("personajeTaberna", personajeTaberna)
+        Taberna registro = (Taberna) session.createCriteria(Taberna.class)
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .add(Restrictions.eq("personajeTaberna", personajeTaberna))
                 .uniqueResult();
 
         if (registro == null) {
+            Personaje personaje = session.get(Personaje.class, idPersonaje);
+
             registro = new Taberna();
             registro.setPersonaje(personaje);
             registro.setPersonajeTaberna(personajeTaberna);
             registro.setCervezasInvitadas(1);
             registro.setUltimaInvitacion(LocalDate.now());
-            sessionFactory.getCurrentSession().save(registro);
+
+            session.save(registro);
         } else {
             registro.setCervezasInvitadas(registro.getCervezasInvitadas() + 1);
             registro.setUltimaInvitacion(LocalDate.now());
-            sessionFactory.getCurrentSession().update(registro);
 
+            session.update(registro);
         }
     }
 
 
     @Override
-    public boolean puedeInvitar(Personaje personaje, PersonajeTaberna personajeTaberna) {
-        Session session= sessionFactory.getCurrentSession();
-        String hql = "FROM Taberna WHERE personaje = :personaje AND personajeTaberna = :personajeTaberna";
-        Taberna registro = (Taberna) session.createQuery(hql)
-                .setParameter("personaje", personaje)
-                .setParameter("personajeTaberna", personajeTaberna)
+    public boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Taberna registro = (Taberna) session.createCriteria(Taberna.class)
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .add(Restrictions.eq("personajeTaberna", personajeTaberna))
                 .uniqueResult();
 
         if (registro == null) {
-            return true; // nunca le invitó → puede invitar
+            return true;
         }
 
         return !registro.getUltimaInvitacion().isEqual(LocalDate.now());
+    }
+
+    @Override
+    public Personaje buscarPorId(Long idPersonaje) {
+
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Personaje.class, idPersonaje);
+
     }
 }

@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 
 public interface RepositorioTaberna {
 
-    int getCantidadCervezasInvitadas(Personaje personaje, PersonajeTaberna personajeTaberna);
+    int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    void invitarCerveza(Personaje personaje, PersonajeTaberna personajeTaberna);
+    void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    boolean puedeInvitar(Personaje personaje, PersonajeTaberna personajeTaberna);
+    boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna);
+
+    Personaje buscarPorId(Long idPersonaje);
 }

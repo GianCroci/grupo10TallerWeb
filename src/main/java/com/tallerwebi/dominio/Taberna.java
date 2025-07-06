@@ -13,7 +13,7 @@ public class Taberna {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "id_personaje")
+    @JoinColumn(name = "idPersonaje")
     private Personaje personaje;
     @Enumerated(EnumType.STRING)
     @Column(name = "personaje_taberna", nullable = false)

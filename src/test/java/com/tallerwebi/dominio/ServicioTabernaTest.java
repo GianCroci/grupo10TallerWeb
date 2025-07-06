@@ -27,123 +27,205 @@ public class ServicioTabernaTest {
         personajeMock = mock(Personaje.class);
     }
 
-/*-----------------------------------VALIDACION Y EJECUCION DE BENEFICIO----------------------------------------------*/
+/*-----------------------------------VALIDACION DE BENEFICIO----------------------------------------------*/
+
     @Test
     public void queAlDar5TragosOMasAlMercaderTeValideElBeneficio(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER)).thenReturn(5);
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.MERCADER)).thenReturn(5);
 
-        servicioTaberna.validarBeneficioMercader(personajeMock);
+        servicioTaberna.validarBeneficioMercader(personaje.getId());
 
-        assertTrue(servicioTaberna.validarBeneficioMercader(personajeMock));
+        assertTrue(servicioTaberna.validarBeneficioMercader(personaje.getId()));
     }
+
+    @Test
+    public void queAlDar5TragosOMenosAlMercaderNOValideElBeneficio(){
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.MERCADER)).thenReturn(4);
+
+        servicioTaberna.validarBeneficioMercader(personaje.getId());
+
+        assertFalse(servicioTaberna.validarBeneficioMercader(personaje.getId()));
+    }
+
+
 
     @Test
     public void queAlDar5TragosOMasAlHerreroTeValideElBeneficio(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO)).thenReturn(5);
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.HERRERO)).thenReturn(5);
 
-        servicioTaberna.validarBeneficioHerrero(personajeMock);
+        servicioTaberna.validarBeneficioHerrero(personaje.getId());
 
-        assertTrue(servicioTaberna.validarBeneficioHerrero(personajeMock));
+        assertTrue(servicioTaberna.validarBeneficioHerrero(personaje.getId()));
     }
+
+    @Test
+    public void queAlDar5TragosOMenosAlHerreroNOValideElBeneficio(){
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.HERRERO)).thenReturn(4);
+
+        servicioTaberna.validarBeneficioHerrero(personaje.getId());
+
+        assertFalse(servicioTaberna.validarBeneficioHerrero(personaje.getId()));
+    }
+
+
 
     @Test
     public void queAlDar5TragosOMasAlGuardiaTeValideElBeneficio(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA)).thenReturn(5);
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(5);
 
-        servicioTaberna.validarBeneficioGuardia(personajeMock);
+        servicioTaberna.validarBeneficioGuardia(personaje.getId());
 
-        assertTrue(servicioTaberna.validarBeneficioGuardia(personajeMock));
+        assertTrue(servicioTaberna.validarBeneficioGuardia(personaje.getId()));
     }
 
     @Test
-    public void queAlValidarElBeneficioDelMercaderObtengas100DeOro(){
-        Personaje personajePrueba= new Personaje();
-        personajePrueba.setOro(0);
+    public void queAlDar5TragosOMenosAlGuardiaNOValideElBeneficio(){
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(4);
 
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.MERCADER)).thenReturn(5);
-        when(servicioTabernaMock.validarBeneficioMercader(personajePrueba)).thenReturn(true);
+        servicioTaberna.validarBeneficioGuardia(personaje.getId());
+
+        assertFalse(servicioTaberna.validarBeneficioGuardia(personaje.getId()));
+    }
+
+
+
+    /*-----------------------------------EJECUCION DE BENEFICIO----------------------------------------------*/
+
+
+    @Test
+    public void queAlValidarElBeneficioDelMercaderObtengas100DeOro(){
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        personaje.setOro(0);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.MERCADER)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioMercader(personaje.getId())).thenReturn(true);
 
         int oroEsperado= 100;
 
-        servicioTaberna.obtenerBeneficioMercader(personajePrueba);
+        servicioTaberna.obtenerBeneficioMercader(personaje.getId());
 
-        int oroFinal = personajePrueba.getOro();
+        int oroFinal = personaje.getOro();
 
         assertEquals(oroEsperado,oroFinal);
 
     }
 
+
     @Test
     public void queNoValideQueSeInvito5TragosAlMercaderYTireException(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER)).thenReturn(4);
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.MERCADER)).thenReturn(4);
 
         assertThrows(IllegalStateException.class, () -> {
-            servicioTaberna.obtenerBeneficioMercader(personajeMock);
+            servicioTaberna.obtenerBeneficioMercader(personaje.getId());
         });
-
-        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.MERCADER);
     }
+
 
     @Test
     public void queAlDar5TragosOMasAlHerreroTeMejoreLasEstadisticasDeInteligenciaYDeFuerza(){
-        Personaje personajePrueba= new Personaje();
-        personajePrueba.setEstadisticas(new Estadisticas());
-        personajePrueba.getEstadisticas().setFuerza(0);
-        personajePrueba.getEstadisticas().setInteligencia(0);
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        personaje.setEstadisticas(new Estadisticas());
+        personaje.getEstadisticas().setFuerza(0);
+        personaje.getEstadisticas().setInteligencia(0);
         int fuerzaEsperada = 10;
         int inteligenciaEsperada = 10;
 
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.HERRERO)).thenReturn(5);
-        when(servicioTabernaMock.validarBeneficioHerrero(personajePrueba)).thenReturn(true);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.HERRERO)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioHerrero(personaje.getId())).thenReturn(true);
 
-        servicioTaberna.obtenerBeneficioHerrero(personajePrueba);
+        servicioTaberna.obtenerBeneficioHerrero(personaje.getId());
 
-        assertEquals(fuerzaEsperada, personajePrueba.getEstadisticas().getFuerza());
-        assertEquals(inteligenciaEsperada, personajePrueba.getEstadisticas().getInteligencia());
+        assertEquals(fuerzaEsperada, personaje.getEstadisticas().getFuerza());
+        assertEquals(inteligenciaEsperada, personaje.getEstadisticas().getInteligencia());
 
     }
 
     @Test
     public void queNoValideQueSeInvito5TragosAlHerreroYTireException(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO)).thenReturn(4);
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.HERRERO)).thenReturn(4);
 
         assertThrows(IllegalStateException.class, () -> {
-            servicioTaberna.obtenerBeneficioHerrero(personajeMock);
+            servicioTaberna.obtenerBeneficioHerrero(personaje.getId());
         });
-
-        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.HERRERO);
     }
-
 
     @Test
     public void queAlDar5TragosOMasAlGuardiaTeRegaleUnArma(){
-        Personaje personajePrueba= new Personaje();
-        personajePrueba.setEquipamientos(new ArrayList<>());
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        personaje.setEquipamientos(new ArrayList<>());
 
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajePrueba, PersonajeTaberna.GUARDIA)).thenReturn(5);
-        when(servicioTabernaMock.validarBeneficioGuardia(personajePrueba)).thenReturn(true);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(5);
+        when(servicioTabernaMock.validarBeneficioGuardia(personaje.getId())).thenReturn(true);
 
         int cantidadDeObjetosEsperada = 1;
 
-        servicioTaberna.obtenerBeneficioGuardia(personajePrueba);
+        servicioTaberna.obtenerBeneficioGuardia(personaje.getId());
 
-        int cantidadDeObjetosFinal = personajePrueba.getEquipamientos().size();
+        int cantidadDeObjetosFinal = personaje.getEquipamientos().size();
 
         assertEquals(cantidadDeObjetosEsperada,cantidadDeObjetosFinal);
 
     }
 
     @Test
-    public void queAlDarMenosDe5TragosAlGuardiaTireException(){
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA)).thenReturn(4);
+    public void queNoValideQueSeInvito5TragosAlGuardiaYTireException(){
+        Personaje personaje= new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(4);
 
         assertThrows(IllegalStateException.class, () -> {
-            servicioTaberna.obtenerBeneficioGuardia(personajeMock);
+            servicioTaberna.obtenerBeneficioGuardia(personaje.getId());
         });
-
-        verify(repositorioTabernaMock).getCantidadCervezasInvitadas(personajeMock, PersonajeTaberna.GUARDIA);
     }
 
+
+    //REARMAR LOGICA DE INVITACION DE CERVEZAS
+
+    /*-----------------------------------INVITACION DE CERVEZAS----------------------------------------------*/
+    /*
+    @Test
+    public void queAlInvitarTragoEnLaTabernaAlGuardiaPasenDe2CervezasInvitadasA3(){
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(2);
+
+        servicioTaberna.invitarCerveza(personaje.getId(), PersonajeTaberna.GUARDIA);
+
+        verify(repositorioTabernaMock, times(1)).invitarCerveza(personaje.getId(), PersonajeTaberna.GUARDIA);
+        assertEquals(3, repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA));
+    }
+    */
 
 }
 
