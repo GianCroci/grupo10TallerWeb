@@ -1,12 +1,15 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMercado;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioMercado;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.tallerwebi.dominio.Personaje;
 
 import javax.transaction.Transactional;
 

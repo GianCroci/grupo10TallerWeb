@@ -1,9 +1,9 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Personaje;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.PersonajeTaberna;
-import com.tallerwebi.dominio.RepositorioTaberna;
-import com.tallerwebi.dominio.Taberna;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioTaberna;
+import com.tallerwebi.dominio.entidad.Taberna;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

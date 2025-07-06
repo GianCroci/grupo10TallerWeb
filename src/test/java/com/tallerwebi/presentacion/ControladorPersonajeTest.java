@@ -1,19 +1,17 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
-import org.dom4j.rule.Mode;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 

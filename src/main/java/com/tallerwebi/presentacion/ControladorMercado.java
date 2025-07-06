@@ -1,17 +1,13 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Equipamiento;
-import com.tallerwebi.dominio.Mercado;
-import com.tallerwebi.dominio.ServicioMercado;
-import com.tallerwebi.dominio.ServicioTaberna;
+import com.tallerwebi.dominio.entidad.Mercado;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioMercado;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

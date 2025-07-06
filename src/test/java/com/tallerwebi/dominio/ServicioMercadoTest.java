@@ -1,5 +1,12 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.entidad.Mercado;
+import com.tallerwebi.dominio.entidad.Pechera;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMercado;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

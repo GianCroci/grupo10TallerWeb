@@ -1,8 +1,13 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioHerreria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -15,8 +20,6 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
 
     private final RepositorioPersonaje repositorioPersonaje;
     private final RepositorioInventario repositorioInventario;
-
-
 
     @Autowired
     public ServicioHerreriaImpl(RepositorioInventario repositorioInventario, RepositorioPersonaje repositorioPersonaje) {
@@ -56,10 +59,4 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         Integer oroPersonaje = repositorioPersonaje.buscarOroPersonaje(idPersonaje);
         return oroPersonaje;
     }
-
-
-
 }
-
-
-

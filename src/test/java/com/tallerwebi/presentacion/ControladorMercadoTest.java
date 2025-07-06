@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
-import com.tallerwebi.dominio.Mercado;
-import com.tallerwebi.dominio.ServicioMercado;
+import com.tallerwebi.dominio.entidad.Mercado;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioMercado;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;

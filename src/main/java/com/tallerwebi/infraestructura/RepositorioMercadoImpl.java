@@ -1,12 +1,12 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Mercado;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMercado;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Transactional
 @Repository("repositorioMercado")

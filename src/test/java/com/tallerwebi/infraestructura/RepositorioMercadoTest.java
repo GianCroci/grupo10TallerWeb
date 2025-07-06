@@ -1,6 +1,9 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Mercado;
+import com.tallerwebi.dominio.entidad.Pechera;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioMercado;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

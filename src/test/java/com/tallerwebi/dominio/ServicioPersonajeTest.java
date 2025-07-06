@@ -1,9 +1,14 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.presentacion.ControladorPersonaje;
+import com.tallerwebi.dominio.entidad.Bandido;
+import com.tallerwebi.dominio.entidad.Guerrero;
+import com.tallerwebi.dominio.entidad.Mago;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioRol;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

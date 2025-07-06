@@ -1,8 +1,14 @@
 package com.tallerwebi.dominio;
 
+
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
 import com.tallerwebi.dominio.excepcion.NivelDeEquipamientoMaximoException;
 import com.tallerwebi.dominio.excepcion.OroInsuficienteException;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioInventario;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioHerreria;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import com.tallerwebi.presentacion.MejoraDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,8 +111,7 @@ public class ServicioHerreriaTest {
 
     @Test
     public void quePuedaObtenerElOroDelPersonaje() {
-        when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(equipamientoMock);
-        when(servicioHerreria.obtenerOroDelPersonaje(anyLong())).thenReturn(50);
+        when(repositorioPersonaje.buscarOroPersonaje(idPersonajeMock)).thenReturn(50);
         Integer oroObtenido = servicioHerreria.obtenerOroDelPersonaje(idPersonajeMock);
         Integer oroEsperado = 50;
 

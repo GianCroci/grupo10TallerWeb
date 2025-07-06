@@ -1,9 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

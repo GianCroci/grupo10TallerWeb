@@ -1,7 +1,5 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Equipamiento;
-
 public class MejoraDto {
 
     private Long idEquipamiento;

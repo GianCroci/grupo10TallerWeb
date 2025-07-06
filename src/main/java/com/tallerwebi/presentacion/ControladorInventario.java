@@ -1,7 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.excepcion.InventarioNoExistente;
+import com.tallerwebi.dominio.entidad.Equipamiento;
+import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioInventario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,12 +20,12 @@ public class ControladorInventario {
     private final ServicioInventario servicioInventario;
 
     @Autowired
-    public ControladorInventario(ServicioInventario servicioInventario, ServicioPersonaje servicioPersonaje) {
+    public ControladorInventario(ServicioInventario servicioInventario) {
         this.servicioInventario = servicioInventario;
     }
 
     @GetMapping("/inventario")
-    public ModelAndView verEquipamiento(HttpSession session) {
+    public ModelAndView verEquipamiento(HttpSession session) throws InventarioVacioException {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         ModelMap model = new ModelMap();
 
@@ -43,21 +44,16 @@ public class ControladorInventario {
                 model.addAttribute("equipoSeleccionado", inventario.get(0));
             }
 
-        } catch (InventarioNoExistente e) {
+        } catch (InventarioVacioException e) {
             model.addAttribute("mensajeError", e.getMessage());
         }
 
         return new ModelAndView("inventario", model);
     }
 
-
     @GetMapping("/inventario/{idEquipo}")
-    public ModelAndView verEquipoEspecifico(HttpSession session, @PathVariable Long idEquipo) {
+    public ModelAndView verEquipoEspecifico(HttpSession session, @PathVariable Long idEquipo) throws InventarioVacioException {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
-
-        if (idPersonaje == null) {
-            return new ModelAndView("redirect:/login");
-        }
 
         ModelMap model = new ModelMap();
         model.addAttribute("inventario", servicioInventario.obtenerInventario(idPersonaje));
@@ -66,15 +62,11 @@ public class ControladorInventario {
         return new ModelAndView("inventario", model);
     }
 
-
     @GetMapping("/inventario/equipar/{idEquipo}")
-    public String equipar(HttpSession session,@PathVariable Long idEquipo) {
+    public String equipar(HttpSession session,@PathVariable Long idEquipo) throws InventarioVacioException {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         servicioInventario.equipar(idPersonaje,idEquipo);
         return "redirect:/inventario";
     }
-
-
-
 
 }
