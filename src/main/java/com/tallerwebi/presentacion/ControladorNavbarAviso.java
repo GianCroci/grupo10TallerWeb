@@ -1,0 +1,42 @@
+package com.tallerwebi.presentacion;
+
+import com.tallerwebi.dominio.ServicioBatallaImpl;
+import com.tallerwebi.dominio.ServicioBatallaWs;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.servlet.http.HttpSession;
+import java.util.Optional;
+
+@ControllerAdvice
+public class ControladorNavbarAviso {
+
+    @Autowired
+    private ServicioBatallaWs batallaService;
+
+    @Autowired
+    private ServicioPersonaje servicioPersonaje;
+
+
+
+    @ModelAttribute
+    public void notificarDesafiosPendientes(HttpSession session, Model model) {
+        Personaje personaje = (Personaje) session.getAttribute("personaje");
+
+        if (personaje != null) {
+            Optional<String> sala = batallaService.buscarSalaPendientePara(personaje.getId());
+
+            model.addAttribute("tieneDesafio", sala.isPresent());
+            model.addAttribute("salaPendienteId", sala.orElse(null));
+        } else {
+            model.addAttribute("tieneDesafio", false);
+        }
+    }
+
+
+}
+

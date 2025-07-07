@@ -79,7 +79,11 @@
         </div>
     </div>
         <div class="d-flex justify-content-center">
-            <button id="btn-registrarme" class="btn btn-lg bg-warning bg-opacity-75 w-50" type="submit">Atacar</button>
+            <a th:href="@{'/batalla-websocket/' + ${rival.id}}" class="btn btn-lg bg-warning bg-opacity-75 w-50">
+                Ir a pelear
+            </a>
+
+            <!--<button id="btn-registrarme" class="btn btn-lg bg-warning bg-opacity-75 w-50" type="submit">Ir a pelear</button>-->
         </div>
 
     </form>

@@ -42,6 +42,8 @@ public class ControladorPersonaje {
             Personaje personajeCreado = servicioPersonaje.crearPersonaje(personajeDTO.getNombre(), personajeDTO.getGenero(), personajeDTO.getImagen(), personajeDTO.getIdRol());
             servicioUsuario.setPersonaje(personajeCreado, usuarioLogueado);
             session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
+            session.setAttribute("personaje", personajeCreado);
+
             return new ModelAndView("redirect:/home", modelMap);
         }
 

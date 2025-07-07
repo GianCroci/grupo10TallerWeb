@@ -7,7 +7,15 @@
         <li><a th:href="@{/inventario}" style="color: white; text-decoration: none;">Inventario</a></li>
         <li><a th:href="@{/herreria}" style="color: white; text-decoration: none;">Herreria</a></li>
         <li><a th:href="@{/creacion-personaje}" style="color: white; text-decoration: none;">Creacion de Personaje</a></li>
-        <li><a th:href="@{/batalla}" style="color: white; text-decoration: none;">Batalla</a></li>
+        <li>
+            <a th:href="${tieneDesafio} ? @{/batalla-websocket/{salaId}(salaId=${salaPendienteId})} : @{/batalla}"
+               style="color: white; text-decoration: none;">
+                Batalla
+                <span th:if="${tieneDesafio}" style="color: red; font-weight: bold;">¡</span>
+            </a>
+        </li>
+
+
         <li><a th:href="@{/home}" style="color: white; text-decoration: none;">Home</a></li>
         <li><a th:href="@{/amigos}" style="color: white; text-decoration: none;">Amigos</a></li>
     </ul>
