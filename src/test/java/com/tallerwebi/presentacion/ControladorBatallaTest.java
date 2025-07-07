@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 public class ControladorBatallaTest {
 
-    private ServicioPersonaje servicioPersonajeMock;
+   /* private ServicioPersonaje servicioPersonajeMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioBatalla servicioBatallaMock;
     private ControladorBatalla controladorBatalla;

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Batalla WebSocket</title>
+
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+  <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .contenedor-batalla {
+      margin-top: 50px;
+    }
+
+    .personaje-box {
+      border: 2px solid #fff;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .img-personaje {
+      width: 50%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container contenedor-batalla text-center">
+  <h1>Batalla por Turnos</h1>
+  <div class="row mt-4">
+    <div class="col-md-5 personaje-box" th:object="${personaje}">
+      <h2 th:text="*{nombre}">Jugador</h2>
+      <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
+      <p>HP: <span id="hpJugador">--</span></p>
+    </div>
+    <div class="col-md-2 d-flex align-items-center justify-content-center">
+      <h1>VS</h1>
+    </div>
+    <div class="col-md-5 personaje-box" th:object="${rival}">
+      <h2 th:text="*{nombre}">Rival</h2>
+      <img th:src="*{imagen}" alt="Rival" class="img-personaje">
+      <p>HP: <span id="hpRival">--</span></p>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <p id="estado">Esperando conexión...</p>
+    <button id="btnAtacar" class="btn btn-danger btn-lg" onclick="atacar()" disabled>¡Atacar!</button>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  conectarBatalla(/*[[${salaId}]]*/, /*[[${personaje.nombre}]]*/);
+</script>
+<script th:src="@{/js/batalla.js}"></script>
+
+</body>
+</html>

@@ -26,7 +26,7 @@ public class ControladorWebSocketTest {
     public void init() {
         messagingTemplateMock = mock(SimpMessagingTemplate.class);
         servicioChatMock = mock(ServicioChat.class);
-        controladorWebSocket = new ControladorWebSocket(messagingTemplateMock, servicioChatMock);
+        controladorWebSocket = new ControladorWebSocket(messagingTemplateMock, servicioChatMock, null);
 
     }
 
