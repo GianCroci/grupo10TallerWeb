@@ -64,7 +64,7 @@ public class ControladorBatalla {
         Personaje jugador = (Personaje) session.getAttribute("personaje");
 
         String salaId = batallaService.obtenerOSalaExistente(jugador.getId(), idRival);
-        Personaje rival = servicioPersonaje.buscarRival(idRival); // solo para mostrarlo
+        Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
 
         model.addAttribute("personaje", jugador);
         model.addAttribute("rival", rival);

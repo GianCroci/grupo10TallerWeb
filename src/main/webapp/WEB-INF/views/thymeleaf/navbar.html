@@ -8,16 +8,27 @@
         <li><a th:href="@{/herreria}" style="color: white; text-decoration: none;">Herreria</a></li>
         <li><a th:href="@{/creacion-personaje}" style="color: white; text-decoration: none;">Creacion de Personaje</a></li>
         <li>
-            <a th:href="${tieneDesafio} ? @{/batalla-websocket/{salaId}(salaId=${salaPendienteId})} : @{/batalla}"
+            <a href="#"
+               th:attr="data-salaid=${salaPendienteId}, data-miid=${#httpSession.getAttribute('personaje') != null ? #httpSession.getAttribute('personaje').id : 0}
+"
+               th:if="${tieneDesafio}"
+               id="btn-batalla-pendiente"
+               style="color: white; text-decoration: none;">
+                Batalla <span style="color: red; font-weight: bold;">¡</span>
+            </a>
+            <a th:href="@{/batalla}"
+               th:unless="${tieneDesafio}"
                style="color: white; text-decoration: none;">
                 Batalla
-                <span th:if="${tieneDesafio}" style="color: red; font-weight: bold;">¡</span>
             </a>
         </li>
+
 
 
         <li><a th:href="@{/home}" style="color: white; text-decoration: none;">Home</a></li>
         <li><a th:href="@{/amigos}" style="color: white; text-decoration: none;">Amigos</a></li>
     </ul>
 </nav>
+
+
 
