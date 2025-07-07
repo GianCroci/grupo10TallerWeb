@@ -17,8 +17,6 @@ public class ServicioTabernaImpl implements ServicioTaberna {
     private RepositorioTaberna repositorioTaberna;
 
 
-
-
     public ServicioTabernaImpl(RepositorioTaberna repositorioTaberna) {
 
         this.repositorioTaberna = repositorioTaberna;
