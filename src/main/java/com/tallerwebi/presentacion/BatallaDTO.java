@@ -11,6 +11,7 @@ public class BatallaDTO {
     private Integer vidaActualEnemigo;
     private Integer nivelEnemigo;
     private String imagenEnemigo;
+    private String ultimaAccionEnemigo;
     private String imagenFondo;
     private Long idPersonaje;
     private String nombrePersonaje;
@@ -18,7 +19,9 @@ public class BatallaDTO {
     private Integer vidaActualPersonaje;
     private Integer nivelPersonaje;
     private String imagenPersonaje;
-    private String primerTurno;
+    private String ultimaAccionPersonaje;
+    private String turno;
+    private String estadoFinalPelea;
 
 
     public BatallaDTO(Personaje personaje, Enemigo enemigo) {
@@ -35,6 +38,10 @@ public class BatallaDTO {
         this.nivelEnemigo = enemigo.getNivel();
         this.imagenEnemigo = enemigo.getImagenEnemigo();
         this.imagenFondo = enemigo.getImagenFondo();
+        this.turno = "";
+        this.estadoFinalPelea = "";
+        this.ultimaAccionPersonaje = "";
+        this.ultimaAccionEnemigo = "";
     }
 
     public BatallaDTO() {
@@ -84,9 +91,9 @@ public class BatallaDTO {
 
     public void setImagenPersonaje(String imagenPersonaje) { this.imagenPersonaje = imagenPersonaje; }
 
-    public String getPrimerTurno() { return primerTurno; }
+    public String getTurno() { return turno; }
 
-    public void setPrimerTurno(String primerTurno) { this.primerTurno = primerTurno; }
+    public void setTurno(String Turno) { this.turno = Turno; }
 
     public Integer getVidaActualEnemigo() { return vidaActualEnemigo; }
 
@@ -95,4 +102,16 @@ public class BatallaDTO {
     public Integer getVidaActualPersonaje() { return vidaActualPersonaje; }
 
     public void setVidaActualPersonaje(Integer vidaActualPersonaje) { this.vidaActualPersonaje = vidaActualPersonaje; }
+
+    public String getUltimaAccionEnemigo() { return ultimaAccionEnemigo; }
+
+    public void setUltimaAccionEnemigo(String ultimaAccionEnemigo) { this.ultimaAccionEnemigo = ultimaAccionEnemigo; }
+
+    public String getUltimaAccionPersonaje() { return ultimaAccionPersonaje; }
+
+    public void setUltimaAccionPersonaje(String ultimaAccionPersonaje) { this.ultimaAccionPersonaje = ultimaAccionPersonaje; }
+
+    public String getEstadoFinalPelea() { return estadoFinalPelea; }
+
+    public void setEstadoFinalPelea(String estadoFinalPelea) { this.estadoFinalPelea = estadoFinalPelea; }
 }

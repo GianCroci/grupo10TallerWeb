@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.interfaz.AccionCombate;
 import com.tallerwebi.dominio.interfaz.repositorio.RepositorioEnemigo;
 import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
@@ -16,13 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ServicioBatallaTest {
 
@@ -38,18 +37,23 @@ public class ServicioBatallaTest {
     private Enemigo slimeMock;
     private Personaje personajeMock;
     private Rol guerreroMock;
+    private Random randomMock;
+    private Map<String, AccionCombate> posiblesAccionesMock;
 
     @BeforeEach
     public void init(){
+        posiblesAccionesMock = new HashMap<>();
+        randomMock = mock(Random.class);
+        posiblesAccionesMock.put("ataqueFisico", new AtaqueFisico(randomMock));
         servicioPersonajeMock = mock(ServicioPersonaje.class);
         repositorioEnemigoMock = mock(RepositorioEnemigo.class);
         repositorioPersonajeMock = mock(RepositorioPersonaje.class);
-        servicioBatalla = new ServicioBatallaImpl(servicioPersonajeMock, repositorioEnemigoMock, repositorioPersonajeMock);
+        servicioBatalla = new ServicioBatallaImpl(servicioPersonajeMock, repositorioEnemigoMock, repositorioPersonajeMock, randomMock, posiblesAccionesMock);
         estadisticasTrolMock = new Estadisticas();
-        estadisticasTrolMock.setInteligencia(20);
-        estadisticasTrolMock.setArmadura(20);
-        estadisticasTrolMock.setAgilidad(20);
-        estadisticasTrolMock.setFuerza(20);
+        estadisticasTrolMock.setInteligencia(0);
+        estadisticasTrolMock.setArmadura(150);
+        estadisticasTrolMock.setAgilidad(100);
+        estadisticasTrolMock.setFuerza(250);
         idPersonajeMock = 1L;
         idEnemigoMock = 1L;
         slimeMock = new Slime();
@@ -57,31 +61,26 @@ public class ServicioBatallaTest {
         slimeMock.setNombre("Slime");
         slimeMock.setDescripcion("baboso");
         estadisticasSlimeMock = new Estadisticas();
-        estadisticasSlimeMock.setInteligencia(50);
-        estadisticasSlimeMock.setArmadura(50);
-        estadisticasSlimeMock.setAgilidad(60);
-        estadisticasSlimeMock.setFuerza(50);
+        estadisticasSlimeMock.setInteligencia(5);
+        estadisticasSlimeMock.setArmadura(20);
+        estadisticasSlimeMock.setAgilidad(5);
+        estadisticasSlimeMock.setFuerza(20);
         slimeMock.setEstadisticas(estadisticasSlimeMock);
         slimeMock.setImagenEnemigo("img/slime.png");
         slimeMock.setImagenFondo("img/calabozo.png");
         slimeMock.setNivel(5);
         slimeMock.setVida(75);
 
-
         personajeMock = new Personaje();
         personajeMock.setId(1l);
         personajeMock.setNombre("Arthas");
         personajeMock.setGenero("Masculino");
+        estadisticasPersonajeMock = new Estadisticas();
+        personajeMock.setEstadisticas(estadisticasPersonajeMock);
         guerreroMock = new Guerrero();
         personajeMock.setRol(guerreroMock);
-        estadisticasPersonajeMock = new Estadisticas();
-        estadisticasPersonajeMock.setFuerza(30);
-        estadisticasPersonajeMock.setInteligencia(5);
-        estadisticasPersonajeMock.setArmadura(15);
-        estadisticasPersonajeMock.setAgilidad(5);
-        personajeMock.setEstadisticas(estadisticasPersonajeMock);
-        personajeMock.setNivel(5);
-        personajeMock.setVida(75);
+        personajeMock.aplicarEstadisticasBase();
+        personajeMock.calcularNivel();
         personajeMock.setImagen("img/guerrero.png");
         personajeMock.setOro(500);
     }
@@ -105,16 +104,16 @@ public class ServicioBatallaTest {
         String imagenEnemigoEsperada = "img/slime.png";
         String imagenEnemigoObtenida = enemigoDTO.getImagenEnemigo();
 
-        Integer fuerzaEsperada = 50;
+        Integer fuerzaEsperada = 20;
         Integer fuerzaObtenida = enemigoDTO.getEstadisticas().getFuerza();
 
-        Integer agilidadEsperada = 60;
+        Integer agilidadEsperada = 5;
         Integer agilidadObtenida = enemigoDTO.getEstadisticas().getAgilidad();
 
-        Integer inteligenciaEsperada = 50;
+        Integer inteligenciaEsperada = 5;
         Integer inteligenciaObtenida = enemigoDTO.getEstadisticas().getInteligencia();
 
-        Integer armaduraEsperada = 50;
+        Integer armaduraEsperada = 20;
         Integer armaduraObtenida = enemigoDTO.getEstadisticas().getArmadura();
 
         Integer nivelEsperado = 5;
@@ -235,15 +234,172 @@ public class ServicioBatallaTest {
     }
 
     @Test
-    public void queElMetodoComenzarBatallaUtiliceLaEstadisticaDeAgilidadDelPersonajeYElEnemigoParaDeterminarQuienComienzaElTurno(){
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeYElEnemigoSonIgualesTengan50PorcientoDeProbabilidadDeEmpezarYSiElNumeroRandomSeEncuentraEntre0Y49ComienceElpersonaje(){
+        personajeMock.getEstadisticas().setAgilidad(10);
+        slimeMock.getEstadisticas().setAgilidad(10);
         when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
         when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(49);
 
         BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
 
-        String primerTurnoEsperado = "Slime comienza la batalla y realiza la accion ";
-        String primerTurnoObtenido = batalladto.getPrimerTurno();
+        String primerTurnoEsperado = "Arthas comienza la batalla";
+        String primerTurnoObtenido = batalladto.getTurno();
 
         assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
     }
+
+    @Test
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeYElEnemigoSonIgualesTengan50PorcientoDeProbabilidadDeEmpezarYSiElNumeroRandomSeEncuentraEntre50Y99ComienceElEnemigo(){
+        personajeMock.getEstadisticas().setAgilidad(10);
+        slimeMock.getEstadisticas().setAgilidad(10);
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(50);
+
+        BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
+
+        String primerTurnoEsperado = "Slime comienza la batalla<br>Slime ha realizado un ataque fuerte y ha hecho 13 puntos de daño.";
+        String primerTurnoObtenido = batalladto.getTurno();
+
+        assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+    }
+
+    @Test
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeEsSuperiorALaDelEnemigoAumente1DePRobabilidadSobre50PorcientoPorCada1PuntoDeAgilidadSuperiorYComienzaElPersonaje(){
+        personajeMock.getEstadisticas().setAgilidad(30);
+        slimeMock.getEstadisticas().setAgilidad(10);
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(69);
+
+        BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
+
+        String primerTurnoEsperado = "Arthas comienza la batalla";
+        String primerTurnoObtenido = batalladto.getTurno();
+
+        assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+    }
+
+    @Test
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeEsSuperiorALaDelEnemigoAumente1DePRobabilidadSobre50PorcientoPorCada1PuntoDeAgilidadSuperiorYComienzaElEnemigo(){
+        personajeMock.getEstadisticas().setAgilidad(30);
+        slimeMock.getEstadisticas().setAgilidad(10);
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(70);
+
+        BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
+
+        String primerTurnoEsperado = "Slime comienza la batalla<br>Slime ha realizado un ataque fuerte y ha hecho 13 puntos de daño.";
+        String primerTurnoObtenido = batalladto.getTurno();
+
+        assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+    }
+
+    @Test
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeEsInferiorALaDelEnemigoDisminuye1DePRobabilidadBajo50PorcientoPorCada1PuntoDeAgilidadSuperiorDelEnemigoYComienzaElPersonaje(){
+        personajeMock.getEstadisticas().setAgilidad(10);
+        slimeMock.getEstadisticas().setAgilidad(30);
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(29);
+
+        BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
+
+        String primerTurnoEsperado = "Arthas comienza la batalla";
+        String primerTurnoObtenido = batalladto.getTurno();
+
+        assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+    }
+
+    @Test
+    public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeEsInferiorALaDelEnemigoDisminuye1DePRobabilidadBajo50PorcientoPorCada1PuntoDeAgilidadSuperiorDelEnemigoYComienzaElEnemigo(){
+        personajeMock.getEstadisticas().setAgilidad(10);
+        slimeMock.getEstadisticas().setAgilidad(30);
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(30);
+
+        BatallaDTO batalladto = servicioBatalla.comenzarBatalla(idPersonajeMock, idEnemigoMock);
+
+        String primerTurnoEsperado = "Slime comienza la batalla<br>Slime ha realizado un ataque fuerte y ha hecho 13 puntos de daño.";
+        String primerTurnoObtenido = batalladto.getTurno();
+
+        assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+    }
+
+    @Test
+    public void queElMetodoRealizarAccionActualiceLaBatallaDTOConLosPuntosDeVidaActualesEnemigosReducidosSiSeRealizaUnAtaqueFisico(){
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(30);
+        String accion = "ataqueFisico";
+        BatallaDTO batallaDTO = new BatallaDTO();
+        batallaDTO.setIdEnemigo(1L);
+        batallaDTO.setIdPersonaje(1L);
+        batallaDTO.setVidaActualEnemigo(75);
+        batallaDTO.setVidaActualPersonaje(75);
+        batallaDTO.setVidaTotalEnemigo(75);
+        batallaDTO.setVidaTotalPersonaje(75);
+        batallaDTO.setUltimaAccionPersonaje("");
+        batallaDTO.setUltimaAccionEnemigo("");
+
+        servicioBatalla.realizarAccion(accion, batallaDTO);
+
+        Integer vidaActualEnemigoEsperada = 55;
+        Integer vidaActualEnemigoObtenida = batallaDTO.getVidaActualEnemigo();
+
+        assertThat(vidaActualEnemigoObtenida, equalTo(vidaActualEnemigoEsperada));
+    }
+
+    @Test
+    public void queElMetodoRealizarAccionActualiceLaBatallaDTOSiElEnemigoMurio(){
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(30);
+        String accion = "ataqueFisico";
+        BatallaDTO batallaDTO = new BatallaDTO();
+        batallaDTO.setIdEnemigo(1L);
+        batallaDTO.setIdPersonaje(1L);
+        batallaDTO.setVidaActualEnemigo(5);
+        batallaDTO.setVidaActualPersonaje(75);
+        batallaDTO.setVidaTotalEnemigo(75);
+        batallaDTO.setVidaTotalPersonaje(75);
+        batallaDTO.setUltimaAccionPersonaje("");
+        batallaDTO.setUltimaAccionEnemigo("");
+
+        servicioBatalla.realizarAccion(accion, batallaDTO);
+
+        String estadoFinalPeleaEsperado = "Arthas se levanta victorioso contra su enemigo Slime";
+        String estadoFinalPeleaObtenido = batallaDTO.getEstadoFinalPelea();
+
+        assertThat(estadoFinalPeleaObtenido, equalToIgnoringCase(estadoFinalPeleaEsperado));
+    }
+
+    @Test
+    public void queElMetodoRealizarAccionAumenteElOroDelPersonajePorElEquivalenteAlNivelDelEnemigoYLoModifiqueEnLaBaseDeDatos(){
+        when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
+        when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
+        when(randomMock.nextInt(99)).thenReturn(30);
+        String accion = "ataqueFisico";
+        BatallaDTO batallaDTO = new BatallaDTO();
+        batallaDTO.setIdEnemigo(1L);
+        batallaDTO.setIdPersonaje(1L);
+        batallaDTO.setVidaActualEnemigo(5);
+        batallaDTO.setVidaActualPersonaje(75);
+        batallaDTO.setVidaTotalEnemigo(75);
+        batallaDTO.setVidaTotalPersonaje(75);
+        batallaDTO.setUltimaAccionPersonaje("");
+        batallaDTO.setUltimaAccionEnemigo("");
+
+        servicioBatalla.realizarAccion(accion, batallaDTO);
+
+        String estadoFinalPeleaEsperado = "Arthas se levanta victorioso contra su enemigo Slime";
+        String estadoFinalPeleaObtenido = batallaDTO.getEstadoFinalPelea();
+
+        assertThat(estadoFinalPeleaObtenido, equalToIgnoringCase(estadoFinalPeleaEsperado));
+        verify(repositorioPersonajeMock, times(1)).modificar(personajeMock);
+    }
+
 }

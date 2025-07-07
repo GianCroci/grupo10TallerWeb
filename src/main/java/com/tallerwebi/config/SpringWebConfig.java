@@ -1,5 +1,10 @@
 package com.tallerwebi.config;
 
+import com.tallerwebi.dominio.AtaqueFisico;
+import com.tallerwebi.dominio.AtaqueMagico;
+import com.tallerwebi.dominio.Defensa;
+import com.tallerwebi.dominio.Esquivar;
+import com.tallerwebi.dominio.interfaz.AccionCombate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +17,10 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 @EnableWebMvc
 @Configuration
@@ -73,6 +82,30 @@ public class SpringWebConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
+    @Bean
+    public Random randomGenerator() {
+        Random randomGenerator = new Random();
+        return randomGenerator;
+    }
 
+    @Bean
+    public AccionCombate ataqueFisico() {
+        return new AtaqueFisico(randomGenerator());
+    }
+
+    @Bean
+    public AccionCombate ataqueMagico() {
+        return new AtaqueMagico(randomGenerator());
+    }
+
+    @Bean
+    public AccionCombate defensa() {
+        return new Defensa();
+    }
+
+    @Bean
+    public AccionCombate esquivar() {
+        return new Esquivar();
+    }
 
 }

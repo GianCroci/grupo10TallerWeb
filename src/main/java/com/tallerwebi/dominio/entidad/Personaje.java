@@ -120,6 +120,7 @@ public class Personaje {
     public void calcularNivel() {
         Integer sumaEstadisticas = obtenerTotalEstadisticas();
         this.nivel = sumaEstadisticas / 10;
+        this.calcularVida();
     }
 
     private Integer obtenerTotalEstadisticas() {
@@ -129,7 +130,7 @@ public class Personaje {
                 + this.estadisticas.getFuerza();
     }
 
-    public void calcularVida() {
+    private void calcularVida() {
         this.vida = this.nivel * 15;
     }
 }

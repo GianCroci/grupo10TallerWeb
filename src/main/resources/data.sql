@@ -79,7 +79,7 @@ INSERT INTO Escudo(id) VALUES (23);
 INSERT INTO Escudo(id) VALUES (24);
 
 INSERT INTO Enemigo(id, nombre, descripcion, imagenEnemigo, imagenFondo, fuerza, inteligencia, armadura, agilidad, nivel, vida)
-VALUES (1, 'Slime', 'Baboso', 'img/slime.png', 'img/calabozo.png', 20, 5, 15, 15, 5, 75),
+VALUES (1, 'Slime', 'Baboso', 'img/slime.png', 'img/calabozo.png', 20, 5, 20, 5, 5, 75),
 (2, 'Lobo', 'Auuuuu', 'img/lobo.png', 'img/bosque.png', 40, 40, 10, 60, 15, 225),
 (3, 'Trol', 'Trolaso', 'img/trol.png', 'img/caverna.png', 250, 0, 150, 100, 50, 750);
 

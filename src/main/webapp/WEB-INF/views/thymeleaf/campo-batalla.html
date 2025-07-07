@@ -86,6 +86,55 @@
         .action-buttons button:hover {
             background-color: #a52a2a;
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #3b2f2f;
+            border: 3px solid #ffd700;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            font-family: 'MedievalSharp', cursive;
+            color: #f5e9c3;
+            box-shadow: 0 0 20px black;
+        }
+
+        .modal-content button {
+            background-color: #8b0000;
+            color: #fff8dc;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: 'MedievalSharp', cursive;
+            cursor: pointer;
+        }
+        .modal-content a {
+            background-color: #8b0000;
+            color: #fff8dc;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: 'MedievalSharp', cursive;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .modal-content button:hover {
+            background-color: #a52a2a;
+        }
     </style>
 </head>
 <body th:style="'background-image: url(' + @{${batallaDTO.imagenFondo}} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
@@ -114,11 +163,22 @@
     </div>
 
     <!-- Botones de acción -->
-    <div class="action-buttons">
-        <button>⚔️ Golpe</button>
-        <button>✨ Magia</button>
-        <button>🛡️ Defender</button>
-        <button>💨 Esquivar</button>
+    <form th:action="@{/realizar-accion}" method="post">
+        <div class="action-buttons">
+            <button type="submit" th:name="accion" th:value="ataqueFisico">Golpe</button>
+            <button type="submit" th:name="accion" th:value="ataqueMagico">Magia</button>
+            <button type="submit" th:name="accion" th:value="defensa">Defender</button>
+            <button type="submit" th:name="accion" th:value="esquivar">Esquivar</button>
+        </div>
+    </form>
+
+</div>
+<div id="turno-modal" class="modal-overlay">
+    <div class="modal-content">
+        <p th:utext="${batallaDTO.turno}"></p>
+        <p th:utext="${batallaDTO.estadoFinalPelea}"></p>
+        <button th:if="${batallaDTO.estadoFinalPelea.isEmpty()}" onclick="cerrarModal()">Aceptar</button>
+        <a th:if="${!batallaDTO.estadoFinalPelea.isEmpty()}" th:href="@{/tablon-enemigos}">Aceptar</a>
     </div>
 </div>
 <script th:inline="javascript">
@@ -135,6 +195,11 @@
     const porcentajeVidaEnemigo = (vidaActualEnemigo / vidaTotalEnemigo) * 100;
     document.getElementById("enemy-health").style.width = porcentajeVidaEnemigo + "%";
     /*]]>*/
+</script>
+<script>
+    function cerrarModal() {
+        document.getElementById("turno-modal").style.display = "none";
+    }
 </script>
 </body>
 </html>

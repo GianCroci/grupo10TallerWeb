@@ -17,4 +17,6 @@ public interface ServicioBatalla {
     List<EnemigoDTO> buscarEnemigosParaTablon();
 
     BatallaDTO comenzarBatalla(Long idPersonaje, Long idEnemigo);
+
+    void realizarAccion(String accion, BatallaDTO batallaDTOActual);
 }

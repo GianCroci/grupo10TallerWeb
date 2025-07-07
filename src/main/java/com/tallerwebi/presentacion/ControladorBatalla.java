@@ -81,7 +81,9 @@ public class ControladorBatalla {
             redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista tablon de enemigos sin haber iniciado sesion");
             return new ModelAndView("redirect:/login");
         }
-
+        if (session.getAttribute("batallaActual") != null) {
+            session.removeAttribute("batallaActual");
+        }
 
         ModelMap model = new ModelMap();
 
@@ -100,11 +102,23 @@ public class ControladorBatalla {
         ModelMap model = new ModelMap();
         BatallaDTO batallaDTO = servicioBatalla.comenzarBatalla(idPersonaje, idEnemigo);
         model.put("batallaDTO", batallaDTO);
+        session.setAttribute("batallaActual", batallaDTO);
         return new ModelAndView("campo-batalla", model);
     }
 
-    @RequestMapping("/campobatalla")
-    public ModelAndView a() {
-        return new ModelAndView("campo-batalla");
+    @RequestMapping(path = "/realizar-accion", method = RequestMethod.POST)
+    public ModelAndView realizarAccion(@RequestParam String accion, HttpSession session) {
+        BatallaDTO batallaDTO = (BatallaDTO) session.getAttribute("batallaActual");
+
+        if (batallaDTO.getVidaActualEnemigo().equals(0) || batallaDTO.getVidaActualPersonaje().equals(0)) {
+            session.removeAttribute("batallaActual");
+            return new ModelAndView("redirect:/tablon-enemigos");
+        }
+        servicioBatalla.realizarAccion(accion, batallaDTO);
+
+        ModelMap model = new ModelMap();
+        model.put("batallaDTO", batallaDTO);
+        session.setAttribute("batallaActual", batallaDTO);
+        return new ModelAndView("campo-batalla", model);
     }
 }
