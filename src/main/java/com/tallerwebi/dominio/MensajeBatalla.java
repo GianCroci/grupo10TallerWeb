@@ -7,7 +7,7 @@ public class MensajeBatalla {
    private boolean turno;
 
 
-    public MensajeBatalla(Long idAtacante, int daño, Long idDefensor, boolean turno) {
+    public MensajeBatalla(Long idAtacante,  Long idDefensor, int daño,boolean turno) {
         this.idAtacante = idAtacante;
         this.daño = daño;
         this.idDefensor = idDefensor;

@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.entidad.Ataque;
+import com.tallerwebi.dominio.entidad.Batalla;
 import com.tallerwebi.dominio.entidad.Mensaje;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
@@ -53,26 +54,51 @@ public class ControladorWebSocket {
         );
     }
 
-    @MessageMapping("/batalla")
-    @SendTo("/topic/batalla/{salaId}")
-    public MensajeBatalla atacar(MensajeBatalla mensaje) {
+    @MessageMapping("/batalla/iniciar/{salaId}")
+    public void iniciarBatalla(@DestinationVariable String salaId) {
+        Batalla batalla = servicioBatalla.obtenerBatalla(salaId); // o como accedas al mapa
+
+        Personaje jugadorA = batalla.getJugadorA();
+        Personaje jugadorB = batalla.getJugadorB();
+
+        EstadoBatalla estado = new EstadoBatalla();
+        estado.setMensaje("¡Comienza la batalla!");
+        estado.setHpJugador(100); // o del que se conecta
+        estado.setHpRival(100);
+        estado.setTurno(jugadorA.getEsTuTurno() ? jugadorA.getNombre() : jugadorB.getNombre());
+
+        messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
+    }
+
+
+    @MessageMapping("/batalla/{salaId}")
+    public void atacar(@DestinationVariable String salaId, MensajeBatalla mensaje) {
         Personaje atacante = servicioPersonaje.buscarPersonaje(mensaje.getIdAtacante());
         Personaje defensor = servicioPersonaje.buscarPersonaje(mensaje.getIdDefensor());
 
-        int daño = calcularDanio(atacante);
-        defensor.restarVida(daño);
+        // Calcular daño y restar vida
+        int daño = servicioBatalla.calcularDaño(atacante); // esto deberías tenerlo ya
+        //defensor.restarVida(daño);
 
         // Cambiar turnos
         atacante.setEsTuTurno(false);
         defensor.setEsTuTurno(true);
 
-        // Guardar estados actualizados
-        personajeService.actualizar(atacante);
-        personajeService.actualizar(defensor);
+        // Guardar cambios si es necesario
+        // servicioPersonaje.actualizar(atacante);
+        // servicioPersonaje.actualizar(defensor);
 
-        // Devolver mensaje con nueva info
-        return new MensajeBatalla(mensaje.getAtacante(), mensaje.getDefensor(), daño, true );
+        // Preparar el objeto de respuesta
+        EstadoBatalla estado = new EstadoBatalla();
+        estado.setMensaje(atacante.getNombre() + " atacó a " + defensor.getNombre() + " y causó " + daño + " de daño.");
+        estado.setHpJugador(100); // asumimos que tenés `getHp()`
+        estado.setHpRival(100);
+        estado.setTurno(defensor.getNombre()); // ahora le toca al defensor
+
+        // Enviar estado a todos los conectados en la sala
+        messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
     }
+
 
 
 

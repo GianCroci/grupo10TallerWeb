@@ -85,5 +85,13 @@ public class ServicioBatallaWs {
     }
 
 
+    public int calcularDaño(Personaje atacante) {
+        Integer daño= 50;
+        return daño;
+    }
+
+    public Batalla obtenerBatalla(String salaId) {
+        return batallas.get(salaId);
+    }
 }
 

@@ -94,4 +94,12 @@ public class Batalla {
     public Personaje getRival() {
         return jugadorB;
     }
+
+    public Personaje getJugadorA() {
+        return jugadorA;
+    }
+
+    public Personaje getJugadorB() {
+        return jugadorB;
+    }
 }

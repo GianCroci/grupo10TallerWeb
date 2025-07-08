@@ -13,15 +13,20 @@ function conectarBatalla(idSala, nombre) {
         stompClient.subscribe("/sala/batalla/" + salaId, function (mensaje) {
             const estado = JSON.parse(mensaje.body);
 
+
+
             document.getElementById("estado").innerText = estado.mensaje;
             document.getElementById("hpJugador").innerText = estado.hpJugador;
             document.getElementById("hpRival").innerText = estado.hpRival;
 
             document.getElementById("btnAtacar").disabled = estado.turno !== nombreJugador;
+
         });
 
         document.getElementById("estado").innerText = "Conectado a la sala.";
     });
+    stompClient.send("/app/batalla/iniciar/" + salaId, {}, {});
+
 }
 
 function atacar() {
@@ -30,4 +35,5 @@ function atacar() {
     };
 
     stompClient.send("/app/batalla/" + salaId, {}, JSON.stringify(ataque));
+
 }
