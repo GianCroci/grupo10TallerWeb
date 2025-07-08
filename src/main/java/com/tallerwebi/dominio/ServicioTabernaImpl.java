@@ -29,24 +29,27 @@ public class ServicioTabernaImpl implements ServicioTaberna {
 
 
     @Override
-    public boolean puedeInvitar(Personaje personaje, PersonajeTaberna personajeTaberna) {
-        if (!repositorioTaberna.puedeInvitar(personaje, personajeTaberna)) {
+    public boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+        if (!repositorioTaberna.puedeInvitar(idPersonaje, personajeTaberna)) {
             throw new IllegalArgumentException("Ya se invitó a este personaje hoy.");
         }
-        return repositorioTaberna.puedeInvitar(personaje, personajeTaberna);
+        return repositorioTaberna.puedeInvitar(idPersonaje, personajeTaberna);
     }
     @Override
-    public void invitarCerveza(Personaje personaje, PersonajeTaberna personajeTaberna) {
-        repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
+    public void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+        if (!puedeInvitar(idPersonaje, personajeTaberna)) {
+            throw new IllegalArgumentException("No se puede invitar a este personaje en este momento.");
+        }
+        repositorioTaberna.invitarCerveza(idPersonaje, personajeTaberna);
     }
-    public int getCantidadCervezasInvitadas(Personaje personaje, PersonajeTaberna personajeTaberna) {
-        return repositorioTaberna.getCantidadCervezasInvitadas(personaje, personajeTaberna);
+    public int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+        return repositorioTaberna.getCantidadCervezasInvitadas(idPersonaje, personajeTaberna);
     }
-    public Map<PersonajeTaberna, Integer> obtenerCervezasInvitadasPorPersonaje(Personaje personaje) {
+    public Map<PersonajeTaberna, Integer> obtenerCervezasInvitadasPorPersonaje(Long idPersonaje) {
         Map<PersonajeTaberna, Integer> cervezas = new HashMap<>();
 
         for (PersonajeTaberna tipo : PersonajeTaberna.values()) {
-            int cantidad = getCantidadCervezasInvitadas(personaje, tipo);
+            int cantidad = getCantidadCervezasInvitadas(idPersonaje, tipo);
             cervezas.put(tipo, cantidad);
         }
 
@@ -107,76 +110,64 @@ public class ServicioTabernaImpl implements ServicioTaberna {
 
     /*--------------------------------------------------------------------------------*/
     //Validacion de condicion
+
     @Override
-    public boolean validarBeneficioMercader(Personaje personaje) {
+    public boolean validarBeneficioMercader(Long idPersonaje) {
+        Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
+        return repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.MERCADER) >= 5;
 
-        if (personaje == null) {
-
-            throw new IllegalArgumentException("El personaje no puede ser nulo");
-        }
-
-        if(getCantidadCervezasInvitadas(personaje, PersonajeTaberna.MERCADER) >= 5) {
-            return true;
-        } else {
-            return false;
-        }
     }
+
     @Override
-    public boolean validarBeneficioHerrero(Personaje personaje) {
+    public boolean validarBeneficioHerrero(Long idPersonaje) {
+        Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
+        return repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.HERRERO) >= 5;
 
-        if (personaje == null) {
-            throw new IllegalArgumentException("El personaje no puede ser nulo");
-        }
-
-        if (repositorioTaberna.getCantidadCervezasInvitadas(personaje, PersonajeTaberna.HERRERO) >= 5) {
-            return true;
-        } else {
-            return false;
-        }
     }
-    @Override
-    public boolean validarBeneficioGuardia(Personaje personaje) {
 
-        if (personaje == null) {
-            throw new IllegalArgumentException("El personaje no puede ser nulo");
-        }
-        if (repositorioTaberna.getCantidadCervezasInvitadas(personaje, PersonajeTaberna.GUARDIA) >= 5) {
-            return true;
-        } else {
-            return false;
-        }
+    @Override
+    public boolean validarBeneficioGuardia(Long idPersonaje) {
+        Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
+        return repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA) >= 5;
+
     }
 
     //Aplicacion de beneficio
     @Override
-    public void obtenerBeneficioMercader(Personaje personaje) {
-        if (validarBeneficioMercader(personaje)) {
+    public void obtenerBeneficioMercader(Long idPersonaje) {
+
+        if (validarBeneficioMercader(idPersonaje)) {
+            Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
             int oroOtorgado= 100;
             personaje.setOro(personaje.getOro() + oroOtorgado);
         } else {
             throw new IllegalStateException("No se pudo obtener el beneficio del mercader porque no se alcanzaron las cervezas invitadas");
         }
     }
+
     @Override
-    public boolean obtenerBeneficioHerrero(Personaje personaje) {
-        if (validarBeneficioHerrero(personaje)) {
-            mejorarEstadisticas(personaje);
+    public boolean obtenerBeneficioHerrero(Long idPersonaje) {
+        if (validarBeneficioHerrero(idPersonaje)) {
+            mejorarEstadisticas(idPersonaje);
             return true;
         } else {
             throw new IllegalStateException("No se pudo obtener el beneficio del herrero porque no se alcanzaron las cervezas invitadas");
         }
     }
+
     @Override
-    public boolean obtenerBeneficioGuardia(Personaje personaje) {
-        if (validarBeneficioGuardia(personaje)) {
-            obtenerArmaEspecialDelGuardia(personaje);
+    public boolean obtenerBeneficioGuardia(Long idPersonaje) {
+        if (validarBeneficioGuardia(idPersonaje)) {
+            obtenerArmaEspecialDelGuardia(idPersonaje);
             return true;
         } else {
             throw new IllegalStateException("No se pudo obtener el beneficio del guardia porque no se alcanzaron las cervezas invitadas");
         }
     }
 
-    private void obtenerArmaEspecialDelGuardia(Personaje personaje) {
+    private void obtenerArmaEspecialDelGuardia(Long idPersonaje) {
+        Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
+
         Equipamiento armaEspecial = new Arma();
         armaEspecial.setNombre("Espada del Guardián");
         //armaEspecial.setStats(50, 20, 0, 0);
@@ -189,21 +180,18 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         personaje.getEquipamientos().add(armaEspecial);
     }
 
-    public void mejorarEstadisticas(Personaje personaje) {
+    public void mejorarEstadisticas(Long idPersonaje) {
+        Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
 
-         int fuerzaActual= personaje.getEstadisticas().getFuerza();
-         int inteligenciaActual = personaje.getEstadisticas().getInteligencia();
-         int beneficioInteligencia= inteligenciaActual += 10;
-         int beneficioFuerza = fuerzaActual += 10;
+        int fuerzaActual= personaje.getEstadisticas().getFuerza();
+        int inteligenciaActual = personaje.getEstadisticas().getInteligencia();
+        int beneficioInteligencia= inteligenciaActual += 10;
+        int beneficioFuerza = fuerzaActual += 10;
 
-            personaje.getEstadisticas().setFuerza(beneficioFuerza);
-            personaje.getEstadisticas().setInteligencia(beneficioInteligencia);
+        personaje.getEstadisticas().setFuerza(beneficioFuerza);
+        personaje.getEstadisticas().setInteligencia(beneficioInteligencia);
 
     }
-
-
-
-
 }
 
 

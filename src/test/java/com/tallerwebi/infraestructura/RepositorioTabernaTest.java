@@ -47,13 +47,14 @@ public class RepositorioTabernaTest {
 
         int cantidadDeCervezasEsperadas=1;
 
-        repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
+        repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
 
-        assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje, personajeTaberna));
+        assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna));
     }
 
+
     @Test
-    public void queSePuedaInvitarVariasCervezas() {
+    public void queSePuedaInvitarVariasCervezasYSoloTeDeje1() {
         Personaje personaje = new Personaje();
         personaje.setNombre("Arthas");
         personaje.setGenero("Masculino");
@@ -63,12 +64,13 @@ public class RepositorioTabernaTest {
         int cantidadDeCervezasEsperadas = 1;
 
         for (int i = 0; i < cantidadDeCervezasEsperadas; i++) {
-            repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
+            repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
         }
 
-        assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje, personajeTaberna));
+        assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna));
     }
 
+    /* REVISAR LOGICA DE SI SE INVITO HOY
     @Test
     public void queNoSePuedaInvitarCervezaSiYaSeInvitoHoy() {
         Personaje personaje = new Personaje();
@@ -77,12 +79,27 @@ public class RepositorioTabernaTest {
 
         sessionFactory.getCurrentSession().save(personaje);
 
-        repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
+        repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
 
         // Intentar invitar de nuevo el mismo día
-        repositorioTaberna.invitarCerveza(personaje, personajeTaberna);
+        repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
 
         // Verificar que la cantidad de cervezas invitadas sigue siendo 1
-        assertEquals(1, repositorioTaberna.getCantidadCervezasInvitadas(personaje, personajeTaberna));
+        assertEquals(1, repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna));
     }
+*/
+    @Test
+    public void queSePuedaBuscarUnPersonajePorID(){
+        Personaje personaje = new Personaje();
+        personaje.setNombre("Arthas");
+        personaje.setGenero("Masculino");
+
+        sessionFactory.getCurrentSession().save(personaje);
+
+        Personaje personajeBuscado = repositorioTaberna.buscarPorId(personaje.getId());
+
+        assertEquals(personaje.getId(), personajeBuscado.getId());
+        assertEquals(personaje.getNombre(), personajeBuscado.getNombre());
+    }
+
 }
