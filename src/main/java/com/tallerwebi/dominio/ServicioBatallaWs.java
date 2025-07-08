@@ -46,6 +46,8 @@ public class ServicioBatallaWs {
             String salaId = entrada.getKey();
             Batalla batalla = entrada.getValue();
 
+
+
             // El personaje participa en esta batalla
             if (salaId.contains(idPersonaje.toString())) {
                 // ¿Este personaje no ha atacado todavía?
@@ -73,6 +75,9 @@ public class ServicioBatallaWs {
         // Si no existe, la creás
         Personaje a = servicioPersonaje.buscarPersonaje(idA);
         Personaje b = servicioPersonaje.buscarPersonaje(idB);
+
+        a.setEsTuTurno(true);
+        b.setEsTuTurno(false);
 
         String nuevaClave = clave1;
         batallas.put(nuevaClave, new Batalla(a, b));

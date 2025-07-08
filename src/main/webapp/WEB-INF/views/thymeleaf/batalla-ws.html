@@ -50,10 +50,16 @@
     </div>
   </div>
 
-  <div class="mt-4">
-    <p id="estado">Esperando conexión...</p>
-    <button id="btnAtacar" class="btn btn-danger btn-lg" onclick="atacar()" disabled>¡Atacar!</button>
+  <div class="mt-4" th:object="${personaje}">
+    <button id="btnAtacar"
+            class="btn btn-danger btn-lg"
+            onclick="atacar()"
+            th:disabled="${!personaje.esTuTurno}">
+      ¡Atacar!
+    </button>
   </div>
+
+
 </div>
 
 <script th:inline="javascript">

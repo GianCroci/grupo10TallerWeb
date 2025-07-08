@@ -63,6 +63,7 @@ public class ControladorBatalla {
     public String salaDeBatalla(@PathVariable Long idRival, HttpSession session, Model model) {
         Personaje jugador = (Personaje) session.getAttribute("personaje");
 
+
         String salaId = batallaService.obtenerOSalaExistente(jugador.getId(), idRival);
         Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
 

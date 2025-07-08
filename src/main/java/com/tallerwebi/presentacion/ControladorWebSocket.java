@@ -1,15 +1,15 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.EstadoBatalla;
-import com.tallerwebi.dominio.ServicioBatallaWs;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.entidad.Ataque;
 import com.tallerwebi.dominio.entidad.Mensaje;
-import com.tallerwebi.dominio.MensajeEnviado;
-import com.tallerwebi.dominio.MensajeRecibido;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -24,6 +24,8 @@ public class ControladorWebSocket {
 
     @Autowired
     private ServicioBatallaWs servicioBatalla;
+    @Autowired
+    private ServicioPersonaje servicioPersonaje;
 
 
     public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat, ServicioBatallaWs servicioBatalla) {
@@ -51,12 +53,27 @@ public class ControladorWebSocket {
         );
     }
 
-    @MessageMapping("/batalla/{salaId}")
-    public void enviarAtaque(@DestinationVariable String salaId, Ataque ataque) {
-        EstadoBatalla estado = servicioBatalla.procesarAtaque(salaId, ataque.getRemitente());
+    @MessageMapping("/batalla")
+    @SendTo("/topic/batalla/{salaId}")
+    public MensajeBatalla atacar(MensajeBatalla mensaje) {
+        Personaje atacante = servicioPersonaje.buscarPersonaje(mensaje.getIdAtacante());
+        Personaje defensor = servicioPersonaje.buscarPersonaje(mensaje.getIdDefensor());
 
-        messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
+        int daño = calcularDanio(atacante);
+        defensor.restarVida(daño);
+
+        // Cambiar turnos
+        atacante.setEsTuTurno(false);
+        defensor.setEsTuTurno(true);
+
+        // Guardar estados actualizados
+        personajeService.actualizar(atacante);
+        personajeService.actualizar(defensor);
+
+        // Devolver mensaje con nueva info
+        return new MensajeBatalla(mensaje.getAtacante(), mensaje.getDefensor(), daño, true );
     }
+
 
 
 
