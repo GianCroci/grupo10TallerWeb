@@ -5,9 +5,8 @@
   <title>Batalla WebSocket</title>
 
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-  <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
-  <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
   <style>
     body {
       background-color: #222;
@@ -38,7 +37,7 @@
     <div class="col-md-5 personaje-box" th:object="${personaje}">
       <h2 th:text="*{nombre}">Jugador</h2>
       <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
-      <p>HP: <span id="hpJugador">--</span></p>
+      <p>HP:<span id="hpJugador">--</span></p>
     </div>
     <div class="col-md-2 d-flex align-items-center justify-content-center">
       <h1>VS</h1>
@@ -62,10 +61,14 @@
 
 </div>
 
-<script th:inline="javascript">
-  conectarBatalla(/*[[${salaId}]]*/, /*[[${personaje.nombre}]]*/);
-</script>
+
 <script th:src="@{/js/batalla.js}"></script>
-<script th:src="@{js/notificacion-batalla.js}"></script>
+<script th:src="@{/js/notificacion-batalla.js}"></script>
+
+<script th:inline="javascript">
+  conectarBatalla([[${salaId}]], [[${#strings.escapeJavaScript(personaje.nombre)}]]);
+</script>
+
+
 </body>
 </html>

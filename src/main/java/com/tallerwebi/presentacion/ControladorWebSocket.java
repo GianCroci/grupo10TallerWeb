@@ -56,6 +56,8 @@ public class ControladorWebSocket {
 
     @MessageMapping("/batalla/iniciar/{salaId}")
     public void iniciarBatalla(@DestinationVariable String salaId) {
+        System.out.println("📡 Iniciando batalla para sala: " + salaId);
+
         Batalla batalla = servicioBatalla.obtenerBatalla(salaId); // o como accedas al mapa
 
         Personaje jugadorA = batalla.getJugadorA();
