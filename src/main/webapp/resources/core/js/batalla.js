@@ -12,16 +12,18 @@ function conectarBatalla(idSala, nombre) {
 
     stompClient.connect({}, function () {
 
+        console.log("Conectado a la sala de batalla: " + salaId + " como " + nombreJugador);
+
         stompClient.subscribe("/sala/batalla/" + salaId, function (mensaje)  {
 
             const estado = JSON.parse(mensaje.body);
 
-                console.log("Objeto estado parseado:", estado);
+                console.log("Objeto estado parseado:", estado.mensaje);
                 console.log("estado.turno:", estado.turno);
                 console.log("nombreJugador:", nombreJugador);
                 console.log("Comparación:", estado.turno === nombreJugador);
 
-            document.getElementById("estado").innerText = estado.mensaje;
+            //document.getElementById("estado").innerText = estado.mensaje;
             document.getElementById("hpJugador").innerText = estado.hpJugador;
             document.getElementById("hpRival").innerText = estado.hpRival;
             document.getElementById("btnAtacar").disabled = estado.turno !== nombreJugador;
