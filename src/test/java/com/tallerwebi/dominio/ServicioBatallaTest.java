@@ -4,6 +4,8 @@ import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.interfaz.AccionCombate;
 import com.tallerwebi.dominio.interfaz.repositorio.RepositorioEnemigo;
 import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
+import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
@@ -22,6 +24,10 @@ import java.util.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServicioBatallaTest {
 
@@ -39,6 +45,7 @@ public class ServicioBatallaTest {
     private Rol guerreroMock;
     private Random randomMock;
     private Map<String, AccionCombate> posiblesAccionesMock;
+    private ServicioPersonaje servicioPersonajeMock;
 
     @BeforeEach
     public void init(){
@@ -311,6 +318,7 @@ public class ServicioBatallaTest {
         String primerTurnoObtenido = batalladto.getTurno();
 
         assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
+        servicioBatalla = new ServicioBatallaImpl(servicioPersonajeMock);
     }
 
     @Test
@@ -400,6 +408,25 @@ public class ServicioBatallaTest {
 
         assertThat(estadoFinalPeleaObtenido, equalToIgnoringCase(estadoFinalPeleaEsperado));
         verify(repositorioPersonajeMock, times(1)).modificar(personajeMock);
+    }
+
+    @Test
+    public void queSePuedaBuscarUnRivalExistente() throws RivalNoEncontrado {
+        Personaje rival = new Personaje();
+        when(servicioPersonajeMock.buscarRival(1L)).thenReturn(rival);
+
+        Personaje obtenido = servicioBatalla.buscarRival(1L);
+
+        assertEquals(rival, obtenido);
+    }
+
+    @Test
+    public void queLanceExcepcionSiNoSeEncuentraUnRival() {
+        when(servicioPersonajeMock.buscarRival(1L)).thenReturn(null);
+
+        assertThrows(RivalNoEncontrado.class, () -> {
+            servicioBatalla.buscarRival(1L);
+        });
     }
 
 }

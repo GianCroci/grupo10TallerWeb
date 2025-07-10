@@ -29,140 +29,6 @@ public class ServicioPersonajeTest {
         servicioPersonaje = new ServicioPersonajeImpl(repoPersonajeMock, repositorioRolMock);
     }
 
-   /* @Test
-    public void queSePuedaCrearUnPersonajeConNombre(){
-
-        servicioPersonaje.setNombre("Lenorwix");
-        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
-        when(personajeMockeado.getNombre()).thenReturn("Lenorwix");
-
-        String nombreEsperado = "Lenorwix";
-        String nombreObtenido = servicioPersonaje.getNombre();
-
-        assertThat(nombreEsperado, equalTo(nombreObtenido));
-    }
-
-   /* @Test
-    public void queSePuedaGuardarElPersonajeEnElRepositorio(){
-
-        when(personajeMockeado.getId()).thenReturn(1L);
-        when(repoPersonajeMock.guardar(1L, personajeMockeado)).thenReturn(true);
-
-        Boolean resultado = servicioPersonaje.guardarPersonaje(personajeMockeado);
-
-        assertThat(resultado, equalTo(true));
-    }
-
-    @Test
-    public void queSeDefinaElRolDelPersonaje(){
-        Personaje personaje = new Personaje();
-
-
-
-        servicioPersonaje.setRol("Mago");
-
-        String rolEsperado = "Mago";
-        String rolObtenido = servicioPersonaje.getRol();
-
-        assertThat(rolEsperado, equalTo(rolObtenido));
-    }
-
-    @Test
-    public void queSiEsLuchadorEmpieceCon100DeFuerza(){
-        Personaje personaje = new Personaje();
-
-
-
-        servicioPersonaje.setRol("Luchador");
-
-        Integer fuerzaEsperado = 100;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelLuchador(){
-        Personaje personaje = new Personaje();
-
-
-
-        servicioPersonaje.setRol("Luchador");
-
-        Integer fuerzaEsperado = 100;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 40;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 80;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 60;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelMago(){
-        Personaje personaje = new Personaje();
-
-
-
-        servicioPersonaje.setRol("Mago");
-
-        Integer fuerzaEsperado = 30;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 100;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 20;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 40;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
-    }
-
-    @Test
-    public void queSeSeteenLasHabilidadesInicialesDelBandido(){
-        Personaje personaje = new Personaje();
-
-
-
-        servicioPersonaje.setRol("Bandido");
-
-        Integer fuerzaEsperado = 50;
-        Integer fuerzaObtenida = servicioPersonaje.getFuerza();
-        Integer inteligenciaEsperado = 70;
-        Integer inteligenciaObtenida = servicioPersonaje.getInteligencia();
-        Integer armaduraEsperado = 30;
-        Integer armaduraObtenida = servicioPersonaje.getArmadura();
-        Integer agilidadEsperado = 100;
-        Integer agilidadObtenida = servicioPersonaje.getAgilidad();
-
-        assertThat(fuerzaEsperado, equalTo(fuerzaObtenida));
-        assertThat(inteligenciaEsperado, equalTo(inteligenciaObtenida));
-        assertThat(armaduraEsperado, equalTo(armaduraObtenida));
-        assertThat(agilidadEsperado, equalTo(agilidadObtenida));
-    }
-
-    @Test
-    public void queSePuedaSetearSiElPersonajeEsFemeninoOMasculino(){
-        Personaje personaje = new Personaje();
-
-        servicioPersonaje.setGenero("Femenino");
-
-        String generoEsperado = "Femenino";
-        String generoObtenido = servicioPersonaje.getGenero();
-
-        assertThat(generoEsperado, equalTo(generoObtenido));
-    }
-
-    */
     @Test
     public void queSePuedaGuardarUnPersonaje(){
 
@@ -291,5 +157,104 @@ public class ServicioPersonajeTest {
         assertThat(agilidadEsperada, equalTo(agilidadObtenida));
 
     }
+
+    @Test
+    public void queDevuelvaElNombreDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        personaje.setNombre("Ezio");
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        String nombre = servicioPersonaje.getNombre(personaje);
+
+        assertThat(nombre, equalTo("Ezio"));
+    }
+
+    @Test
+    public void queDevuelvaElRolDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        personaje.setRol(new Guerrero());
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getRol(personaje), equalTo(personaje.getRol()));
+    }
+
+    @Test
+    public void queDevuelvaLaFuerzaDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        Estadisticas stats = new Estadisticas();
+        stats.setFuerza(42);
+        personaje.setEstadisticas(stats);
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getFuerza(personaje), equalTo(42));
+    }
+
+    @Test
+    public void queDevuelvaLaInteligenciaDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        Estadisticas stats = new Estadisticas();
+        stats.setInteligencia(77);
+        personaje.setEstadisticas(stats);
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getInteligencia(personaje), equalTo(77));
+    }
+
+    @Test
+    public void queDevuelvaLaArmaduraDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        Estadisticas stats = new Estadisticas();
+        stats.setArmadura(31);
+        personaje.setEstadisticas(stats);
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getArmadura(personaje), equalTo(31));
+    }
+
+    @Test
+    public void queDevuelvaLaAgilidadDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        Estadisticas stats = new Estadisticas();
+        stats.setAgilidad(60);
+        personaje.setEstadisticas(stats);
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getAgilidad(personaje), equalTo(60));
+    }
+
+    @Test
+    public void queDevuelvaElGeneroDelPersonaje() {
+        Personaje personaje = new Personaje();
+        personaje.setId(1L);
+        personaje.setGenero("Femenino");
+
+        when(repoPersonajeMock.buscarPersonaje(1L)).thenReturn(personaje);
+
+        assertThat(servicioPersonaje.getGenero(personaje), equalTo("Femenino"));
+    }
+
+    @Test
+    public void queDevuelvaUnRivalAlBuscarloPorId() {
+        Personaje rival = new Personaje();
+        rival.setNombre("Rival");
+        when(repoPersonajeMock.buscarRival(1L)).thenReturn(rival);
+
+        Personaje obtenido = servicioPersonaje.buscarRival(1L);
+
+        assertThat(obtenido.getNombre(), equalTo("Rival"));
+    }
+
 
 }

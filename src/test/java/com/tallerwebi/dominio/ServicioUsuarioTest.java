@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -41,6 +42,16 @@ public class ServicioUsuarioTest {
 
         verify(usuarioEncontradoMock, times(1)).setPersonaje(personajeMockeado);
 
+    }
+
+    @Test
+    public void queSePuedaBuscarUnUsuarioPorMail(){
+        // preparacion
+        when(repoUsuarioMock.buscar("gian@unlam.com")).thenReturn(usuarioMock1);
+        // ejecucion
+        Usuario usuarioEncontrado = servicioUsuario.buscar("gian@unlam.com");
+        // verificacion
+        assertThat(usuarioEncontrado, equalTo(usuarioMock1));
     }
 
 }

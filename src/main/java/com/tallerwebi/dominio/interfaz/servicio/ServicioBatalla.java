@@ -10,10 +10,6 @@ import java.util.List;
 public interface ServicioBatalla {
     Personaje buscarRival(Long idPersonaje) throws RivalNoEncontrado;
 
-    void atacarRival(Personaje personaje, Personaje rival);
-
-    String getResultado();
-
     List<EnemigoDTO> buscarEnemigosParaTablon();
 
     BatallaDTO comenzarBatalla(Long idPersonaje, Long idEnemigo);

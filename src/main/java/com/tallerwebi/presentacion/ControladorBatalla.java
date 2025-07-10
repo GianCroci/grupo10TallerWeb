@@ -1,11 +1,13 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioBatallaWsImpl;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,11 +22,13 @@ public class ControladorBatalla {
 
     private ServicioPersonaje servicioPersonaje;
     private ServicioBatalla servicioBatalla;
+    private ServicioBatallaWsImpl batallaService;
 
     @Autowired
-    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla) {
+    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla, ServicioBatallaWsImpl batallaService) {
         this.servicioPersonaje = servicioPersonaje;
         this.servicioBatalla = servicioBatalla;
+        this.batallaService = batallaService;
     }
 
     @GetMapping("/batalla")
@@ -54,23 +58,19 @@ public class ControladorBatalla {
         return new ModelAndView("batalla", modelMap);
     }
 
-    @PostMapping("/atacar-rival")
-    public ModelAndView atacarRival(HttpServletRequest request) {
-        Long idPersonaje = (Long) request.getSession().getAttribute("idPersonaje");
-        Long idRival = (Long) request.getSession().getAttribute("idRival");
+    @GetMapping("/batalla-websocket/{idRival}")
+    public String salaDeBatalla(@PathVariable Long idRival, HttpSession session, Model model) {
+        Personaje jugador = (Personaje) session.getAttribute("personaje");
 
-        Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
+
+        String salaId = batallaService.obtenerOSalaExistente(jugador.getId(), idRival);
         Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
 
-        servicioBatalla.atacarRival(personaje, rival);
+        model.addAttribute("personaje", jugador);
+        model.addAttribute("rival", rival);
+        model.addAttribute("salaId", salaId);
 
-        ModelMap modelMap = new ModelMap();
-        modelMap.put("personaje", personaje);
-        modelMap.put("rival", rival);
-        modelMap.put("resultado", servicioBatalla.getResultado());
-
-
-        return new ModelAndView("batalla", modelMap);
+        return "batalla-ws";
     }
 
     @RequestMapping("/tablon-enemigos")

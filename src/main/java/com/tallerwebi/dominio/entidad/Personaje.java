@@ -28,6 +28,7 @@ public class Personaje {
     @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Equipamiento> equipamientos = new ArrayList<>();
     private String codigoAmigo;
+    private Boolean esTuTurno = false;
     @ManyToMany
     @JoinTable(
             name = "amigos",
@@ -98,7 +99,6 @@ public class Personaje {
 
     public void aplicarEstadisticasBase() {
         getRol().aplicarStatsBase(this);
-
     }
 
     public void inicializarCodigoAmigo() {
@@ -132,5 +132,13 @@ public class Personaje {
 
     private void calcularVida() {
         this.vida = this.nivel * 15;
+    }
+
+    public Boolean getEsTuTurno(){
+        return esTuTurno;
+    }
+
+    public void setEsTuTurno(Boolean esTuTurno) {
+        this.esTuTurno = esTuTurno;
     }
 }
