@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +42,31 @@ public class ControladorLoginTest {
 		personajeMock = mock(Personaje.class);
 		controladorLogin = new ControladorLogin(servicioLoginMock, servicioUsuarioMock);
 	}
+
+	@Test
+	public void queSePuedaIrALogin(){
+		//preparacion
+
+		//ejecucion
+		ModelAndView modelAndView = controladorLogin.irALogin(sessionMock);
+		//verificacion
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+		assertThat(modelAndView.getModel().get("datosLogin") instanceof DatosLogin, equalTo(true));
+		verify(sessionMock, times(1)).removeAttribute("idPersonaje");
+	}
+
+	@Test
+	public void nuevoUsuarioDeberiaMostrarVistaNuevoUsuarioConModelo() {
+		// preparacion
+
+		// ejecución
+		ModelAndView modelAndView = controladorLogin.nuevoUsuario();
+
+		// validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+		assertThat(modelAndView.getModel().get("usuario") instanceof Usuario, equalTo(true));
+	}
+
 
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente(){
@@ -111,5 +137,14 @@ public class ControladorLoginTest {
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+	}
+
+	@Test
+	public void inicioDeberiaRedirigirALogin(){
+		// ejecucion
+		ModelAndView modelAndView = controladorLogin.inicio();
+
+		// validacion
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
 	}
 }

@@ -47,9 +47,12 @@ public class RepositorioTabernaTest {
 
         int cantidadDeCervezasEsperadas=1;
 
+        Boolean puedeInvitar = repositorioTaberna.puedeInvitar(personaje.getId(), personajeTaberna);
+
         repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
 
         assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna));
+        assertEquals(true, puedeInvitar);
     }
 
 
@@ -100,6 +103,31 @@ public class RepositorioTabernaTest {
 
         assertEquals(personaje.getId(), personajeBuscado.getId());
         assertEquals(personaje.getNombre(), personajeBuscado.getNombre());
+    }
+
+    @Test
+    public void queSePuedaObtenerLasCervezasInvitadas(){
+        /* @Override
+    public int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna) {
+
+        Session session= sessionFactory.getCurrentSession();
+
+        Taberna registro = (Taberna) session.createCriteria(Taberna.class)
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .add(Restrictions.eq("personajeTaberna", personajeTaberna))
+                .uniqueResult();
+
+        return registro != null ? registro.getCervezasInvitadas() : 0;
+    } */
+        Personaje personaje = new Personaje();
+        personaje.setNombre("Arthas");
+        personaje.setGenero("Masculino");
+
+        sessionFactory.getCurrentSession().save(personaje);
+        repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
+
+        Integer cantidadInvitada = repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna);
+        assertEquals(1, cantidadInvitada);
     }
 
 }
