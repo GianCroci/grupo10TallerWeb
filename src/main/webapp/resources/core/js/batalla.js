@@ -38,6 +38,9 @@ function conectarBatalla(idSala, nombre) {
                 } if(estado.hpRival <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
+                    stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
+                        idGanador: idPersonaje
+                    }));
                 }
             } else {
 
@@ -49,6 +52,9 @@ function conectarBatalla(idSala, nombre) {
                 } if(estado.hpJugador <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
+                    stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
+                        idGanador: idPersonaje
+                    }));
                 }
                 console.log("Jugador B - Mi HP:", estado.hpRival, "HP Rival:", estado.hpJugador);
             }

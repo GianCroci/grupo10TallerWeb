@@ -88,7 +88,18 @@ public class ControladorWebSocket {
     }
 
 
+    @MessageMapping("/batalla/ganador")
+    public void otorgarOroAGanador(@Payload GanadorDTO ganador) {
+        Personaje personajeGanador = servicioPersonaje.buscarPersonaje(ganador.getIdGanador());
 
+        if (personajeGanador != null) {
+            int oroActual = personajeGanador.getOro() != null ? personajeGanador.getOro() : 0;
+            personajeGanador.setOro(oroActual + 10);
+
+            servicioPersonaje.modificar(personajeGanador);
+            System.out.println("🏆 " + personajeGanador.getNombre() + " ganó y ahora tiene " + personajeGanador.getOro() + " oro.");
+        }
+    }
 
 
 

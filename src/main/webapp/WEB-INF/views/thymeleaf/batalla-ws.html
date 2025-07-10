@@ -107,7 +107,9 @@
     </button>
   </div>
   </div>
-
+  <script th:inline="javascript">
+    const idPersonaje = /*[[${personaje.id}]]*/ 0;
+  </script>
   <script th:src="@{/js/batalla.js}"></script>
   <script th:src="@{/js/notificacion-batalla.js}"></script>
 
