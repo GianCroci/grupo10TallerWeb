@@ -11,4 +11,6 @@ public interface ServicioMercadoPago {
     String crearCheckout(Pedido pedido) throws MPException, MPApiException;
 
     Optional<String> obtenerMensajeOperacion(String operacionMP);
+
+    void completarCompraRealizada(Long idPersonaje, Long idProducto, Integer cantidad, String status);
 }

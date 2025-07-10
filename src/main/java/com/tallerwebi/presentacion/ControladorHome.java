@@ -32,7 +32,7 @@ public class ControladorHome {
     }
 
     @RequestMapping("/home")
-    public ModelAndView irAlHome(HttpSession session, RedirectAttributes redirectAttributes, @RequestParam(required = false) String operacionMP) {
+    public ModelAndView irAlHome(HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap model = new ModelMap();
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
@@ -40,15 +40,10 @@ public class ControladorHome {
             redirectAttributes.addFlashAttribute("error", "No puede acceder a la vista home sin haber iniciado sesion");
             return new ModelAndView("redirect:/login");
         }
-        Optional<String> mensajito = servicioMercadoPago.obtenerMensajeOperacion(operacionMP);
-        if (mensajito.isPresent()) {
-            model.put("mensajito", mensajito.get());
-        }
 
         List<Producto> productosParaComprarPorMP = servicioProducto.obtenerTodosLosProductos();
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
         model.put("infoPersonaje", personaje);
-
         model.put("productosParaComprarPorMP", productosParaComprarPorMP);
         return new ModelAndView("home", model);
     }

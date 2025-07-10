@@ -87,6 +87,7 @@ INSERT INTO Slime (id) VALUES (1);
 INSERT INTO Lobo (id) VALUES (2);
 INSERT INTO Trol (id) VALUES (3);
 
-INSERT INTO Producto (id, nombre, precio, cantidadProducto)
-VALUES (1, 'Oro', '100', 100),
-(2, 'Mas oro', 200, 250);
+INSERT INTO Producto (id, nombre, precio, cantidadProducto, imagen)
+VALUES (1, 'Oro', '100', 100, 'img/monedas.png'),
+(2, 'Mas oro', '200', 250, 'img/oro.png'),
+(3, 'Muchisimo oro', '300', 400, 'img/olla-oro.png');

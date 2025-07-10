@@ -47,7 +47,7 @@ public class ControladorHomeTest {
     public void queElControladorHomeTeEnvieALaVistaHomeConLosDatosDelPersonaje(){
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
         when(servicioPersonaje.buscarPersonaje(1L)).thenReturn(personajeMock);
-        mav = controladorHome.irAlHome(sessionMock, redirectAttributesMock, operacionMPMock);
+        mav = controladorHome.irAlHome(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "home";
         String vistaObtenida = mav.getViewName();
@@ -60,7 +60,7 @@ public class ControladorHomeTest {
     public void queElControladorHomeTeEnvieAlLoginSiNoHayUnIdPersonajeEnElHttpSession(){
         when(sessionMock.getAttribute("idPersonaje")).thenReturn(null);
         when(servicioPersonaje.buscarPersonaje(1L)).thenReturn(personajeMock);
-        mav = controladorHome.irAlHome(sessionMock, redirectAttributesMock, operacionMPMock);
+        mav = controladorHome.irAlHome(sessionMock, redirectAttributesMock);
 
         String vistaEsperada = "redirect:/login";
         String vistaObtenida = mav.getViewName();

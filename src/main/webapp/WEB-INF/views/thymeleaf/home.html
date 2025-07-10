@@ -90,30 +90,24 @@
                         <div class="mb-4">
                             <label class="form-label d-block">Elegí tu producto</label>
 
-                            <div class="row g-3" th:each="productoActual : ${productosParaComprarPorMP}">
-
-                                <!-- Opción: Paquete Básico -->
-                                <div class="col-md-6">
-                                    <label class="w-100 border rounded p-3 d-flex align-items-center justify-content-between bg-light position-relative" style="cursor: pointer;">
+                            <div class="row g-3">
+                                <!-- Iteramos productos -->
+                                <div class="col-md-4" th:each="productoActual : ${productosParaComprarPorMP}">
+                                    <label class="border rounded p-3 d-flex flex-column align-items-center bg-light position-relative" style="cursor:pointer;">
                                         <input type="radio" name="productoSeleccionado" th:value="${productoActual.id}" class="form-check-input position-absolute top-0 end-0 m-2" required>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <img src="img/oro.png" th:alt="${productoActual.nombre}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded">
-                                            <div>
-                                                <h5 class="mb-1" th:text="${productoActual.nombre}"></h5>
-                                                <p class="mb-0 text-muted" th:text="${productoActual.precio}"></p>
-                                            </div>
-                                        </div>
+                                        <img src="img/oro.png" th:alt="${productoActual.nombre}" style="width:80px; height:80px; object-fit:cover;" class="rounded mb-2">
+                                        <h5 class="text-center mb-1" th:text="${productoActual.nombre}"  style="color: black;"></h5>
+                                        <p class="mb-1 text-muted" th:text="'Precio: $' + ${productoActual.precio}"></p>
+                                        <p class="mb-0 text-success" th:text="'Recompensa: ' + ${productoActual.cantidadProducto}"></p>
                                     </label>
                                 </div>
-
-
                             </div>
                         </div>
 
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-4">
-                                <label for="cantidadInput" class="form-label">Cantidad</label>
-                                <input type="number" class="form-control" id="cantidadInput" min="1" value="1" required />
+                        <div class="row g-3 mb-4 justify-content-center">
+                            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                <label for="cantidadInput" class="form-label mb-0 me-2">Cantidad:</label>
+                                <input type="number" class="form-control" style="max-width: 100px;" id="cantidadInput" min="1" value="1" required />
                             </div>
                         </div>
 
@@ -127,7 +121,19 @@
             </div>
         </div>
     </div>
-    <div id="paymentBrick_container"></div>
+    <div id="paymentBrick_container" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+">
+        <button id="cerrarBrickBtn" style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: white; font-size: 2rem;">&times;</button>
+        <div id="brickWrapper" style="background: white; padding: 2rem; border-radius: 12px; max-width: 420px; width: 100%;"></div>
+    </div>
 </main>
 
 <!-- Boostrap core js -->
@@ -135,6 +141,7 @@
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
     const mp = new MercadoPago('APP_USR-609e475f-c7f9-446e-aec5-4acae4148b06');
+    let paymentBrickController = null;
     function crearCheckout() {
         const cantidad = parseInt(document.getElementById("cantidadInput").value);
         const idProducto = document.querySelector('input[name="productoSeleccionado"]:checked')?.value;
@@ -148,6 +155,14 @@
             idProducto: parseInt(idProducto),
             cantidad: cantidad
         };
+
+        if (paymentBrickController) {
+            paymentBrickController.unmount();
+            paymentBrickController = null;
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('mpModal'));
+        modal.hide();
 
         fetch('mp', {
             method: "POST",
@@ -164,7 +179,9 @@
                 }
 
                 const bricksBuilder = mp.bricks();
-                bricksBuilder.create("payment", "paymentBrick_container", {
+                const container = document.getElementById("paymentBrick_container");
+                container.style.display = "flex";
+                bricksBuilder.create("payment", "brickWrapper", {
                     initialization: {
                         amount: 100,
                         preferenceId: preferenceId
@@ -178,6 +195,8 @@
                         onReady: () => console.log("Brick listo"),
                         onError: error => console.error(error)
                     },
+                }).then(controller => {
+                    paymentBrickController = controller; // ✅ Guardamos para luego desmontarlo
                 });
             })
             .catch(err => {
@@ -185,6 +204,14 @@
                 alert("Error inesperado al crear preferencia");
             });
     }
+    document.getElementById("cerrarBrickBtn")?.addEventListener("click", () => {
+        if (window.paymentBrickController) {
+            window.paymentBrickController.unmount();
+            window.paymentBrickController = null;
+        }
+        document.getElementById("paymentBrick_container").style.display = "none";
+    });
+
 </script>
 </body>
 </html>

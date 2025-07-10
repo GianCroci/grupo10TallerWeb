@@ -7,15 +7,20 @@ import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
+import com.tallerwebi.dominio.entidad.Pago;
+import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.entidad.Producto;
-import com.tallerwebi.dominio.interfaz.repositorio.RepositorioProducto;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioMercadoPago;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPago;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioProducto;
 import com.tallerwebi.presentacion.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,22 +29,28 @@ import java.util.Optional;
 @Transactional
 public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 
-    private final RepositorioProducto repositorioProducto;
+    private final ServicioProducto servicioProducto;
+    private final ServicioPersonaje servicioPersonaje;
+    private final ServicioPago servicioPago;
 
     @Autowired
-    public ServicioMercadoPagoImpl(RepositorioProducto repositorioProducto) {
-        this.repositorioProducto = repositorioProducto;
+    public ServicioMercadoPagoImpl(ServicioProducto servicioProducto, ServicioPersonaje servicioPersonaje, ServicioPago servicioPago) {
+        this.servicioProducto = servicioProducto;
+        this.servicioPersonaje = servicioPersonaje;
+        this.servicioPago = servicioPago;
     }
 
     @Override
     public String crearCheckout(Pedido pedido) throws MPException, MPApiException {
 
-        Producto productoObtenido = repositorioProducto.buscarProductoPorId(pedido.getIdProducto());
+        Producto productoObtenido = servicioProducto.buscarProductoPorId(pedido.getIdProducto());
+
+        String nGrokUrl = "https://ea40b6f1b33c.ngrok-free.app";
 
         PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                .success("https://616ad40edf44.ngrok-free.app/spring/pago/success")
-                .failure("https://616ad40edf44.ngrok-free.app/spring/pago/failure")
-                .pending("https://616ad40edf44.ngrok-free.app/spring/pago/pending")
+                .success(nGrokUrl + "/spring/pago/success?idPersonaje=" + pedido.getIdPersonajeComprador())
+                .failure(nGrokUrl + "/spring/pago/failure?idPersonaje=" + pedido.getIdPersonajeComprador())
+                .pending(nGrokUrl + "/spring/pago/pending?idPersonaje=" + pedido.getIdPersonajeComprador())
                 .build();
 
 // Crear un objeto de preferencia
@@ -52,12 +63,12 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
                         .title(productoObtenido.getNombre())
                         .quantity(pedido.getCantidad())
                         .unitPrice(new BigDecimal(productoObtenido.getPrecio()))
+                        .id(pedido.getIdProducto().toString())
                         .build();
 
         items.add(item);
 
         PreferenceRequest request = PreferenceRequest.builder()
-                .autoReturn("approved")
                 .backUrls(backUrls)
                 // el .purpose('wallet_purchase') solo permite pagos registrados
                 // para permitir pagos de guest, puede omitir esta línea
@@ -90,5 +101,28 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
                 mensajito = null;
         };
         return Optional.ofNullable(mensajito);
+    }
+
+    @Override
+    public void completarCompraRealizada(Long idPersonaje, Long idProducto, Integer cantidad, String status) {
+
+        Producto productoComprado = servicioProducto.buscarProductoPorId(idProducto);
+        Personaje personajeComprador = servicioPersonaje.buscarPersonaje(idPersonaje);
+        if (status != null) {
+            if (status.equals("approved")) {
+                personajeComprador.setOro(personajeComprador.getOro() + (productoComprado.getCantidadProducto() * cantidad));
+                servicioPersonaje.modificar(personajeComprador);
+            }
+        }else {
+            status = "failed";
+        }
+
+        Pago pagoCreado = new Pago();
+        pagoCreado.setPersonaje(personajeComprador);
+        pagoCreado.setProducto(productoComprado);
+        pagoCreado.setCantidad(cantidad);
+        pagoCreado.setStatus(status);
+        pagoCreado.setFecha(LocalDateTime.now());
+        servicioPago.guardarPago(pagoCreado);
     }
 }

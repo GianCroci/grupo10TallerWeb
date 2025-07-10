@@ -283,7 +283,7 @@ public class ServicioBatallaTest {
 
     @Test
     public void queEnElMetodoComenzarBatallaSiLaAgilidadDelPersonajeEsSuperiorALaDelEnemigoAumente1DePRobabilidadSobre50PorcientoPorCada1PuntoDeAgilidadSuperiorYComienzaElEnemigo(){
-        personajeMock.getEstadisticas().setAgilidad(30);
+        personajeMock.getEstadisticas().setAgilidad(11);
         slimeMock.getEstadisticas().setAgilidad(10);
         when(repositorioEnemigoMock.obtenerEnemigoPorId(idEnemigoMock)).thenReturn(slimeMock);
         when(repositorioPersonajeMock.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);

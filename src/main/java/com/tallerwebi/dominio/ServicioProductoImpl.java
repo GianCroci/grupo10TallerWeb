@@ -24,4 +24,9 @@ public class ServicioProductoImpl implements ServicioProducto {
     public List<Producto> obtenerTodosLosProductos() {
         return repositorioProducto.obtenerTodosLosProductos();
     }
+
+    @Override
+    public Producto buscarProductoPorId(Long idProducto) {
+        return repositorioProducto.buscarProductoPorId(idProducto);
+    }
 }
