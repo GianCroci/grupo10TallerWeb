@@ -42,9 +42,9 @@ public class Guerrero extends Rol {
 
     @Override
     public void aplicarStatsBase(Personaje personaje) {
-        personaje.getEstadisticas().setFuerza(100);
-        personaje.getEstadisticas().setArmadura(80);
-        personaje.getEstadisticas().setAgilidad(60);
+        personaje.getEstadisticas().setFuerza(85);
+        personaje.getEstadisticas().setArmadura(70);
+        personaje.getEstadisticas().setAgilidad(30);
         personaje.getEstadisticas().setInteligencia(20);
     }
 }

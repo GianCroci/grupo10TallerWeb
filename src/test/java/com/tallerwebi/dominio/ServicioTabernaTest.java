@@ -210,24 +210,21 @@ public class ServicioTabernaTest {
         });
     }
 
-
-    //REARMAR LOGICA DE INVITACION DE CERVEZAS
-
-    /*-----------------------------------INVITACION DE CERVEZAS----------------------------------------------*/
-    /*
     @Test
-    public void queAlInvitarTragoEnLaTabernaAlGuardiaPasenDe2CervezasInvitadasA3(){
-        Personaje personaje = new Personaje();
-        personaje.setId(1L);
-        when(repositorioTabernaMock.buscarPorId(1L)).thenReturn(personaje);
-        when(repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA)).thenReturn(2);
-
-        servicioTaberna.invitarCerveza(personaje.getId(), PersonajeTaberna.GUARDIA);
-
-        verify(repositorioTabernaMock, times(1)).invitarCerveza(personaje.getId(), PersonajeTaberna.GUARDIA);
-        assertEquals(3, repositorioTabernaMock.getCantidadCervezasInvitadas(personaje.getId(), PersonajeTaberna.GUARDIA));
+    public void quePuedaInvitar() {
+        when(repositorioTabernaMock.puedeInvitar(1L, PersonajeTaberna.MERCADER)).thenReturn(true);
+        boolean resultado = servicioTaberna.puedeInvitar(1L, PersonajeTaberna.MERCADER);
+        assertTrue(resultado);
     }
-    */
+
+    @Test
+    public void queNoPuedaInvitarYLanceExcepcion() {
+        when(repositorioTabernaMock.puedeInvitar(1L, PersonajeTaberna.MERCADER)).thenReturn(false);
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioTaberna.puedeInvitar(1L, PersonajeTaberna.MERCADER);
+        });
+    }
+
 
 }
 
