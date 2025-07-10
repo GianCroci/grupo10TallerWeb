@@ -18,14 +18,7 @@
     }
 
     .contenedor-batalla {
-      margin-top: 50px;
-    }
-
-    .personaje-box {
-      border: 3px solid #fff;
-      padding: 20px;
-      border-radius: 15px;
-      background-color: rgba(0, 0, 0, 0.6);
+      margin-top: 30px;
     }
 
     .img-personaje {
@@ -41,19 +34,19 @@
     }
 
     #estado {
-      margin-top: 20px;
+      margin-top: 8px;
       font-size: 20px;
       color: #ffe066;
     }
   </style>
 </head>
 <body>
-<main th:style="'background-image: url(' + @{/img/fondo-batalla-ws.jpg} + '); background-size: cover; background-position: center bottom; height: 90vh'"
+<main th:style="'background-image: url(' + @{/img/fondo-batalla-ws.png} + '); background-size: cover; background-position: center bottom; height: 90vh'"
       class="container-fluid d-flex flex-column align-items-center">
   <div class="container contenedor-batalla text-center">
 
-    <div class="row mt-4">
-      <div class="col-md-5 personaje-box" th:object="${personaje}">
+    <div class="row mt-1">
+      <div class="col-md-5" th:object="${personaje}">
         <h2 th:text="*{nombre}">Jugador</h2>
         <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
         <p>HP: <span id="hpJugador">--</span></p>
@@ -61,14 +54,14 @@
       <div class="col-md-2 d-flex align-items-center justify-content-center">
         <h1>VS</h1>
       </div>
-      <div class="col-md-5 personaje-box" th:object="${rival}">
+      <div class="col-md-5" th:object="${rival}">
         <h2 th:text="*{nombre}">Rival</h2>
         <img th:src="*{imagen}" alt="Rival" class="img-personaje">
         <p>HP: <span id="hpRival">--</span></p>
       </div>
     </div>
 
-    <div class="mt-5" th:object="${personaje}">
+    <div class="mt-1" th:object="${personaje}">
       <button id="btnAtacar"
               class="btn btn-danger btn-lg"
               onclick="atacar()"
