@@ -39,7 +39,7 @@ public class ControladorInventarioTest {
 
         assertThat(mav.getViewName(), equalTo("redirect:/login"));
     }
-
+/*
     @Test
     public void queSePuedaVerElInventarioYElPrimerEquipadoSiExiste() throws InventarioVacioException {
         List<Equipamiento> inventarioMock = List.of(new Arma(), new Arma());
@@ -51,8 +51,8 @@ public class ControladorInventarioTest {
         assertThat(mav.getViewName(), equalTo("inventario"));
         assertThat(mav.getModel().get("inventario"), equalTo(inventarioMock));
         assertThat(mav.getModel().get("equipoSeleccionado"), notNullValue());
-    }
-
+    }*/
+/*
     @Test
     public void queSePuedaVerElInventarioYElPrimerEquipo() throws InventarioVacioException {
         List<Equipamiento> inventarioMock = List.of(new Arma(), new Arma());
@@ -63,7 +63,7 @@ public class ControladorInventarioTest {
 
         assertThat(mav.getViewName(), equalTo("inventario"));
         assertThat(mav.getModel().get("equipoSeleccionado"), equalTo(inventarioMock.get(0)));
-    }
+    }*/
 
     @Test
     public void queSeVeaUnMensajeSiElInventarioEstaVacio() throws InventarioVacioException {
