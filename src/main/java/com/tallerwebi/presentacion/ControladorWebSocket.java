@@ -1,7 +1,6 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.entidad.Ataque;
 import com.tallerwebi.dominio.entidad.Batalla;
 import com.tallerwebi.dominio.entidad.Mensaje;
 import com.tallerwebi.dominio.entidad.Personaje;
@@ -11,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ControladorWebSocket {
@@ -27,12 +23,12 @@ public class ControladorWebSocket {
     private ServicioChat servicioChat;
 
     @Autowired
-    private ServicioBatallaWs servicioBatalla;
+    private ServicioBatallaWsImpl servicioBatalla;
     @Autowired
     private ServicioPersonaje servicioPersonaje;
 
 
-    public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat, ServicioBatallaWs servicioBatalla) {
+    public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat, ServicioBatallaWsImpl servicioBatalla) {
         this.messagingTemplate = messagingTemplate;
         this.servicioChat = servicioChat;
         this.servicioBatalla = servicioBatalla;

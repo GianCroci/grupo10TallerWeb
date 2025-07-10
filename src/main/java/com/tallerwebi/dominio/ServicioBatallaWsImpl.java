@@ -3,6 +3,8 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.entidad.Batalla;
 import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatallaWs;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,23 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ServicioBatallaWs {
+public class ServicioBatallaWsImpl implements ServicioBatallaWs {
+
+
+    private final ServicioPersonaje servicioPersonaje;
+
+    private final Map<String, Batalla> batallas;
 
     @Autowired
-    private ServicioPersonaje servicioPersonaje;
+    public ServicioBatallaWsImpl(ServicioPersonaje servicioPersonaje) {
+        this(servicioPersonaje, new HashMap<>());
+    }
 
-    private final Map<String, Batalla> batallas = new HashMap<>();
-
-
+    // Constructor para tests
+    public ServicioBatallaWsImpl(ServicioPersonaje servicioPersonaje, Map<String, Batalla> batallas) {
+        this.servicioPersonaje = servicioPersonaje;
+        this.batallas = batallas;
+    }
 
     public Optional<String> buscarSalaPendientePara(Long idPersonaje) {
         for (String clave : batallas.keySet()) {

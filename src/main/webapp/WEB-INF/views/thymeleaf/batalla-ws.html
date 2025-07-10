@@ -12,48 +12,79 @@
 
   <style>
     body {
-      background-color: #1c1c1c;
-      color: #f5f5f5;
       font-family: 'MedievalSharp', cursive;
+      margin: 0;
+      padding: 0;
+      color: #fefae0;
+      background-color: #1c1c1c;
     }
 
-    .contenedor-batalla {
-      margin-top: 30px;
+    h1, h2 {
+      text-shadow: 2px 2px #000;
+      color: #f4d35e;
     }
 
     .img-personaje {
-      width: 50%;
+      width: 60%;
+      border: 3px solid #f4d35e;
       border-radius: 10px;
+      box-shadow: 0 0 10px #000;
     }
 
     #btnAtacar {
-      font-size: 24px;
-      padding: 10px 30px;
-      border-radius: 10px;
-      border: 2px solid #fff;
+      font-size: 28px;
+      padding: 15px 40px;
+      border-radius: 12px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(#7c0a02, #510000);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #btnAtacar:hover:enabled {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+
+    #btnAtacar:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     #estado {
-      margin-top: 8px;
-      font-size: 20px;
+      margin-top: 15px;
+      font-size: 22px;
       color: #ffe066;
+      text-shadow: 1px 1px #000;
+    }
+
+    p {
+      font-size: 20px;
+    }
+    .box-boton {
+      margin-top: -5rem !important;
     }
   </style>
 </head>
-<body>
-<main th:style="'background-image: url(' + @{/img/fondo-batalla-ws.png} + '); background-size: cover; background-position: center bottom; height: 90vh'"
-      class="container-fluid d-flex flex-column align-items-center">
-  <div class="container contenedor-batalla text-center">
 
-    <div class="row mt-1">
+<body>
+<main th:style="'background-image: url(' + @{/img/fondo-batalla-ws.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
+      class="container-fluid d-flex flex-column align-items-center">
+  <div class="container text-center">
+
+    <div class="row mt-5">
       <div class="col-md-5" th:object="${personaje}">
         <h2 th:text="*{nombre}">Jugador</h2>
         <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
         <p>HP: <span id="hpJugador">--</span></p>
       </div>
+
       <div class="col-md-2 d-flex align-items-center justify-content-center">
         <h1>VS</h1>
       </div>
+
       <div class="col-md-5" th:object="${rival}">
         <h2 th:text="*{nombre}">Rival</h2>
         <img th:src="*{imagen}" alt="Rival" class="img-personaje">
@@ -61,9 +92,9 @@
       </div>
     </div>
 
-    <div class="mt-1" th:object="${personaje}">
+    <div class="box-boton" th:object="${personaje}">
       <button id="btnAtacar"
-              class="btn btn-danger btn-lg"
+              class="btn"
               onclick="atacar()"
               th:disabled="${!personaje.esTuTurno}">
         ¡Atacar!

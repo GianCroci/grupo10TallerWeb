@@ -8,6 +8,7 @@ import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,15 +21,17 @@ import static org.mockito.Mockito.*;
 
 public class ControladorBatallaTest {
 
-   /* private ServicioPersonaje servicioPersonajeMock;
+    private ServicioPersonaje servicioPersonajeMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioBatalla servicioBatallaMock;
+    private ServicioBatallaWsImpl servicioBatallaWSMock;
     private ControladorBatalla controladorBatalla;
     private HttpServletRequest requestMock;
     private HttpSession sessionMock;
     private Personaje personajeMockeado;
     private Personaje rivalMockeado;
     private RedirectAttributes redirectAttributesMock;
+    private Model modelMock;
 
     @BeforeEach
     public void init(){
@@ -37,12 +40,14 @@ public class ControladorBatallaTest {
         servicioPersonajeMock = mock(ServicioPersonaje.class);
         servicioBatallaMock = new ServicioBatallaImpl(servicioPersonajeMock);
         servicioBatallaMock = mock(ServicioBatalla.class);
-        controladorBatalla = new ControladorBatalla(servicioPersonajeMock, servicioBatallaMock);
+        servicioBatallaWSMock = mock(ServicioBatallaWsImpl.class);
+        controladorBatalla = new ControladorBatalla(servicioPersonajeMock, servicioBatallaMock, servicioBatallaWSMock);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
         personajeMockeado = mock(Personaje.class);
         rivalMockeado = mock(Personaje.class);
         redirectAttributesMock = mock(RedirectAttributes.class);
+        modelMock = mock(Model.class);
     }
 
     @Test
@@ -65,25 +70,20 @@ public class ControladorBatallaTest {
     }
 
     @Test
-    public void queSePuedaAtacarAlrivalYMeDevuelvaUnMensajeConElResultadoDeLaBatalla(){
+    public void queMeEnvieALaSalaDeBatallaWScontraUnRival(){
         //preparacion
-        when(requestMock.getSession()).thenReturn(sessionMock);
-        when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
-        when(sessionMock.getAttribute("idRival")).thenReturn(2L);
-        when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
-        when(servicioPersonajeMock.buscarPersonaje(2L)).thenReturn(rivalMockeado);
-        when(servicioBatallaMock.getResultado()).thenReturn("Victoria");
+        Long idRival = 2L;
+        when(sessionMock.getAttribute("personaje")).thenReturn(personajeMockeado);
+        when(servicioBatallaWSMock.obtenerOSalaExistente(personajeMockeado.getId(), idRival)).thenReturn("sala1");
+        when(servicioPersonajeMock.buscarPersonaje(idRival)).thenReturn(rivalMockeado);
 
         //ejecucion
-        ModelAndView modelAndView = controladorBatalla.atacarRival(requestMock);
-
-        String mensajeEsperado = "Victoria";
+        controladorBatalla.salaDeBatalla(idRival, sessionMock, modelMock);
 
         //verificacion
-        verify(servicioBatallaMock, times(1)).atacarRival(personajeMockeado, rivalMockeado);
-        assertThat(mensajeEsperado, equalTo(modelAndView.getModel().get("resultado")));
+        verify(modelMock).addAttribute("personaje", personajeMockeado);
+        verify(modelMock).addAttribute("rival", rivalMockeado);
+        verify(modelMock).addAttribute("salaId", "sala1");
     }
-    /*
 
-        */
 }

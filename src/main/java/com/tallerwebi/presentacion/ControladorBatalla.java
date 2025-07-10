@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioBatallaWs;
+import com.tallerwebi.dominio.ServicioBatallaWsImpl;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,10 +22,10 @@ public class ControladorBatalla {
 
     private ServicioPersonaje servicioPersonaje;
     private ServicioBatalla servicioBatalla;
-    private ServicioBatallaWs batallaService;
+    private ServicioBatallaWsImpl batallaService;
 
     @Autowired
-    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla, ServicioBatallaWs batallaService) {
+    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla, ServicioBatallaWsImpl batallaService) {
         this.servicioPersonaje = servicioPersonaje;
         this.servicioBatalla = servicioBatalla;
         this.batallaService = batallaService;

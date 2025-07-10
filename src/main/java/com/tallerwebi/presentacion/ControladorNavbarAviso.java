@@ -1,7 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioBatallaImpl;
-import com.tallerwebi.dominio.ServicioBatallaWs;
+import com.tallerwebi.dominio.ServicioBatallaWsImpl;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.Optional;
 public class ControladorNavbarAviso {
 
     @Autowired
-    private ServicioBatallaWs batallaService;
+    private ServicioBatallaWsImpl batallaService;
 
     @Autowired
     private ServicioPersonaje servicioPersonaje;
