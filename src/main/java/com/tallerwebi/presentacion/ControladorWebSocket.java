@@ -10,9 +10,12 @@ import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ControladorWebSocket {
@@ -58,48 +61,36 @@ public class ControladorWebSocket {
     public void iniciarBatalla(@DestinationVariable String salaId) {
         System.out.println("📡 Iniciando batalla para sala: " + salaId);
 
-        Batalla batalla = servicioBatalla.obtenerBatalla(salaId); // o como accedas al mapa
-
+        Batalla batalla = servicioBatalla.obtenerBatalla(salaId);
         Personaje jugadorA = batalla.getJugadorA();
         Personaje jugadorB = batalla.getJugadorB();
 
         EstadoBatalla estado = new EstadoBatalla();
         estado.setMensaje("¡Comienza la batalla!");
-        estado.setHpJugador(100); // o del que se conecta
-        estado.setHpRival(100);
-        estado.setTurno(jugadorA.getEsTuTurno() ? jugadorA.getNombre() : jugadorB.getNombre());
+        estado.setHpJugador(batalla.getHpRestante(jugadorA.getNombre()));
+        estado.setHpRival(batalla.getHpRestante(jugadorB.getNombre()));
+        estado.setTurno(jugadorA.getNombre());
+
+        estado.setNombreJugadorA(jugadorA.getNombre());
+        estado.setNombreJugadorB(jugadorB.getNombre());
 
         messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
     }
-
 
     @MessageMapping("/batalla/{salaId}")
-    public void atacar(@DestinationVariable String salaId, MensajeBatalla mensaje) {
-        Personaje atacante = servicioPersonaje.buscarPersonaje(mensaje.getIdAtacante());
-        Personaje defensor = servicioPersonaje.buscarPersonaje(mensaje.getIdDefensor());
+    public void atacar(@DestinationVariable String salaId, @Payload AtaqueDTO ataque) {
+        Batalla batalla = servicioBatalla.obtenerBatalla(salaId);
+        String remitente = ataque.getRemitente();
 
-        // Calcular daño y restar vida
-        int daño = servicioBatalla.calcularDaño(atacante); // esto deberías tenerlo ya
-        //defensor.restarVida(daño);
+        EstadoBatalla estado = batalla.atacar(remitente);
+        estado.setMiNombre(remitente);
 
-        // Cambiar turnos
-        atacante.setEsTuTurno(false);
-        defensor.setEsTuTurno(true);
+        estado.setNombreJugadorA(batalla.getJugadorA().getNombre());
+        estado.setNombreJugadorB(batalla.getJugadorB().getNombre());
 
-        // Guardar cambios si es necesario
-        // servicioPersonaje.actualizar(atacante);
-        // servicioPersonaje.actualizar(defensor);
-
-        // Preparar el objeto de respuesta
-        EstadoBatalla estado = new EstadoBatalla();
-        estado.setMensaje(atacante.getNombre() + " atacó a " + defensor.getNombre() + " y causó " + daño + " de daño.");
-        estado.setHpJugador(100); // asumimos que tenés `getHp()`
-        estado.setHpRival(100);
-        estado.setTurno(defensor.getNombre()); // ahora le toca al defensor
-
-        // Enviar estado a todos los conectados en la sala
         messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
     }
+
 
 
 

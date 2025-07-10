@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.entidad.Personaje;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Batalla {
     private Personaje jugadorA;
@@ -25,20 +26,15 @@ public class Batalla {
         hpRestante.put(b.getNombre(), 100);
     }
 
-    public boolean puedeAtacar(String nombre) {
-        return turno.equals(nombre) && turnosUsados.get(nombre) < 3 && !batallaTerminada();
+    public Integer getHpRestante(String nombre) {
+        return hpRestante.get(nombre);
     }
-
-    public boolean haAtacado(Long idPersonaje) {
-        return turnosUsados.getOrDefault(idPersonaje.toString(), 0) > 0;
-    }
-
-
 
     public EstadoBatalla atacar(String nombreAtacante) {
         String nombreDefensor = getRivalNombre(nombreAtacante);
 
-        int daño = calcularDaño(getPersonaje(nombreAtacante));
+        int daño = calcularDañoFinal(getPersonaje(nombreAtacante), getPersonaje(nombreDefensor));
+
         int hpActual = hpRestante.get(nombreDefensor);
         int nuevoHp = Math.max(0, hpActual - daño);
         hpRestante.put(nombreDefensor, nuevoHp);
@@ -48,6 +44,7 @@ public class Batalla {
 
         // Verificar fin de batalla
         boolean fin = batallaTerminada();
+
 
         if (!fin) {
             turno = nombreDefensor;
@@ -63,15 +60,100 @@ public class Batalla {
     }
 
     public boolean batallaTerminada() {
-        return turnosUsados.values().stream().allMatch(t -> t >= 3);
+        if (hpRestante.get(jugadorA.getNombre()) <= 0 || hpRestante.get(jugadorB.getNombre()) <= 0){
+            return true;
+        }
+        return false;
     }
 
-    private int calcularDaño(Personaje atacante) {
-        // Ejemplo simple basado en fuerza y armas
-        int fuerza = atacante.getEstadisticas().getFuerza();
-        int bonoArmas = atacante.getEquipamientos().size();
-        return fuerza + bonoArmas; // podés hacer una fórmula más realista
+    private int calcularDañoFinal(Personaje atacante, Personaje defensor) {
+        int ataqueRaw = calcularAtaque(atacante);
+        int defensaRaw = calcularDefensa(defensor);
+
+
+        int dañoBase = ataqueRaw - defensaRaw;
+
+
+        int dañoFinal = Math.max(20, Math.min(70, dañoBase));
+
+
+        if (dañoBase < 20) {
+            dañoFinal = 20 + (int)(Math.random() * 16);
+        }
+
+        else if (dañoBase > 70) {
+            dañoFinal = 55 + (int)(Math.random() * 16); // 55-70
+        }
+
+        return dañoFinal;
     }
+
+    private int calcularAtaque(Personaje atacante) {
+        int fuerza = atacante.getEstadisticas().getFuerza();
+        int inteligencia = atacante.getEstadisticas().getInteligencia();
+        int agilidad = atacante.getEstadisticas().getAgilidad();
+
+
+        int base = (fuerza + inteligencia) / 2 + 15;
+
+        int variante = (int) (Math.random() * 4);
+
+        switch (variante) {
+            case 0:
+
+                return base + (int)(Math.random() * 20 + 10);
+
+            case 1:
+
+                return (int) (base * 1.3 + Math.random() * 25 + 15);
+
+            case 2:
+
+                return (int) ((inteligencia * 0.8 + fuerza * 0.4) + Math.random() * 20 + 10);
+
+            case 3:
+
+                return (int) (agilidad * 0.7 + fuerza * 0.3 + Math.random() * 18 + 12);
+
+            default:
+                return base + 10;
+        }
+    }
+
+    private int calcularDefensa(Personaje defensor) {
+        int armadura = defensor.getEstadisticas().getArmadura();
+        int agilidad = defensor.getEstadisticas().getAgilidad();
+
+
+        int base = (armadura + agilidad) / 3 + 5;
+
+        int variante = (int) (Math.random() * 4);
+
+        switch (variante) {
+            case 0:
+
+                return base + (int)(Math.random() * 15 + 5);
+
+            case 1:
+
+                return (int) (armadura * 0.8 + Math.random() * 15 + 5);
+
+            case 2:
+
+                return (int) (agilidad * 0.6 + Math.random() * 12 + 3);
+
+            case 3:
+
+                return Math.random() < 0.3 ?
+                        (int)(base * 1.5 + Math.random() * 10) :
+                        (int)(base * 0.7 + Math.random() * 8);
+
+            default:
+                return base + 5;
+        }
+    }
+
+
 
     private Personaje getPersonaje(String nombre) {
         return jugadorA.getNombre().equals(nombre) ? jugadorA : jugadorB;
@@ -81,7 +163,6 @@ public class Batalla {
         return jugadorA.getNombre().equals(nombre) ? jugadorB.getNombre() : jugadorA.getNombre();
     }
 
-    // Clon para no modificar los personajes reales
     private Personaje clonar(Personaje p) {
         Personaje copia = new Personaje();
         copia.setId(p.getId());

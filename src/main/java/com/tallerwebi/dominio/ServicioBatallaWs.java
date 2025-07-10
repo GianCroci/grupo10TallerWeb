@@ -19,45 +19,18 @@ public class ServicioBatallaWs {
 
     private final Map<String, Batalla> batallas = new HashMap<>();
 
-    // Crear una batalla nueva
-    public void crearBatalla(String salaId, Personaje jugador, Personaje rival) {
-        if (!batallas.containsKey(salaId)) {
-            batallas.put(salaId, new Batalla(jugador, rival));
-        }
-    }
 
-
-    // Procesar un ataque enviado por el jugador
-    public EstadoBatalla procesarAtaque(String salaId, String nombreAtacante) {
-        Batalla batalla = batallas.get(salaId);
-        if (batalla == null) {
-            throw new IllegalStateException("La batalla no existe.");
-        }
-
-        if (!batalla.puedeAtacar(nombreAtacante)) {
-            throw new IllegalStateException("No podés atacar ahora.");
-        }
-
-        return batalla.atacar(nombreAtacante);
-    }
 
     public Optional<String> buscarSalaPendientePara(Long idPersonaje) {
-        for (Map.Entry<String, Batalla> entrada : batallas.entrySet()) {
-            String salaId = entrada.getKey();
-            Batalla batalla = entrada.getValue();
-
-
-
-            // El personaje participa en esta batalla
-            if (salaId.contains(idPersonaje.toString())) {
-                // ¿Este personaje no ha atacado todavía?
-                if (!batalla.haAtacado(idPersonaje)) {
-                    return Optional.of(salaId);
-                }
+        for (String clave : batallas.keySet()) {
+            Batalla b = batallas.get(clave);
+            if (b.getJugadorA().getId().equals(idPersonaje) || b.getJugadorB().getId().equals(idPersonaje)) {
+                return Optional.of(clave); // ej: "2_3"
             }
         }
         return Optional.empty();
     }
+
 
 
     public String obtenerOSalaExistente(Long idA, Long idB) {
@@ -85,13 +58,10 @@ public class ServicioBatallaWs {
     }
 
 
-    public int calcularDaño(Personaje atacante) {
-        Integer daño= 50;
-        return daño;
-    }
-
     public Batalla obtenerBatalla(String salaId) {
         return batallas.get(salaId);
     }
+
+
 }
 

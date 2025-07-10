@@ -27,6 +27,7 @@ public class Personaje {
     private List<Equipamiento> equipamientos = new ArrayList<>();
     private String codigoAmigo;
     private Boolean esTuTurno = false;
+    private Integer vida = 100;
     @ManyToMany
     @JoinTable(
             name = "amigos",
@@ -113,5 +114,13 @@ public class Personaje {
 
     public void setEsTuTurno(Boolean esTuTurno) {
         this.esTuTurno = esTuTurno;
+    }
+
+    public Integer getVida() {
+        return vida;
+    }
+
+    public void setVida(Integer vida) {
+        this.vida = vida;
     }
 }

@@ -5,13 +5,16 @@
   <title>Batalla WebSocket</title>
 
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
   <style>
     body {
-      background-color: #222;
-      color: #fff;
-      font-family: 'Trebuchet MS', sans-serif;
+      background-color: #1c1c1c;
+      color: #f5f5f5;
+      font-family: 'MedievalSharp', cursive;
     }
 
     .contenedor-batalla {
@@ -19,57 +22,69 @@
     }
 
     .personaje-box {
-      border: 2px solid #fff;
+      border: 3px solid #fff;
       padding: 20px;
       border-radius: 15px;
+      background-color: rgba(0, 0, 0, 0.6);
     }
 
     .img-personaje {
       width: 50%;
       border-radius: 10px;
     }
+
+    #btnAtacar {
+      font-size: 24px;
+      padding: 10px 30px;
+      border-radius: 10px;
+      border: 2px solid #fff;
+    }
+
+    #estado {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #ffe066;
+    }
   </style>
 </head>
 <body>
-<div class="container contenedor-batalla text-center">
-  <h1>Batalla por Turnos</h1>
-  <p id="estado">Esperando estado de batalla...</p>
-  <div class="row mt-4">
-    <div class="col-md-5 personaje-box" th:object="${personaje}">
-      <h2 th:text="*{nombre}">Jugador</h2>
-      <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
-      <p>HP:<span id="hpJugador">--</span></p>
+<main th:style="'background-image: url(' + @{/img/fondo-batalla-ws.jpg} + '); background-size: cover; background-position: center bottom; height: 90vh'"
+      class="container-fluid d-flex flex-column align-items-center">
+  <div class="container contenedor-batalla text-center">
+
+    <div class="row mt-4">
+      <div class="col-md-5 personaje-box" th:object="${personaje}">
+        <h2 th:text="*{nombre}">Jugador</h2>
+        <img th:src="*{imagen}" alt="Jugador" class="img-personaje">
+        <p>HP: <span id="hpJugador">--</span></p>
+      </div>
+      <div class="col-md-2 d-flex align-items-center justify-content-center">
+        <h1>VS</h1>
+      </div>
+      <div class="col-md-5 personaje-box" th:object="${rival}">
+        <h2 th:text="*{nombre}">Rival</h2>
+        <img th:src="*{imagen}" alt="Rival" class="img-personaje">
+        <p>HP: <span id="hpRival">--</span></p>
+      </div>
     </div>
-    <div class="col-md-2 d-flex align-items-center justify-content-center">
-      <h1>VS</h1>
-    </div>
-    <div class="col-md-5 personaje-box" th:object="${rival}">
-      <h2 th:text="*{nombre}">Rival</h2>
-      <img th:src="*{imagen}" alt="Rival" class="img-personaje">
-      <p>HP: <span id="hpRival">--</span></p>
+
+    <div class="mt-5" th:object="${personaje}">
+      <button id="btnAtacar"
+              class="btn btn-danger btn-lg"
+              onclick="atacar()"
+              th:disabled="${!personaje.esTuTurno}">
+        ¡Atacar!
+      </button>
+      <p id="estado">Esperando estado de batalla...</p>
     </div>
   </div>
 
-  <div class="mt-4" th:object="${personaje}">
-    <button id="btnAtacar"
-            class="btn btn-danger btn-lg"
-            onclick="atacar()"
-            th:disabled="${!personaje.esTuTurno}">
-      ¡Atacar!
-    </button>
-  </div>
+  <script th:src="@{/js/batalla.js}"></script>
+  <script th:src="@{/js/notificacion-batalla.js}"></script>
 
-
-</div>
-
-
-<script th:src="@{/js/batalla.js}"></script>
-<script th:src="@{/js/notificacion-batalla.js}"></script>
-
-<script th:inline="javascript">
-  conectarBatalla([[${salaId}]], [[${#strings.escapeJavaScript(personaje.nombre)}]]);
-</script>
-
-
+  <script th:inline="javascript">
+    conectarBatalla([[${salaId}]], [[${#strings.escapeJavaScript(personaje.nombre)}]]);
+  </script>
+</main>
 </body>
 </html>
