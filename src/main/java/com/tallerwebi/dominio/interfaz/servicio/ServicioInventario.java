@@ -14,5 +14,7 @@ public interface ServicioInventario {
     Equipamiento obtenerEquipamientoPorId(Long idPersonaje,Long idEquipamiento);
     Boolean equipar(Long idPersonaje,Long idEquipamiento) throws InventarioVacioException;
     void sumarEstadisticas(Personaje personaje, Estadisticas stats);
+    void restarEstadisticas(Personaje personaje, Estadisticas stats);
+    Equipamiento obtenerEquipamientoEquipadoPorTipo(Long idPersonaje, Class<? extends Equipamiento> tipoEquipamiento);
     //void darArmaEspecial();
 }
