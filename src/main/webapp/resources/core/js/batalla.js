@@ -34,8 +34,10 @@ function conectarBatalla(idSala, nombre) {
                 console.log("Jugador A - Mi HP:", estado.hpJugador, "HP Rival:", estado.hpRival);
                 if (estado.hpJugador <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
+                    document.getElementById("btnSalir").style.display = "block";
                 } if(estado.hpRival <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
+                    document.getElementById("btnSalir").style.display = "block";
                 }
             } else {
 
@@ -43,8 +45,10 @@ function conectarBatalla(idSala, nombre) {
                 document.getElementById("hpRival").innerText = estado.hpJugador;
                 if (estado.hpRival <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
+                    document.getElementById("btnSalir").style.display = "block";
                 } if(estado.hpJugador <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
+                    document.getElementById("btnSalir").style.display = "block";
                 }
                 console.log("Jugador B - Mi HP:", estado.hpRival, "HP Rival:", estado.hpJugador);
             }
@@ -65,4 +69,8 @@ function atacar() {
 
     console.log("Atacó " + ataque.remitente);
     stompClient.send("/app/batalla/" + salaId, {}, JSON.stringify(ataque));
+}
+
+function salir() {
+    window.location.href = "/spring/home";
 }
