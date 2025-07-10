@@ -45,7 +45,6 @@ public class ServicioBatallaTest {
     private Rol guerreroMock;
     private Random randomMock;
     private Map<String, AccionCombate> posiblesAccionesMock;
-    private ServicioPersonaje servicioPersonajeMock;
 
     @BeforeEach
     public void init(){
@@ -318,7 +317,6 @@ public class ServicioBatallaTest {
         String primerTurnoObtenido = batalladto.getTurno();
 
         assertThat(primerTurnoObtenido, equalToIgnoringCase(primerTurnoEsperado));
-        servicioBatalla = new ServicioBatallaImpl(servicioPersonajeMock);
     }
 
     @Test
