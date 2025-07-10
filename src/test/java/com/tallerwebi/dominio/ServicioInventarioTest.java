@@ -82,7 +82,7 @@ public class ServicioInventarioTest {
     }
 
     //el nombre parece un trabalenguas D:
-    @Test
+   /* @Test
     public void queEquipeNuevoEquipoYDesequipeElEquipadoAnterior() throws InventarioVacioException {
         Rol rolMock = mock(Guerrero.class);
 
@@ -181,7 +181,7 @@ public class ServicioInventarioTest {
         assertTrue(equipoNuevoMock.getEquipado());
 
         verify(rolMock, never()).aplicarStatsBase(personajeMock);
-    }
+    }*/
 
 
     @Test

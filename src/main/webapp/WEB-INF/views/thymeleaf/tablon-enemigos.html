@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tablón de Misiones</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-size: cover;
+      font-family: 'MedievalSharp', cursive;
+      color: #f5e9c3;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+      padding: 50px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3em;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    .enemy-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .enemy {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch; /* permite que el contenedor derecho se estire */
+      background: rgba(66, 36, 0, 0.85);
+      border: 3px solid #c19a6b;
+      border-radius: 15px;
+      box-shadow: 0 0 15px black;
+      padding: 20px;
+    }
+
+    .enemy-content {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .enemy-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 20px;
+      min-width: 130px;
+    }
+
+    .enemy button {
+      background-color: #8b0000;
+      color: #fff8dc;
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1em;
+      border: 2px solid #ffd700;
+      border-radius: 10px;
+      padding: 15px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .enemy button:hover {
+      background-color: #a52a2a;
+    }
+
+    .enemy img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border: 3px solid #ffd700;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+
+    .enemy-info {
+      flex-grow: 1;
+    }
+
+    .enemy-info h2 {
+      margin: 0;
+      font-size: 1.8em;
+      color: #ffd700;
+    }
+
+    .enemy-info p {
+      margin: 5px 0;
+      font-size: 1.1em;
+    }
+
+    .stats {
+      margin-top: 10px;
+      font-size: 0.95em;
+    }
+
+    .stats span {
+      display: inline-block;
+      margin-right: 15px;
+    }
+
+    .stats i {
+      margin-right: 5px;
+      color: #ffa500;
+    }
+
+    .level {
+      font-weight: bold;
+      color: #ffa500;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body class="bg-dark text-light"
+      th:style="'background-image: url(' + @{/img/tablon-enemigos.png} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
+<header th:replace="navbar :: nav"></header>
+<div class="overlay">
+  <h1>Tablón de Misiones</h1>
+  <div class="enemy-list">
+
+    <!-- Enemigos -->
+    <div th:each="enemigoActual : ${enemigos}" >
+      <form class="enemy" th:action="@{/comenzar-batalla}" method="post">
+        <div class="enemy-content">
+          <img th:src="@{${enemigoActual.imagenEnemigo}}" th:alt="${enemigoActual.nombre}" />
+          <div class="enemy-info">
+            <h2 th:text="${enemigoActual.nombre}"></h2>
+            <p th:text="${enemigoActual.descripcion}"></p>
+            <div class="stats">
+              <span><i class="fas fa-dumbbell"></i><span th:text="'Fuerza: ' + ${enemigoActual.estadisticas.fuerza}"></span></span>
+              <span><i class="fas fa-shield-alt"></i><span th:text="'Armadura: ' + ${enemigoActual.estadisticas.armadura}"></span></span>
+              <span><i class="fas fa-hat-wizard"></i><span th:text="'Inteligencia: ' + ${enemigoActual.estadisticas.inteligencia}"></span></span>
+              <span><i class="fas fa-wind"></i><span th:text="'Agilidad: ' + ${enemigoActual.estadisticas.agilidad}"></span></span>
+            </div>
+            <div class="level" th:text="'Nivel: ' + ${enemigoActual.nivel}"></div>
+          </div>
+        </div>
+        <div class="enemy-actions">
+          <button type="submit" th:name="idEnemigo" th:value="${enemigoActual.id}"><i class="fa-solid fa-hand-fist"></i>Luchar</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -43,9 +43,9 @@ public class Mago extends Rol {
 
     @Override
     public void aplicarStatsBase(Personaje personaje) {
-        personaje.getEstadisticas().setFuerza(50);
-        personaje.getEstadisticas().setArmadura(20);
-        personaje.getEstadisticas().setAgilidad(40);
-        personaje.getEstadisticas().setInteligencia(80);
+        personaje.getEstadisticas().setFuerza(0);
+        personaje.getEstadisticas().setArmadura(10);
+        personaje.getEstadisticas().setAgilidad(10);
+        personaje.getEstadisticas().setInteligencia(30);
     }
 }

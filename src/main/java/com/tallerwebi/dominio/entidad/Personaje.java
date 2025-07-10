@@ -21,13 +21,14 @@ public class Personaje {
     private Rol rol;
     @Embedded
     private Estadisticas estadisticas;
+    private Integer nivel;
+    private Integer vida;
     private String imagen;
     private Integer oro;
     @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Equipamiento> equipamientos = new ArrayList<>();
     private String codigoAmigo;
     private Boolean esTuTurno = false;
-    private Integer vida = 100;
     @ManyToMany
     @JoinTable(
             name = "amigos",
@@ -88,6 +89,14 @@ public class Personaje {
 
     public void setAmigos(List<Personaje> amigos) { this.amigos = amigos; }
 
+    public Integer getNivel() { return nivel; }
+
+    public void setNivel(Integer nivel) { this.nivel = nivel; }
+
+    public Integer getVida() { return vida; }
+
+    public void setVida(Integer vida) { this.vida = vida; }
+
     public void aplicarEstadisticasBase() {
         getRol().aplicarStatsBase(this);
     }
@@ -108,19 +117,28 @@ public class Personaje {
         return Objects.hashCode(id);
     }
 
+    public void calcularNivel() {
+        Integer sumaEstadisticas = obtenerTotalEstadisticas();
+        this.nivel = sumaEstadisticas / 10;
+        this.calcularVida();
+    }
+
+    private Integer obtenerTotalEstadisticas() {
+        return this.estadisticas.getAgilidad()
+                + this.estadisticas.getInteligencia()
+                + this.estadisticas.getArmadura()
+                + this.estadisticas.getFuerza();
+    }
+
+    private void calcularVida() {
+        this.vida = this.nivel * 15;
+    }
+
     public Boolean getEsTuTurno(){
         return esTuTurno;
     }
 
     public void setEsTuTurno(Boolean esTuTurno) {
         this.esTuTurno = esTuTurno;
-    }
-
-    public Integer getVida() {
-        return vida;
-    }
-
-    public void setVida(Integer vida) {
-        this.vida = vida;
     }
 }

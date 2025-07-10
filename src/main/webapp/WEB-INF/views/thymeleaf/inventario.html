@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{'/css/inventario.css?v1'}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <header th:replace="navbar :: nav"></header>
     <title>Inventario</title>
+    <link rel="stylesheet" th:href="@{'/css/inventario.css?v1234'}">
+    <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
+    <header th:replace="navbar :: nav"></header>
 </head>
 <body th:style="'background-image: url(' + @{/img/equipamiento.png} + ')'">
-<header></header>
 <main>
+    <div class="contenedor-principal" th:if="${mensajeError == null}" th:style="'background-image: url(' + @{/img/contenedor-equipamiento.png} + ')'">
 
-    <div class="contenedor-principal" th:if="${mensajeError == null}"  th:style="'background-image: url(' + @{/img/contenedor-equipamiento.png} + ')'">
+        <div class="filtros">
+            <button onclick="filtrarPorTipo('Todos')">Todos</button>
+            <button onclick="filtrarPorTipo('Arma')">Armas</button>
+            <button onclick="filtrarPorTipo('Casco')">Cascos</button>
+            <button onclick="filtrarPorTipo('Escudo')">Escudos</button>
+            <button onclick="filtrarPorTipo('Pantalones')">Pantalones</button>
+            <button onclick="filtrarPorTipo('Pechera')">Pecheras</button>
+            <button onclick="filtrarPorTipo('Botas')">Botas</button>
+
+        </div>
 
         <div class="contenedor-armas">
             <a th:each="equipo : ${inventario}"
-               th:href="@{'/inventario/' + ${equipo.getId()}}"
-               class="imagen-arma">
-                <img th:src="@{'/' + ${equipo.getImagen()}}" th:alt="${equipo.nombre}" />
+               th:href="@{'/inventario/' + ${equipo.id}}"
+               class="imagen-arma"
+               th:attr="data-tipo=${equipo.getClass().getSimpleName()}">
+                <img th:src="@{'/' + ${equipo.imagen}}" th:alt="${equipo.nombre}" />
             </a>
+            <p id="mensaje-sin-equipos" style="display:none; font-weight: bold;">
+                No hay equipos de este tipo
+            </p>
         </div>
+
 
         <div class="contenedor-informacion" th:if="${equipoSeleccionado != null}">
             <div class="nombre-equipo">
@@ -30,42 +42,54 @@
             </div>
             <div class="estadistica">
                 <h2>Fuerza</h2>
-                <div style="display:flex; column-gap: 0%">
-                    <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getFuerza()})"></h2>
-                </div>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.stats.fuerza}"></h2>
             </div>
             <div class="estadistica">
                 <h2>Inteligencia</h2>
-                <div style="display:flex; column-gap: 0%">
-                    <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getInteligencia()})"></h2>
-                </div>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.stats.inteligencia}"></h2>
             </div>
             <div class="estadistica">
                 <h2>Resistencia</h2>
-                <div style="display:flex; column-gap: 0%">
-                    <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getArmadura()})"></h2>
-                </div>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.stats.armadura}"></h2>
             </div>
             <div class="estadistica">
                 <h2>Agilidad</h2>
-                <div style="display:flex; column-gap: 0%">
-                    <h2 style="color: #840000;" th:text="'+' + (${equipoSeleccionado.getStats().getAgilidad()})"></h2>
-                </div>
+                <h2 style="color: #840000;" th:text="'+' + ${equipoSeleccionado.stats.agilidad}"></h2>
             </div>
             <div>
-                <a class="boton" th:classappend="${equipoSeleccionado.getEquipado()} ? 'equipado' : ''"
-                   th:href="@{'/inventario/equipar/' + ${equipoSeleccionado.getId()}}"
-                   th:text="${equipoSeleccionado.getEquipado()} ? 'Equipado' : 'Equipar'"></a>
+                <a class="boton" th:classappend="${equipoSeleccionado.equipado} ? 'equipado' : ''"
+                   th:href="@{'/inventario/equipar/' + ${equipoSeleccionado.id}}"
+                   th:text="${equipoSeleccionado.equipado} ? 'Equipado' : 'Equipar'"></a>
             </div>
         </div>
-
     </div>
 
     <div th:if="${mensajeError}" class="mensaje-error">
         <p th:text="${mensajeError}"></p>
     </div>
-
 </main>
+<script>
+    function filtrarPorTipo(tipo) {
+        const elementos = document.querySelectorAll('.imagen-arma');
+        let visibles = 0;
+        elementos.forEach(el => {
+            const tipoElemento = el.getAttribute('data-tipo');
+            if (tipo === 'Todos' || tipoElemento === tipo) {
+                el.style.display = 'inline-block';
+                visibles++;
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        const mensaje = document.getElementById('mensaje-sin-equipos');
+        if (visibles === 0) {
+            mensaje.style.display = 'block';
+        } else {
+            mensaje.style.display = 'none';
+        }
+    }
+</script>
 <script th:src="@{js/notificacion-batalla.js}"></script>
 </body>
 </html>

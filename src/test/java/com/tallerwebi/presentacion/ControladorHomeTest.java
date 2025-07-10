@@ -1,8 +1,11 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioProducto;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioMercadoPago;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.excepcion.InventarioVacioException;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioProducto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,15 +26,21 @@ public class ControladorHomeTest {
     private ServicioPersonaje servicioPersonaje;
     private Personaje personajeMock;
     private RedirectAttributes redirectAttributesMock;
+    private ServicioProducto servicioProducto;
+    private ServicioMercadoPago servicioMercadoPago;
+    private String operacionMPMock;
 
     @BeforeEach
     public void init() throws InventarioVacioException {
+        servicioMercadoPago = mock(ServicioMercadoPago.class);
+        servicioProducto = mock(ServicioProducto.class);
         servicioPersonaje = mock(ServicioPersonaje.class);
-        controladorHome = new ControladorHome(servicioPersonaje);
+        controladorHome = new ControladorHome(servicioPersonaje, servicioProducto, servicioMercadoPago);
         sessionMock = mock(HttpSession.class);
         personajeMock = mock(Personaje.class);
         redirectAttributesMock = mock(RedirectAttributes.class);
         mav = null;
+        operacionMPMock = "";
     }
 
     @Test
