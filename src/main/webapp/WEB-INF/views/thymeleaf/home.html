@@ -66,10 +66,149 @@
         <h3 th:text="${infoPersonaje.estadisticas.agilidad}">Agilidad</h3>
     </div>
 </div>
+    <!-- Botón que abre el modal -->
+    <div class="text-center my-4">
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#mpModal">
+            Comprar con Mercado Pago
+        </button>
+    </div>
+
+    <!-- Modal de Mercado Pago -->
+    <div class="modal fade" id="mpModal" tabindex="-1" aria-labelledby="mpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="mpModalLabel">Elegí tu compra</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm" onsubmit="event.preventDefault(); crearCheckout();">
+                        <div class="mb-4">
+                            <label class="form-label d-block">Elegí tu producto</label>
+
+                            <div class="row g-3">
+                                <!-- Iteramos productos -->
+                                <div class="col-md-4" th:each="productoActual : ${productosParaComprarPorMP}">
+                                    <label class="border rounded p-3 d-flex flex-column align-items-center bg-light position-relative" style="cursor:pointer;">
+                                        <input type="radio" name="productoSeleccionado" th:value="${productoActual.id}" class="form-check-input position-absolute top-0 end-0 m-2" required>
+                                        <img src="img/oro.png" th:alt="${productoActual.nombre}" style="width:80px; height:80px; object-fit:cover;" class="rounded mb-2">
+                                        <h5 class="text-center mb-1" th:text="${productoActual.nombre}"  style="color: black;"></h5>
+                                        <p class="mb-1 text-muted" th:text="'Precio: $' + ${productoActual.precio}"></p>
+                                        <p class="mb-0 text-success" th:text="'Recompensa: ' + ${productoActual.cantidadProducto}"></p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4 justify-content-center">
+                            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                <label for="cantidadInput" class="form-label mb-0 me-2">Cantidad:</label>
+                                <input type="number" class="form-control" style="max-width: 100px;" id="cantidadInput" min="1" value="1" required />
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success w-100">Confirmar y pagar</button>
+                        </div>
+                    </form>
+
+                    <div id="brick_container" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="paymentBrick_container" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+">
+        <button id="cerrarBrickBtn" style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: white; font-size: 2rem;">&times;</button>
+        <div id="brickWrapper" style="background: white; padding: 2rem; border-radius: 12px; max-width: 420px; width: 100%;"></div>
+    </div>
 </main>
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script th:src="@{js/notificacion-batalla.js}"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mp = new MercadoPago('APP_USR-609e475f-c7f9-446e-aec5-4acae4148b06');
+    let paymentBrickController = null;
+    function crearCheckout() {
+        const cantidad = parseInt(document.getElementById("cantidadInput").value);
+        const idProducto = document.querySelector('input[name="productoSeleccionado"]:checked')?.value;
+
+        if (cantidad < 1 || !idProducto) {
+            alert("Completá todos los campos correctamente.");
+            return;
+        }
+
+        const body = {
+            idProducto: parseInt(idProducto),
+            cantidad: cantidad
+        };
+
+        if (paymentBrickController) {
+            paymentBrickController.unmount();
+            paymentBrickController = null;
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('mpModal'));
+        modal.hide();
+
+        fetch('mp', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.text())
+            .then(preferenceId => {
+                if (preferenceId.startsWith("Error") || preferenceId.startsWith("Producto")) {
+                    alert(preferenceId);
+                    return;
+                }
+
+                const bricksBuilder = mp.bricks();
+                const container = document.getElementById("paymentBrick_container");
+                container.style.display = "flex";
+                bricksBuilder.create("payment", "brickWrapper", {
+                    initialization: {
+                        amount: 100,
+                        preferenceId: preferenceId
+                    },
+                    customization: {
+                        paymentMethods: {
+                            mercadoPago: "all",
+                        },
+                    },
+                    callbacks: {
+                        onReady: () => console.log("Brick listo"),
+                        onError: error => console.error(error)
+                    },
+                }).then(controller => {
+                    paymentBrickController = controller; // ✅ Guardamos para luego desmontarlo
+                });
+            })
+            .catch(err => {
+                console.error("Error en fetch:", err);
+                alert("Error inesperado al crear preferencia");
+            });
+    }
+    document.getElementById("cerrarBrickBtn")?.addEventListener("click", () => {
+        if (window.paymentBrickController) {
+            window.paymentBrickController.unmount();
+            window.paymentBrickController = null;
+        }
+        document.getElementById("paymentBrick_container").style.display = "none";
+    });
+
+</script>
 </body>
 </html>

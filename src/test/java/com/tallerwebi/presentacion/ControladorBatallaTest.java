@@ -3,6 +3,8 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioEnemigo;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioPersonaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
@@ -15,12 +17,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class ControladorBatallaTest {
 
+    private RepositorioPersonaje repositorioPersonajeMock;
     private ServicioPersonaje servicioPersonajeMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioBatalla servicioBatallaMock;
@@ -31,14 +36,17 @@ public class ControladorBatallaTest {
     private Personaje personajeMockeado;
     private Personaje rivalMockeado;
     private RedirectAttributes redirectAttributesMock;
+    private Long idPersonajeMock;
+    private RepositorioEnemigo repositorioEnemigo;
     private Model modelMock;
 
     @BeforeEach
     public void init(){
+        repositorioPersonajeMock = mock(RepositorioPersonaje.class);
+        repositorioEnemigo = mock(RepositorioEnemigo.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioBatallaMock = mock(ServicioBatalla.class);
         servicioPersonajeMock = mock(ServicioPersonaje.class);
-        servicioBatallaMock = new ServicioBatallaImpl(servicioPersonajeMock);
         servicioBatallaMock = mock(ServicioBatalla.class);
         servicioBatallaWSMock = mock(ServicioBatallaWsImpl.class);
         controladorBatalla = new ControladorBatalla(servicioPersonajeMock, servicioBatallaMock, servicioBatallaWSMock);
@@ -48,6 +56,7 @@ public class ControladorBatallaTest {
         rivalMockeado = mock(Personaje.class);
         redirectAttributesMock = mock(RedirectAttributes.class);
         modelMock = mock(Model.class);
+        idPersonajeMock = 1L;
     }
 
     @Test
@@ -86,4 +95,139 @@ public class ControladorBatallaTest {
         verify(modelMock).addAttribute("salaId", "sala1");
     }
 
+
+
+
+
+
+
+    @Test
+    public void queElMetodoIrATablonEnemigosMeDevuelvaLaVistaTablonEnemigos(){
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
+        ModelAndView mav = controladorBatalla.irATablonEnemigos(sessionMock, redirectAttributesMock);
+
+        String vistaEsperada = "tablon-enemigos";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+    }
+
+    @Test
+    public void queElMetodoIrATablonEnemigosMeRedirijaALaVistaLoginConUnMensajeDeErrorSiNoExisteElIdDePersonaje(){
+
+        ModelAndView mav = controladorBatalla.irATablonEnemigos(sessionMock, redirectAttributesMock);
+
+        String vistaEsperada = "redirect:/login";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        verify(redirectAttributesMock).addFlashAttribute("error", "No puede acceder a la vista tablon de enemigos sin haber iniciado sesion");
+    }
+
+    @Test
+    public void queElMetodoIrATablonEnemigosBusqueUnaListaDeEnemigosDTOYlaGuardeEnUnModel(){
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
+        when(servicioBatallaMock.buscarEnemigosParaTablon()).thenReturn(new ArrayList<>());
+        ModelAndView mav = controladorBatalla.irATablonEnemigos(sessionMock, redirectAttributesMock);
+
+        String vistaEsperada = "tablon-enemigos";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("enemigos"), notNullValue());
+    }
+
+    @Test
+    public void queElMetodoComenzarBatallaMeDevuelvaLaVistaCampoBatalla(){
+        Long idEnemigoMockeado = 1L;
+        ModelAndView mav = controladorBatalla.comenzarBatalla(idEnemigoMockeado, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+    }
+
+    @Test
+    public void queElMetodoComenzarBatallaGuardeUnModelConUnBatallaDTO(){
+        Long idEnemigoMockeado = 1L;
+        BatallaDTO batallaDTO = new BatallaDTO();
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
+        when(servicioBatallaMock.comenzarBatalla(idPersonajeMock, idEnemigoMockeado)).thenReturn(batallaDTO);
+        ModelAndView mav = controladorBatalla.comenzarBatalla(idEnemigoMockeado, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("batallaDTO"), notNullValue());
+    }
+
+    @Test
+    public void queElMetodoComenzarBatallaGuardeElObjetoBatallaDTOEnLaSession(){
+        Long idEnemigoMockeado = 1L;
+        BatallaDTO batallaDTO = new BatallaDTO();
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
+        when(servicioBatallaMock.comenzarBatalla(idPersonajeMock, idEnemigoMockeado)).thenReturn(batallaDTO);
+        ModelAndView mav = controladorBatalla.comenzarBatalla(idEnemigoMockeado, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("batallaDTO"), notNullValue());
+        verify(sessionMock, times(1)).setAttribute("batallaActual", batallaDTO);
+    }
+
+    @Test
+    public void queElMetodoRealizarAccionMeDevuelvaMismaVistaCampoBatalla(){
+        String accion = "ataqueFisico";
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(idPersonajeMock);
+        BatallaDTO batallaDTO = new BatallaDTO();
+        when(sessionMock.getAttribute("batallaActual")).thenReturn(batallaDTO);
+        batallaDTO.setVidaActualPersonaje(1);
+        batallaDTO.setVidaActualEnemigo(1);
+        ModelAndView mav = controladorBatalla.realizarAccion(accion, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+    }
+
+    @Test
+    public void queElMetodoRealizarAccioActualiceLosDatosDelObjetoBatallaDTOGuardadoEnLaSessionYloVuelvaAGuardarEnElModel(){
+        String accion = "Ataque Fisico";
+        BatallaDTO batallaDTO = new BatallaDTO();
+        when(sessionMock.getAttribute("batallaActual")).thenReturn(batallaDTO);
+        batallaDTO.setVidaActualPersonaje(1);
+        batallaDTO.setVidaActualEnemigo(1);
+
+        ModelAndView mav = controladorBatalla.realizarAccion(accion, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("batallaDTO"), notNullValue());
+    }
+
+    @Test
+    public void queElMetodoRealizarAccioActualiceLosDatosDelObjetoBatallaDTOGuardadoEnLaSession(){
+        String accion = "Ataque Fisico";
+        BatallaDTO batallaDTO = new BatallaDTO();
+        batallaDTO.setVidaActualPersonaje(1);
+        batallaDTO.setVidaActualEnemigo(1);
+        when(sessionMock.getAttribute("batallaActual")).thenReturn(batallaDTO);
+
+        ModelAndView mav = controladorBatalla.realizarAccion(accion, sessionMock);
+
+        String vistaEsperada = "campo-batalla";
+        String vistaObtenida = mav.getViewName();
+
+        assertThat(vistaObtenida, equalToIgnoringCase(vistaEsperada));
+        assertThat(mav.getModel().get("batallaDTO"), notNullValue());
+        verify(sessionMock, times(1)).setAttribute("batallaActual", batallaDTO);
+    }
 }
