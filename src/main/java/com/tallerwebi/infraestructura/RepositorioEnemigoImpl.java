@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.interfaz.repositorio.RepositorioEnemigo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ public class RepositorioEnemigoImpl implements RepositorioEnemigo {
 
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public RepositorioEnemigoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

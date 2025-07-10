@@ -86,3 +86,7 @@ VALUES (1, 'Slime', 'Baboso', 'img/slime.png', 'img/calabozo.png', 20, 5, 20, 5,
 INSERT INTO Slime (id) VALUES (1);
 INSERT INTO Lobo (id) VALUES (2);
 INSERT INTO Trol (id) VALUES (3);
+
+INSERT INTO Producto (id, nombre, precio, cantidadProducto)
+VALUES (1, 'Oro', '100', 100),
+(2, 'Mas oro', 200, 250);

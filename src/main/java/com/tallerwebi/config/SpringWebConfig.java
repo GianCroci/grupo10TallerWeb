@@ -1,5 +1,7 @@
 package com.tallerwebi.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadopago.MercadoPagoConfig;
 import com.tallerwebi.dominio.AtaqueFisico;
 import com.tallerwebi.dominio.AtaqueMagico;
 import com.tallerwebi.dominio.Defensa;
@@ -18,6 +20,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -106,6 +109,13 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Bean
     public AccionCombate esquivar() {
         return new Esquivar();
+    }
+
+    @Bean
+    public MercadoPagoConfig mercadoPagoConfigInitializer() {
+        MercadoPagoConfig mercadoPagoConfig = new MercadoPagoConfig();
+        mercadoPagoConfig.setAccessToken("APP_USR-4056231313034055-070822-e86fb2056a2461743a3744a07fc4e2c7-2547024138");
+        return mercadoPagoConfig;
     }
 
 }

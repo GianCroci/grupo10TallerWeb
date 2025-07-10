@@ -47,6 +47,10 @@
     <p th:text="${error}"></p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
 </div>
+<div th:if="${mensajito != null}" class="alert alert-danger alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 9999; width: 50%;">
+    <p th:text="${mensajito}"></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
 <main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
       class="container-fluid d-flex flex-column align-items-center">
 <div id="loginbox" style="margin-top:50px;" class="mt-5 row">
@@ -66,9 +70,121 @@
         <h3 th:text="${infoPersonaje.estadisticas.agilidad}">Agilidad</h3>
     </div>
 </div>
+    <!-- Botón que abre el modal -->
+    <div class="text-center my-4">
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#mpModal">
+            Comprar con Mercado Pago
+        </button>
+    </div>
+
+    <!-- Modal de Mercado Pago -->
+    <div class="modal fade" id="mpModal" tabindex="-1" aria-labelledby="mpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="mpModalLabel">Elegí tu compra</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm" onsubmit="event.preventDefault(); crearCheckout();">
+                        <div class="mb-4">
+                            <label class="form-label d-block">Elegí tu producto</label>
+
+                            <div class="row g-3" th:each="productoActual : ${productosParaComprarPorMP}">
+
+                                <!-- Opción: Paquete Básico -->
+                                <div class="col-md-6">
+                                    <label class="w-100 border rounded p-3 d-flex align-items-center justify-content-between bg-light position-relative" style="cursor: pointer;">
+                                        <input type="radio" name="productoSeleccionado" th:value="${productoActual.id}" class="form-check-input position-absolute top-0 end-0 m-2" required>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="img/oro.png" th:alt="${productoActual.nombre}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded">
+                                            <div>
+                                                <h5 class="mb-1" th:text="${productoActual.nombre}"></h5>
+                                                <p class="mb-0 text-muted" th:text="${productoActual.precio}"></p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="cantidadInput" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidadInput" min="1" value="1" required />
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success w-100">Confirmar y pagar</button>
+                        </div>
+                    </form>
+
+                    <div id="brick_container" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="paymentBrick_container"></div>
 </main>
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mp = new MercadoPago('APP_USR-609e475f-c7f9-446e-aec5-4acae4148b06');
+    function crearCheckout() {
+        const cantidad = parseInt(document.getElementById("cantidadInput").value);
+        const idProducto = document.querySelector('input[name="productoSeleccionado"]:checked')?.value;
+
+        if (cantidad < 1 || !idProducto) {
+            alert("Completá todos los campos correctamente.");
+            return;
+        }
+
+        const body = {
+            idProducto: parseInt(idProducto),
+            cantidad: cantidad
+        };
+
+        fetch('mp', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.text())
+            .then(preferenceId => {
+                if (preferenceId.startsWith("Error") || preferenceId.startsWith("Producto")) {
+                    alert(preferenceId);
+                    return;
+                }
+
+                const bricksBuilder = mp.bricks();
+                bricksBuilder.create("payment", "paymentBrick_container", {
+                    initialization: {
+                        amount: 100,
+                        preferenceId: preferenceId
+                    },
+                    customization: {
+                        paymentMethods: {
+                            mercadoPago: "all",
+                        },
+                    },
+                    callbacks: {
+                        onReady: () => console.log("Brick listo"),
+                        onError: error => console.error(error)
+                    },
+                });
+            })
+            .catch(err => {
+                console.error("Error en fetch:", err);
+                alert("Error inesperado al crear preferencia");
+            });
+    }
+</script>
 </body>
 </html>
