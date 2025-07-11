@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-@Service
+@Service("servicioChat")
 public class ServicioChatImpl implements ServicioChat {
 
     @Autowired

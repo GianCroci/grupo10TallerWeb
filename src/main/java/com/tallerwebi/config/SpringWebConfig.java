@@ -110,12 +110,4 @@ public class SpringWebConfig implements WebMvcConfigurer {
     public AccionCombate esquivar() {
         return new Esquivar();
     }
-
-    @Bean
-    public MercadoPagoConfig mercadoPagoConfigInitializer() {
-        MercadoPagoConfig mercadoPagoConfig = new MercadoPagoConfig();
-        mercadoPagoConfig.setAccessToken("APP_USR-4056231313034055-070822-e86fb2056a2461743a3744a07fc4e2c7-2547024138");
-        return mercadoPagoConfig;
-    }
-
 }

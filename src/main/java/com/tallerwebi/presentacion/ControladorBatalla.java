@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.ServicioBatallaWsImpl;
 import com.tallerwebi.dominio.entidad.Personaje;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioBatalla;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatallaWs;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import com.tallerwebi.dominio.excepcion.RivalNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class ControladorBatalla {
 
     private ServicioPersonaje servicioPersonaje;
     private ServicioBatalla servicioBatalla;
-    private ServicioBatallaWsImpl batallaService;
+    private ServicioBatallaWs servicioBatallaWs;
 
     @Autowired
-    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla, ServicioBatallaWsImpl batallaService) {
+    public ControladorBatalla(ServicioPersonaje servicioPersonaje, ServicioBatalla servicioBatalla, ServicioBatallaWs servicioBatallaWs) {
         this.servicioPersonaje = servicioPersonaje;
         this.servicioBatalla = servicioBatalla;
-        this.batallaService = batallaService;
+        this.servicioBatallaWs = servicioBatallaWs;
     }
 
     @GetMapping("/batalla")
@@ -63,7 +64,7 @@ public class ControladorBatalla {
         Personaje jugador = (Personaje) session.getAttribute("personaje");
 
 
-        String salaId = batallaService.obtenerOSalaExistente(jugador.getId(), idRival);
+        String salaId = servicioBatallaWs.obtenerOSalaExistente(jugador.getId(), idRival);
         Personaje rival = servicioPersonaje.buscarPersonaje(idRival);
 
         model.addAttribute("personaje", jugador);

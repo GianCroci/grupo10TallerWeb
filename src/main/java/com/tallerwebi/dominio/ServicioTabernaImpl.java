@@ -7,11 +7,13 @@ import com.tallerwebi.dominio.interfaz.repositorio.RepositorioTaberna;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioTaberna;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service("servicioTaberna")
+@Transactional
 public class ServicioTabernaImpl implements ServicioTaberna {
 
     private RepositorioTaberna repositorioTaberna;

@@ -9,11 +9,13 @@ import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
+@Service("servicioBatallaWs")
+@Transactional
 public class ServicioBatallaWsImpl implements ServicioBatallaWs {
 
 

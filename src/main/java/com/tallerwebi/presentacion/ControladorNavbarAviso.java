@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioBatallaWsImpl;
 import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatallaWs;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class ControladorNavbarAviso {
 
     @Autowired
-    private ServicioBatallaWsImpl batallaService;
+    private ServicioBatallaWs servicioBatallaWs;
 
     @Autowired
     private ServicioPersonaje servicioPersonaje;
@@ -27,7 +28,7 @@ public class ControladorNavbarAviso {
         Personaje personaje = (Personaje) session.getAttribute("personaje");
 
         if (personaje != null) {
-            Optional<String> sala = batallaService.buscarSalaPendientePara(personaje.getId());
+            Optional<String> sala = servicioBatallaWs.buscarSalaPendientePara(personaje.getId());
 
             model.addAttribute("tieneDesafio", sala.isPresent());
             model.addAttribute("salaPendienteId", sala.orElse(null));
