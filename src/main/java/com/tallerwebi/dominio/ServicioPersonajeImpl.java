@@ -8,7 +8,10 @@ import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+import javax.transaction.Transactional;
+
+@Service("servicioPersonaje")
+@Transactional
 public class ServicioPersonajeImpl implements ServicioPersonaje {
 
     private RepositorioPersonaje repositorioPersonaje;

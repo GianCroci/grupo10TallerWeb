@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.entidad.Batalla;
 import com.tallerwebi.dominio.entidad.Mensaje;
 import com.tallerwebi.dominio.entidad.Personaje;
+import com.tallerwebi.dominio.interfaz.servicio.ServicioBatallaWs;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioChat;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioPersonaje;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,15 @@ public class ControladorWebSocket {
     private ServicioChat servicioChat;
 
     @Autowired
-    private ServicioBatallaWsImpl servicioBatalla;
+    private ServicioBatallaWs servicioBatallaWs;
     @Autowired
     private ServicioPersonaje servicioPersonaje;
 
 
-    public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat, ServicioBatallaWsImpl servicioBatalla) {
+    public ControladorWebSocket(SimpMessagingTemplate messagingTemplate, ServicioChat servicioChat, ServicioBatallaWs servicioBatallaWs) {
         this.messagingTemplate = messagingTemplate;
         this.servicioChat = servicioChat;
-        this.servicioBatalla = servicioBatalla;
+        this.servicioBatallaWs = servicioBatallaWs;
     }
 
     @MessageMapping("/chat")
@@ -57,7 +58,7 @@ public class ControladorWebSocket {
     public void iniciarBatalla(@DestinationVariable String salaId) {
         System.out.println("📡 Iniciando batalla para sala: " + salaId);
 
-        Batalla batalla = servicioBatalla.obtenerBatalla(salaId);
+        Batalla batalla = servicioBatallaWs.obtenerBatalla(salaId);
         Personaje jugadorA = batalla.getJugadorA();
         Personaje jugadorB = batalla.getJugadorB();
 
@@ -75,7 +76,7 @@ public class ControladorWebSocket {
 
     @MessageMapping("/batalla/{salaId}")
     public void atacar(@DestinationVariable String salaId, @Payload AtaqueDTO ataque) {
-        Batalla batalla = servicioBatalla.obtenerBatalla(salaId);
+        Batalla batalla = servicioBatallaWs.obtenerBatalla(salaId);
         String remitente = ataque.getRemitente();
 
         EstadoBatalla estado = batalla.atacar(remitente);

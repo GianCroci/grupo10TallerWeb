@@ -7,8 +7,8 @@ INSERT INTO Mago(id) VALUES (2);
 INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
-INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo, nivel, vida)
-VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01', 26, 390);
+INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo, nivel, vida, esTuTurno)
+VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01', 26, 390, false);
 
 -- Insertar un usuario asociado al personaje (ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
