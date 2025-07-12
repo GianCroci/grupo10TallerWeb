@@ -169,8 +169,14 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         Personaje personaje = repositorioTaberna.buscarPorId(idPersonaje);
 
         Equipamiento armaEspecial = new Arma();
+        Estadisticas estadisticasArmaEspecial = new Estadisticas();
+        estadisticasArmaEspecial.setFuerza(20);
+        estadisticasArmaEspecial.setInteligencia(20);
+        estadisticasArmaEspecial.setArmadura(10);
+        estadisticasArmaEspecial.setAgilidad(5);
+
         armaEspecial.setNombre("Espada del Guardián");
-        //armaEspecial.setStats(50, 20, 0, 0);
+        armaEspecial.setStats(estadisticasArmaEspecial);
         armaEspecial.setCostoCompra(0);
         armaEspecial.setCostoVenta(100);
         armaEspecial.setCostoMejora(20);

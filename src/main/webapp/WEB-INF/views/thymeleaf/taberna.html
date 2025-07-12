@@ -16,27 +16,52 @@
         <div class="text-center" style="color: black ; text-align: center ; background: burlywood; max-width: 700px; opacity: 0.8; border-radius: 10px ; border: solid 2px black ; width: 80% ">
             <h1>Bienvenido a la taberna</h1>
             <p>En esta taberna puedes encontrar personajes interesantes y compartir un trago con ellos.</p>
-            <p>Te has encontrado con este personaje en la taberna</p>
-                <div class="text-center mt-4">
-                    <img th:src="@{/img/{imagen}(imagen=${imagenParcial})}" alt="Personaje" style="max-height: 300px;">
-                </div>
-                <div th:if="${mensaje}">
-                    <p th:text="${mensaje}" class="alert alert-info"></p>
-                </div>
+            <p>Hablar con este personaje</p>
             <p>¿Quieres invitarle un trago?</p>
-            <div th:if="${personajeDisponible}">
-                <form th:action="@{/invitarTrago}" action="#" method="POST">
-                    <label for="personaje">Invitar un trago a:</label>
-                    <select name="personaje" id="personaje" class="form-select" style="text-align: center">
-                        <option th:value="${personajeDisponible}" th:text="${personajeDisponible}"></option>
-                    </select>
-                    <button type="submit" class="btn btn-primary mt-2">Invitar Trago</button>
-                    <!-- Botón para abrir el modal -->
-                    <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#infoModal">
-                        Mostrar Información
-                    </button>
-                </form>
+            <div th:if="${mensaje}">
+                <p th:text="${mensaje}" class="alert alert-info"></p>
             </div>
+            <form th:action="@{/invitarTrago}" method="POST">
+                <input type="hidden" name="personajeSeleccionado" id="personajeSeleccionado">
+
+                <div id="carouselPersonajes" class="carousel slide mb-3" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+
+                        <!-- MERCADER -->
+                        <div class="carousel-item active">
+                            <img th:src="@{/img/mercader.png}" class="d-block mx-auto" style="max-height: 300px;" alt="MERCADER">
+                            <h5 class="mt-2">Mercader</h5>
+                        </div>
+
+                        <!-- HERRERO -->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/herrero.png}" class="d-block mx-auto" style="max-height: 300px;" alt="HERRERO">
+                            <h5 class="mt-2">Herrero</h5>
+                        </div>
+
+                        <!-- GUARDIA -->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/guardia.png}" class="d-block mx-auto" style="max-height: 300px;" alt="GUARDIA">
+                            <h5 class="mt-2">Guardia</h5>
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPersonajes" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPersonajes" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Invitar Trago</button>
+                <button type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#infoModal">
+                    Mostrar Información
+                </button>
+            </form>
+
         </div>
 
         <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
@@ -44,9 +69,9 @@
                 <div class="modal-content">
                     <div class="modal-body text-center" style="color: black ; text-align: center ; background: burlywood; max-width: 700px; opacity: 0.8; border-radius: 10px ; border: solid 2px black ;">
                         <h3>Invita 5 cervezas a los distintos personajes para obtener recompensas</h3>
-                        <p>Mercader: Te hara un descuento en la tienda.</p>
-                        <p>Herrero: Te dejara mejorar sus armas.</p>
-                        <p>Guardia: Te conseguira un item especial.</p>
+                        <p>Mercader: Te regalara oro.</p>
+                        <p>Herrero: Te hara una mejora en el equipamiento.</p>
+                        <p>Guardia: Te conseguira un arma especial.</p>
 
                         <table style="text-align: center; margin: 0 auto;">
                                 <thead>
@@ -75,6 +100,24 @@
     </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputSeleccionado = document.getElementById('personajeSeleccionado');
+        const carousel = document.getElementById('carouselPersonajes');
+
+        const actualizarSeleccion = () => {
+            const activo = carousel.querySelector('.carousel-item.active img');
+            const personaje = activo.getAttribute('alt');
+            inputSeleccionado.value = personaje; // MERCADER, HERRERO o GUARDIA
+        };
+
+        actualizarSeleccion(); // Al cargar
+
+        carousel.addEventListener('slid.bs.carousel', () => {
+            actualizarSeleccion();
+        });
+    });
+</script>
 
 
 

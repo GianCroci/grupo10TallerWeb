@@ -55,7 +55,7 @@ public class ControladorTaberna {
 
 
     @PostMapping("/invitarTrago")
-    public ModelAndView invitarTrago(HttpSession session, @RequestParam("personaje") String personajeInvitacion) {
+    public ModelAndView invitarTrago(HttpSession session, @RequestParam("personajeSeleccionado") String personajeSeleccionado) {
         ModelMap modelMap = new ModelMap();
 
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
@@ -65,14 +65,9 @@ public class ControladorTaberna {
             return new ModelAndView("taberna", modelMap);
         }
 
-        PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
-        String imagenParcial = servicioTaberna.obtenerVistaSegunPersonaje(personajeDisponible);
+        PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personajeSeleccionado.toUpperCase());
 
-
-        try {
-            PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personajeInvitacion);
-
-            if (personajeEnum.equals(personajeDisponible)) {
+        try{
                 if (servicioTaberna.puedeInvitar(idPersonaje, personajeEnum)) {
                     servicioTaberna.invitarCerveza(idPersonaje, personajeEnum);
                     int cantidad = servicioTaberna.getCantidadCervezasInvitadas(idPersonaje, personajeEnum);
@@ -80,29 +75,16 @@ public class ControladorTaberna {
                 } else {
                     modelMap.put("mensaje", "Ya se invitó a este personaje hoy.");
                 }
-            } else {
-                modelMap.put("mensaje", "No puedes invitar un trago a " + personajeEnum.name() + " en este momento.");
-            }
-
-
         } catch (IllegalArgumentException e) {
-            String mensaje = e.getMessage();
-            if (mensaje != null && mensaje.contains("Ya invitaste")) {
-                modelMap.put("mensaje", mensaje);
-            } else {
-                modelMap.put("mensaje", "Personaje no válido.");
-            }
+            modelMap.put("mensaje", "Ya se invito este personaje hoy.");
         }
 
+
         Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
+        //modelMap.put("personajeSeleccionado", personajeEnum.name()); // Esto será: MERCADER, HERRERO o GUARDIA
 
-        String vistaParcial = servicioTaberna.mostrarTaberna();
 
-        modelMap.put("vistaParcial", vistaParcial);
-        modelMap.put("imagenParcial", imagenParcial);
-        modelMap.put("personajeDisponible", personajeDisponible);
         modelMap.put("personajes", personajes);
-
 
         return new ModelAndView("taberna", modelMap);
     }
