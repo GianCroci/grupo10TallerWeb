@@ -20,6 +20,8 @@ public class Taberna {
 
     private int cervezasInvitadas;
 
+    private LocalDate ultimaInvitacion;
+
     public Long getId() {
         return id;
     }
@@ -60,7 +62,7 @@ public class Taberna {
         this.ultimaInvitacion = ultimaInvitacion;
     }
 
-    private LocalDate ultimaInvitacion;
+
 
 
 }

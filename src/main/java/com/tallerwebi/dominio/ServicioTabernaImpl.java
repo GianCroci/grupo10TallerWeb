@@ -56,6 +56,15 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         return cervezas;
     }
 
+    public int obtenerCervezasDisponibles(Long idPersonaje) {
+        // Supongamos que el máximo por día es 2
+        int maximo = 2;
+
+        // Podés guardar las invitaciones con timestamp y contar solo las de "hoy"
+        int yaUsadas = repoInvitaciones.cantidadInvitacionesHoy(idPersonaje); // método que contás vos
+
+        return Math.max(0, maximo - yaUsadas);
+    }
 
 
 

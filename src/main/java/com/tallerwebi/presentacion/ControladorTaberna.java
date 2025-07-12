@@ -76,14 +76,13 @@ public class ControladorTaberna {
                     modelMap.put("mensaje", "Ya se invitó a este personaje hoy.");
                 }
         } catch (IllegalArgumentException e) {
-            modelMap.put("mensaje", "Ya se invito este personaje hoy.");
+            modelMap.put("mensaje", "Ya se invito este personaje hoy, vuelve mañana.");
         }
 
 
         Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
-        //modelMap.put("personajeSeleccionado", personajeEnum.name()); // Esto será: MERCADER, HERRERO o GUARDIA
 
-
+        modelMap.put("personajeSeleccionado", personajeEnum.name());
         modelMap.put("personajes", personajes);
 
         return new ModelAndView("taberna", modelMap);
