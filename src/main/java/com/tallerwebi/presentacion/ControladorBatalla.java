@@ -61,7 +61,8 @@ public class ControladorBatalla {
 
     @GetMapping("/batalla-websocket/{idRival}")
     public String salaDeBatalla(@PathVariable Long idRival, HttpSession session, Model model) {
-        Personaje jugador = (Personaje) session.getAttribute("personaje");
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        Personaje jugador = servicioPersonaje.buscarPersonaje(idPersonaje);
 
 
         String salaId = servicioBatallaWs.obtenerOSalaExistente(jugador.getId(), idRival);

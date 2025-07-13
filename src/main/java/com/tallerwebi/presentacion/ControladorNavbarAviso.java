@@ -25,7 +25,8 @@ public class ControladorNavbarAviso {
 
     @ModelAttribute
     public void notificarDesafiosPendientes(HttpSession session, Model model) {
-        Personaje personaje = (Personaje) session.getAttribute("personaje");
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
 
         if (personaje != null) {
             Optional<String> sala = servicioBatallaWs.buscarSalaPendientePara(personaje.getId());
