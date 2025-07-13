@@ -35,7 +35,7 @@
             <div class="form-group">
                 <input th:field="*{password}" type="password" id="password" class="form-control" required/>
             </div>
-            <button type="submit" class="form-button button-l margin-b">Ingresar</button>
+                <button type="submit" id="btn-login" class="form-button button-l margin-b">Ingresar</button>
             <p th:if="${error != null}" class="alert alert-danger" th:text="'Error: ' + ${error}">
             </p>
 

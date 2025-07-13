@@ -1,12 +1,13 @@
 package com.tallerwebi.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class VistaLogin extends VistaWeb {
 
     public VistaLogin(Page page) {
         super(page);
-        page.navigate("localhost:8080/spring/login");
+        page.navigate("http://localhost:8080/spring/login");
     }
 
     public String obtenerTextoDeLaBarraDeNavegacion(){
@@ -26,6 +27,7 @@ public class VistaLogin extends VistaWeb {
     }
 
     public void darClickEnIniciarSesion(){
+        page.waitForSelector("button[type='submit']", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
         this.darClickEnElElemento("#btn-login");
     }
 }

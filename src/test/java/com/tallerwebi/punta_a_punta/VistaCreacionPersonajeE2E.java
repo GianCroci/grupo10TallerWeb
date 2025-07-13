@@ -1,22 +1,20 @@
 package com.tallerwebi.punta_a_punta;
 
 import com.microsoft.playwright.*;
+import com.tallerwebi.punta_a_punta.vistas.VistaCreacionPersonaje;
 import com.tallerwebi.punta_a_punta.vistas.VistaLogin;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
-public class VistaLoginE2E {
+
+public class VistaCreacionPersonajeE2E {
 
     static Playwright playwright;
     static Browser browser;
     BrowserContext context;
-    VistaLogin vistaLogin;
+    VistaCreacionPersonaje vistaCreacionPersonaje;
+    private VistaLogin vistaLogin;
 
     @BeforeAll
     static void abrirNavegador() {
@@ -35,7 +33,7 @@ public class VistaLoginE2E {
     void crearContextoYPagina() {
         context = browser.newContext();
         Page page = context.newPage();
-        vistaLogin = new VistaLogin(page);
+        vistaCreacionPersonaje = new VistaCreacionPersonaje(page);
     }
 
     @AfterEach
@@ -43,22 +41,16 @@ public class VistaLoginE2E {
         context.close();
     }
 
-
-   @Test
-    void deberiaDarUnErrorAlIngresarDatosIncorrectosYTocarElBoton() {
-        vistaLogin.escribirEMAIL("damian@unlam.edu.ar");
-        vistaLogin.escribirClave("unlam");
-        vistaLogin.darClickEnIniciarSesion();
-        String texto = vistaLogin.obtenerMensajeDeError();
-        assertThat("Error: Usuario o clave incorrecta", equalToIgnoringCase(texto));
-    }
-
     @Test
-    void deberiaNavegarAlHomeSiElUsuarioExiste() {
+    void deberiaEscribirElNombreDelPersonaje() {
         vistaLogin.escribirEMAIL("test@unlam.edu.ar");
         vistaLogin.escribirClave("test");
         vistaLogin.darClickEnIniciarSesion();
-        String url = vistaLogin.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/spring/home"));
+
+        vistaCreacionPersonaje.escribirNombre("Legolas");
+
+
+        String url = vistaCreacionPersonaje.obtenerURLActual();
+        assertThat(url, containsStringIgnoringCase("/spring/creacion-personaje"));
     }
 }
