@@ -6,6 +6,8 @@ public class PersonajeDTO {
     private String imagen;
     private Long idRol;
 
+    public PersonajeDTO() {}
+
     public String getNombre() { return nombre; }
 
     public void setNombre(String nombre) { this.nombre = nombre; }

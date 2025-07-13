@@ -28,4 +28,9 @@ public class RepositorioRolImpl implements RepositorioRol {
                 .add(Restrictions.eq("id", idRol))
                 .uniqueResult();
     }
+
+    @Override
+    public void guardarRol(Rol rol) {
+        sessionFactory.getCurrentSession().save(rol);
+    }
 }
