@@ -12,7 +12,7 @@ VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 5
 
 -- Insertar un usuario asociado al personaje (ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
-VALUES ('test@unlam.edu.ar', 'test', 'ADMIN', true, 1);
+VALUES ('test@unlam.edu.ar', '$2a$10$18z5TDsK7/VTCo5mocGB..miVXF0k/U6jrn1vbaKnaJYFuOormE/i', 'ADMIN', true, 1);
 
 -- Equipamiento en inventario del personaje (rol_id = 1 = Guerrero, 2 = Mago, 3 = Bandido)
 INSERT INTO Equipamiento(
