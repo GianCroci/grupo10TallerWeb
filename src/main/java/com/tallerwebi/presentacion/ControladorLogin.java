@@ -28,11 +28,10 @@ public class ControladorLogin {
     }
 
     @RequestMapping("/login")
-    public ModelAndView irALogin(HttpSession session) {
+    public ModelAndView irALogin() {
 
         ModelMap modelo = new ModelMap();
         modelo.put("datosLogin", new DatosLogin());
-        session.removeAttribute("idPersonaje");
         return new ModelAndView("login", modelo);
     }
 
@@ -43,6 +42,7 @@ public class ControladorLogin {
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
             if (usuarioBuscado.getPersonaje() == null) {
+                request.getSession().setAttribute("accesoCreacionPersonaje", true);
                 return new ModelAndView("redirect:/creacion-personaje");
             }
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
@@ -61,7 +61,6 @@ public class ControladorLogin {
 
         try{
             servicioLogin.registrar(usuario);
-            session.setAttribute("usuarioLogueado", usuario);
         } catch (UsuarioExistente e){
             model.put("error", "El usuario ya existe");
             return new ModelAndView("nuevo-usuario", model);
@@ -69,6 +68,8 @@ public class ControladorLogin {
             model.put("error", "Error al registrar el nuevo usuario");
             return new ModelAndView("nuevo-usuario", model);
         }
+        session.setAttribute("usuarioLogueado", usuario);
+        session.setAttribute("accesoCreacionPersonaje", true);
         return new ModelAndView("redirect:/creacion-personaje");
     }
 
@@ -83,5 +84,10 @@ public class ControladorLogin {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/login");
     }
-}
 
+    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpSession session) {
+        session.invalidate();
+        return new ModelAndView("redirect:/login");
+    }
+}

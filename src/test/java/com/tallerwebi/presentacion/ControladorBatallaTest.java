@@ -82,7 +82,8 @@ public class ControladorBatallaTest {
     public void queMeEnvieALaSalaDeBatallaWScontraUnRival(){
         //preparacion
         Long idRival = 2L;
-        when(sessionMock.getAttribute("personaje")).thenReturn(personajeMockeado);
+        when(sessionMock.getAttribute("idPersonaje")).thenReturn(1L);
+        when(servicioPersonajeMock.buscarPersonaje(1L)).thenReturn(personajeMockeado);
         when(servicioBatallaWSMock.obtenerOSalaExistente(personajeMockeado.getId(), idRival)).thenReturn("sala1");
         when(servicioPersonajeMock.buscarPersonaje(idRival)).thenReturn(rivalMockeado);
 
