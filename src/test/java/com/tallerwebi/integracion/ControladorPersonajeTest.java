@@ -67,7 +67,6 @@ public class ControladorPersonajeTest {
 
         // Crear un rol en la bdd
         Guerrero guerrero = new Guerrero();
-        guerrero.setId(1L);
         guerrero.setTipo("Guerrero");
         repositorioRol.guardarRol(guerrero);
 
