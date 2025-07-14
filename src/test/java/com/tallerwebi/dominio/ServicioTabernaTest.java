@@ -209,5 +209,28 @@ public class ServicioTabernaTest {
             servicioTaberna.obtenerBeneficioGuardia(personaje.getId());
         });
     }
+
+    @Test
+    public void queCalculeCorrectamenteLaCantidadDeCervezasDisponibles() {
+        Long idPersonaje = 1L;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(1);
+
+        int cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
+
+        assertEquals(1, cervezasDisponibles);
+    }
+
+    @Test
+    public void queNoPermitaCervezasDisponiblesSiYaSeInvitoElMaximo() {
+        Long idPersonaje = 1L;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(3);
+
+        int cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
+
+        assertEquals(0, cervezasDisponibles);
+    }
+
 }
 

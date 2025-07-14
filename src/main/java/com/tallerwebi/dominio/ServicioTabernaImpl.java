@@ -29,7 +29,9 @@ public class ServicioTabernaImpl implements ServicioTaberna {
 
     @Override
     public void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna) {
-        repositorioTaberna.invitarCerveza(idPersonaje, personajeTaberna);
+        if (repositorioTaberna.cantidadInvitacionesHoy(idPersonaje) < 2) {
+            repositorioTaberna.invitarCerveza(idPersonaje, personajeTaberna);
+        }
     }
     public int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna) {
         return repositorioTaberna.getCantidadCervezasInvitadas(idPersonaje, personajeTaberna);
@@ -56,29 +58,6 @@ public class ServicioTabernaImpl implements ServicioTaberna {
     /*--------------------------------------------------------------------------------*/
     // METODOS PROPIOS DEL SERVICIO
 
-    //Primero se obtiene la hora actual
-
-    @Override
-    public PersonajeTaberna obtenerPersonajeDisponible() {
-        LocalTime horaActual = LocalTime.now();
-        return getPersonajePorHora(horaActual);
-    }
-
-    //Segundo se determina el personaje que corresponde a esa hora
-
-    @Override
-    public PersonajeTaberna getPersonajePorHora(LocalTime hora) {
-        if (hora.isAfter(LocalTime.of(6, 0)) && hora.isBefore(LocalTime.of(12, 0))) {
-            return PersonajeTaberna.MERCADER;
-        } else if (hora.isAfter(LocalTime.of(12, 0)) && hora.isBefore(LocalTime.of(18, 0))) {
-            return PersonajeTaberna.HERRERO;
-        } else {
-            return PersonajeTaberna.GUARDIA;
-        }
-    }
-
-    //Tercero se devuele el string de la imagen segun el personaje
-
     @Override
     public String obtenerVistaSegunPersonaje(PersonajeTaberna personajeTaberna) {
 
@@ -94,12 +73,10 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         }
     }
 
-    //Cuarto se renderiza la vista taberna con la vista correspondiente
 
     @Override
     public String mostrarTaberna() {
-        PersonajeTaberna vistaSegunPersonaje = getPersonajePorHora(LocalTime.now());
-        return obtenerVistaSegunPersonaje(vistaSegunPersonaje);
+        return "taberna.png";
     }
 
     /*--------------------------------------------------------------------------------*/

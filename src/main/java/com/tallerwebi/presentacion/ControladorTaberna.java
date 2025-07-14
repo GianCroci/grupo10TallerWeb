@@ -35,12 +35,6 @@ public class ControladorTaberna {
             return new ModelAndView("redirect:/login");
         }
 
-        //Personajes disponibles
-        PersonajeTaberna personajeDisponible = servicioTaberna.obtenerPersonajeDisponible();
-
-        //Imagen del personaje
-        String imagenParcial = servicioTaberna.obtenerVistaSegunPersonaje(personajeDisponible);
-
         //Cantidad de cervezas invitadas por cada personaje
         Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
 
@@ -49,8 +43,6 @@ public class ControladorTaberna {
 
 
         modelMap.put("cervezasDisponibles", cervezasDisponibles);
-        modelMap.put("personajeDisponible", personajeDisponible);
-        modelMap.put("imagenParcial", imagenParcial);
         modelMap.put("personajes", personajes);
 
         return new ModelAndView("taberna", modelMap);

@@ -16,11 +16,7 @@ public interface ServicioTaberna {
 
     String mostrarTaberna();
 
-    PersonajeTaberna getPersonajePorHora(LocalTime hora);
-
     String obtenerVistaSegunPersonaje(PersonajeTaberna personajeTaberna);
-
-    PersonajeTaberna obtenerPersonajeDisponible();
 
     int obtenerCervezasDisponibles(Long idPersonaje);
 
