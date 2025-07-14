@@ -27,19 +27,8 @@ public class ServicioTabernaImpl implements ServicioTaberna {
     /*--------------------------------------------------------------------------------*/
     //METODOS QUE PEGAN CON EL REPO
 
-
-    @Override
-    public boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna) {
-        if (!repositorioTaberna.puedeInvitar(idPersonaje, personajeTaberna)) {
-            throw new IllegalArgumentException("Ya se invitó a este personaje hoy.");
-        }
-        return repositorioTaberna.puedeInvitar(idPersonaje, personajeTaberna);
-    }
     @Override
     public void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna) {
-        if (!puedeInvitar(idPersonaje, personajeTaberna)) {
-            throw new IllegalArgumentException("No se puede invitar a este personaje en este momento.");
-        }
         repositorioTaberna.invitarCerveza(idPersonaje, personajeTaberna);
     }
     public int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna) {
@@ -57,15 +46,11 @@ public class ServicioTabernaImpl implements ServicioTaberna {
     }
 
     public int obtenerCervezasDisponibles(Long idPersonaje) {
-        // Supongamos que el máximo por día es 2
-        int maximo = 2;
+        int maximoDiario = 2;
+        int yaInvitadas = repositorioTaberna.cantidadInvitacionesHoy(idPersonaje);
 
-        // Podés guardar las invitaciones con timestamp y contar solo las de "hoy"
-        int yaUsadas = repoInvitaciones.cantidadInvitacionesHoy(idPersonaje); // método que contás vos
-
-        return Math.max(0, maximo - yaUsadas);
+        return Math.max(0, maximoDiario - yaInvitadas);
     }
-
 
 
     /*--------------------------------------------------------------------------------*/

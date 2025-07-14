@@ -47,12 +47,9 @@ public class RepositorioTabernaTest {
 
         int cantidadDeCervezasEsperadas=1;
 
-        Boolean puedeInvitar = repositorioTaberna.puedeInvitar(personaje.getId(), personajeTaberna);
-
         repositorioTaberna.invitarCerveza(personaje.getId(), personajeTaberna);
 
         assertEquals(cantidadDeCervezasEsperadas, repositorioTaberna.getCantidadCervezasInvitadas(personaje.getId(), personajeTaberna));
-        assertEquals(true, puedeInvitar);
     }
 
 

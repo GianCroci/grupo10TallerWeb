@@ -10,8 +10,6 @@ public interface ServicioTaberna {
 
     void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna);
-
     int getCantidadCervezasInvitadas(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
     Map<PersonajeTaberna, Integer> obtenerCervezasInvitadasPorPersonaje(Long idPersonaje);
@@ -24,7 +22,7 @@ public interface ServicioTaberna {
 
     PersonajeTaberna obtenerPersonajeDisponible();
 
-
+    int obtenerCervezasDisponibles(Long idPersonaje);
 
     boolean validarBeneficioMercader(Long idPersonaje);
     boolean validarBeneficioHerrero(Long idPersonaje);

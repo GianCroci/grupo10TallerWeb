@@ -10,7 +10,7 @@ public interface RepositorioTaberna {
 
     void invitarCerveza(Long idPersonaje, PersonajeTaberna personajeTaberna);
 
-    boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna);
-
     Personaje buscarPorId(Long idPersonaje);
+
+    int cantidadInvitacionesHoy(Long idPersonaje);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Transactional
 @Repository("repositorioTaberna")
@@ -63,29 +64,34 @@ public class RepositorioTabernaImpl implements RepositorioTaberna {
             session.update(registro);
         }
     }
-
-
-    @Override
-    public boolean puedeInvitar(Long idPersonaje, PersonajeTaberna personajeTaberna) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Taberna registro = (Taberna) session.createCriteria(Taberna.class)
-                .add(Restrictions.eq("personaje.id", idPersonaje))
-                .add(Restrictions.eq("personajeTaberna", personajeTaberna))
-                .uniqueResult();
-
-        if (registro == null) {
-            return true;
-        }
-
-        return !registro.getUltimaInvitacion().isEqual(LocalDate.now());
-    }
-
     @Override
     public Personaje buscarPorId(Long idPersonaje) {
 
         Session session = sessionFactory.getCurrentSession();
         return session.get(Personaje.class, idPersonaje);
 
+    }
+
+    @Override
+    public int cantidadInvitacionesHoy(Long idPersonaje) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Taberna> registros = session.createCriteria(Taberna.class)
+                .add(Restrictions.eq("personaje.id", idPersonaje))
+                .add(Restrictions.eq("ultimaInvitacion", LocalDate.now()))
+                .list();
+
+        /*
+        int total = 0;
+        for (Taberna t : registros) {
+            total += t.getCervezasInvitadas();
+        }
+
+        return total;
+
+                */
+        return registros.stream()
+                .mapToInt(Taberna::getCervezasInvitadas)
+                .sum();
     }
 }

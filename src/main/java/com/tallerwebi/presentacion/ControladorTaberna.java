@@ -44,7 +44,11 @@ public class ControladorTaberna {
         //Cantidad de cervezas invitadas por cada personaje
         Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
 
+        //Cantidad de cervezas disponibles diarias
+        int cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
 
+
+        modelMap.put("cervezasDisponibles", cervezasDisponibles);
         modelMap.put("personajeDisponible", personajeDisponible);
         modelMap.put("imagenParcial", imagenParcial);
         modelMap.put("personajes", personajes);
@@ -66,22 +70,31 @@ public class ControladorTaberna {
         }
 
         PersonajeTaberna personajeEnum = PersonajeTaberna.valueOf(personajeSeleccionado.toUpperCase());
+        int cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
+
 
         try{
-                if (servicioTaberna.puedeInvitar(idPersonaje, personajeEnum)) {
-                    servicioTaberna.invitarCerveza(idPersonaje, personajeEnum);
-                    int cantidad = servicioTaberna.getCantidadCervezasInvitadas(idPersonaje, personajeEnum);
-                    modelMap.put("mensaje", "Has invitado un trago a " + personajeEnum.name() + ". Total de cervezas invitadas: " + cantidad);
-                } else {
-                    modelMap.put("mensaje", "Ya se invitó a este personaje hoy.");
-                }
+            if (cervezasDisponibles <= 0) {
+                modelMap.put("mensaje", "No tenemos más cervezas para ti hoy. ¡Vuelve mañana!");
+            } else {
+                servicioTaberna.invitarCerveza(idPersonaje, personajeEnum);
+
+
+                int total = servicioTaberna.getCantidadCervezasInvitadas(idPersonaje, personajeEnum);
+
+                modelMap.put("mensaje", "Has invitado un trago a " + personajeEnum.name() +
+                        ". Total de cervezas invitadas: " + total);
+            }
+
         } catch (IllegalArgumentException e) {
-            modelMap.put("mensaje", "Ya se invito este personaje hoy, vuelve mañana.");
+            modelMap.put("mensaje", "No tienes mas cervezas, vuelve mañana.");
         }
 
+        cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
 
         Map<PersonajeTaberna, Integer> personajes = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
 
+        modelMap.put("cervezasDisponibles", cervezasDisponibles);
         modelMap.put("personajeSeleccionado", personajeEnum.name());
         modelMap.put("personajes", personajes);
 

@@ -123,7 +123,7 @@ public class ControladorTabernaTest {
         when(servicioTabernaMock.obtenerPersonajeDisponible()).thenReturn(PersonajeTaberna.HERRERO);
         when(servicioTabernaMock.obtenerVistaSegunPersonaje(PersonajeTaberna.HERRERO)).thenReturn("herrero.png");
         when(servicioTabernaMock.mostrarTaberna()).thenReturn("vistaTaberna");
-        when(servicioTabernaMock.puedeInvitar(1L, PersonajeTaberna.HERRERO)).thenReturn(true);
+        //when(servicioTabernaMock.puedeInvitar(1L, PersonajeTaberna.HERRERO)).thenReturn(true);
         when(servicioTabernaMock.getCantidadCervezasInvitadas(1L, PersonajeTaberna.HERRERO)).thenReturn(3);
         when(servicioTabernaMock.obtenerCervezasInvitadasPorPersonaje(1L)).thenReturn(new HashMap<>());
 

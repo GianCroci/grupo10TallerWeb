@@ -209,22 +209,5 @@ public class ServicioTabernaTest {
             servicioTaberna.obtenerBeneficioGuardia(personaje.getId());
         });
     }
-
-    @Test
-    public void quePuedaInvitar() {
-        when(repositorioTabernaMock.puedeInvitar(1L, PersonajeTaberna.MERCADER)).thenReturn(true);
-        boolean resultado = servicioTaberna.puedeInvitar(1L, PersonajeTaberna.MERCADER);
-        assertTrue(resultado);
-    }
-
-    @Test
-    public void queNoPuedaInvitarYLanceExcepcion() {
-        when(repositorioTabernaMock.puedeInvitar(1L, PersonajeTaberna.MERCADER)).thenReturn(false);
-        assertThrows(IllegalArgumentException.class, () -> {
-            servicioTaberna.puedeInvitar(1L, PersonajeTaberna.MERCADER);
-        });
-    }
-
-
 }
 
