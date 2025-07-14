@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Repository("repositorioRol")
@@ -28,4 +29,23 @@ public class RepositorioRolImpl implements RepositorioRol {
                 .add(Restrictions.eq("id", idRol))
                 .uniqueResult();
     }
+
+    @Override
+    public void guardarRol(Rol rol) {
+        sessionFactory.getCurrentSession().save(rol);
+    }
+
+    @Override
+    public List<Rol> obtenerTodos() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("FROM Rol", Rol.class).list();
+    }
+
+    @Override
+    public void eliminar(Rol rol) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(rol);
+    }
+
+
 }

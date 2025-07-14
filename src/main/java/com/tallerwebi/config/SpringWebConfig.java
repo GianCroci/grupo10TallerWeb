@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -112,10 +113,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public MercadoPagoConfig mercadoPagoConfigInitializer() {
-        MercadoPagoConfig mercadoPagoConfig = new MercadoPagoConfig();
-        mercadoPagoConfig.setAccessToken("APP_USR-4056231313034055-070822-e86fb2056a2461743a3744a07fc4e2c7-2547024138");
-        return mercadoPagoConfig;
+    public BCryptPasswordEncoder encoderGenerator() {
+        return new BCryptPasswordEncoder();
     }
-
 }

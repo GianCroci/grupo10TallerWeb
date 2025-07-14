@@ -3,11 +3,11 @@ package com.tallerwebi.punta_a_punta.vistas;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 
-public class VistaLogin extends VistaWeb {
+public class VistaNuevoUsuario extends VistaWeb {
 
-    public VistaLogin(Page page) {
+    public VistaNuevoUsuario(Page page) {
         super(page);
-        page.navigate("http://localhost:8080/spring/login");
+        page.navigate("http://localhost:8080/spring/nuevo-usuario");
     }
 
     public String obtenerTextoDeLaBarraDeNavegacion(){

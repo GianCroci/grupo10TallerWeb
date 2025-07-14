@@ -38,10 +38,30 @@ public class ServicioHerreriaImpl implements ServicioHerreria {
         }
         Personaje personajeObtenido = repositorioPersonaje.buscarPersonaje(idPersonaje);
         Integer oroUsuarioFinal = personajeObtenido.getOro() - equipamientoObtenido.getCostoMejora();
-        equipamientoObtenido.mejorar();
+        if(equipamientoObtenido.getEquipado()){
+            disminuirEstadisticasArmaEquipada(personajeObtenido, equipamientoObtenido);
+            equipamientoObtenido.mejorar();
+            aumentarEstadisticasArmaEquipada(personajeObtenido, equipamientoObtenido);
+        }else{
+            equipamientoObtenido.mejorar();
+        }
         personajeObtenido.setOro(oroUsuarioFinal);
         repositorioInventario.modificarEquipamiento(equipamientoObtenido);
         repositorioPersonaje.modificar(personajeObtenido);
+    }
+
+    private void aumentarEstadisticasArmaEquipada(Personaje personajeObtenido, Equipamiento equipamientoObtenido) {
+        personajeObtenido.getEstadisticas().setAgilidad(personajeObtenido.getEstadisticas().getAgilidad() + equipamientoObtenido.getStats().getAgilidad());
+        personajeObtenido.getEstadisticas().setFuerza(personajeObtenido.getEstadisticas().getFuerza() + equipamientoObtenido.getStats().getFuerza());
+        personajeObtenido.getEstadisticas().setInteligencia(personajeObtenido.getEstadisticas().getInteligencia() + equipamientoObtenido.getStats().getInteligencia());
+        personajeObtenido.getEstadisticas().setArmadura(personajeObtenido.getEstadisticas().getArmadura() + equipamientoObtenido.getStats().getArmadura());
+    }
+
+    private void disminuirEstadisticasArmaEquipada(Personaje personajeObtenido, Equipamiento equipamientoObtenido) {
+        personajeObtenido.getEstadisticas().setAgilidad(personajeObtenido.getEstadisticas().getAgilidad() - equipamientoObtenido.getStats().getAgilidad());
+        personajeObtenido.getEstadisticas().setFuerza(personajeObtenido.getEstadisticas().getFuerza() - equipamientoObtenido.getStats().getFuerza());
+        personajeObtenido.getEstadisticas().setInteligencia(personajeObtenido.getEstadisticas().getInteligencia() - equipamientoObtenido.getStats().getInteligencia());
+        personajeObtenido.getEstadisticas().setArmadura(personajeObtenido.getEstadisticas().getArmadura() - equipamientoObtenido.getStats().getArmadura());
     }
 
     @Override

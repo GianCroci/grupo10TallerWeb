@@ -1,9 +1,11 @@
 package com.tallerwebi.integracion;
 
 import com.tallerwebi.config.WebSocketConfig;
+import com.tallerwebi.dominio.interfaz.repositorio.RepositorioUsuario;
 import com.tallerwebi.integracion.config.HibernateTestConfig;
 import com.tallerwebi.integracion.config.SpringWebTestConfig;
 import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.presentacion.PersonajeDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,10 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +39,12 @@ public class ControladorLoginTest {
 	@Autowired
 	private WebApplicationContext wac;
 	private MockMvc mockMvc;
+
+	@Autowired
+	private RepositorioUsuario repoUsuario;
+
+	private Usuario usuarioReal;
+
 
 
 	@BeforeEach
@@ -73,5 +80,28 @@ public class ControladorLoginTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 		assertThat(modelAndView.getModel().get("datosLogin").toString(),  containsString("com.tallerwebi.presentacion.DatosLogin"));
 
+	}
+
+	@Test
+	public void debeRetornarLaPaginaNuevoUsuarioCuandoSeNavegaANuevoUsuario() throws Exception {
+		MvcResult result = this.mockMvc.perform(get("/nuevo-usuario"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		ModelAndView modelAndView = result.getModelAndView();
+		assert modelAndView != null;
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+		assertTrue(modelAndView.getModel().containsKey("usuario"));
+		assertThat(modelAndView.getModel().get("usuario"), instanceOf(Usuario.class));
+	}
+
+	@Test
+	public void queSeRegistreUnNuevoUsuario(){
+		usuarioReal = new Usuario();
+		usuarioReal.setEmail("gian@unlam.com");
+		usuarioReal.setPassword("1234");
+		repoUsuario.guardar(usuarioReal);
+
+		assertEquals(usuarioReal, repoUsuario.buscar("gian@unlam.com"));
 	}
 }

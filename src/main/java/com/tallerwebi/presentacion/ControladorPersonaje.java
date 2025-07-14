@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,7 +26,19 @@ public class ControladorPersonaje {
     }
 
     @GetMapping("/creacion-personaje")
-    public ModelAndView creacionPersonaje() {
+    public ModelAndView creacionPersonaje(RedirectAttributes redirectAttributes, HttpSession session) {
+
+        Boolean accesoCreacionPersonaje = (Boolean) session.getAttribute("accesoCreacionPersonaje");
+
+        Long idPersonaje = (Long) session.getAttribute("idPersonaje");
+        if (idPersonaje != null) {
+            redirectAttributes.addFlashAttribute("error", "No se puede crear un segundo personaje");
+            return new ModelAndView("redirect:/home");
+        }
+        if(accesoCreacionPersonaje == null || !accesoCreacionPersonaje){
+            redirectAttributes.addFlashAttribute("error", "No puede acceder a la creacion de personaje sin haberse registrado");
+            return new ModelAndView("redirect:/login");
+        }
 
         ModelMap modelMap = new ModelMap();
         modelMap.put("datosPersonaje", new PersonajeDTO());
@@ -42,13 +55,14 @@ public class ControladorPersonaje {
             Personaje personajeCreado = servicioPersonaje.crearPersonaje(personajeDTO.getNombre(), personajeDTO.getGenero(), personajeDTO.getImagen(), personajeDTO.getIdRol());
             servicioUsuario.setPersonaje(personajeCreado, usuarioLogueado);
             session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
-            session.setAttribute("personaje", personajeCreado);
 
             return new ModelAndView("redirect:/home", modelMap);
         }
 
         return new ModelAndView("redirect:/creacion-personaje", modelMap);
     }
+
+
 
 
 }

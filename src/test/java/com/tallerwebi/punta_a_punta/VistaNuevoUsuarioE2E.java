@@ -2,21 +2,18 @@ package com.tallerwebi.punta_a_punta;
 
 import com.microsoft.playwright.*;
 import com.tallerwebi.punta_a_punta.vistas.VistaLogin;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.tallerwebi.punta_a_punta.vistas.VistaNuevoUsuario;
+import org.junit.jupiter.api.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
-public class VistaLoginE2E {
 
+public class VistaNuevoUsuarioE2E {
     static Playwright playwright;
     static Browser browser;
     BrowserContext context;
-    VistaLogin vistaLogin;
+    VistaNuevoUsuario vistaNuevoUsuario;
 
     @BeforeAll
     static void abrirNavegador() {
@@ -35,7 +32,7 @@ public class VistaLoginE2E {
     void crearContextoYPagina() {
         context = browser.newContext();
         Page page = context.newPage();
-        vistaLogin = new VistaLogin(page);
+        vistaNuevoUsuario = new VistaNuevoUsuario(page);
     }
 
     @AfterEach
@@ -45,20 +42,12 @@ public class VistaLoginE2E {
 
 
     @Test
-    void deberiaDarUnErrorAlIngresarDatosIncorrectosYTocarElBoton() {
-        vistaLogin.escribirEMAIL("dami@ulam.edu.ar");
-        vistaLogin.escribirClave("unlam");
-        vistaLogin.darClickEnIniciarSesion();
-        String texto = vistaLogin.obtenerMensajeDeError();
-        assertThat("Error: Usuario o clave incorrecta", equalToIgnoringCase(texto));
+    void deberiaCrearUnUsuarioAlIngresarUnMailNuevoYContraseniaValidadYNavegarACreacionPersonaje() {
+        vistaNuevoUsuario.escribirEMAIL("damian@unlam.edu.ar");
+        vistaNuevoUsuario.escribirClave("unlam");
+        vistaNuevoUsuario.darClickEnIniciarSesion();
+        String url = vistaNuevoUsuario.obtenerURLActual();
+        assertThat(url, containsStringIgnoringCase("/spring/creacion-personaje"));
     }
 
-    @Test
-    void deberiaNavegarAlHomeSiElUsuarioExiste() {
-        vistaLogin.escribirEMAIL("test@unlam.edu.ar");
-        vistaLogin.escribirClave("test");
-        vistaLogin.darClickEnIniciarSesion();
-        String url = vistaLogin.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/spring/home"));
-    }
 }

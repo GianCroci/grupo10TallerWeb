@@ -7,12 +7,12 @@ INSERT INTO Mago(id) VALUES (2);
 INSERT INTO Bandido(id) VALUES (3);
 
 -- Insertar un personaje
-INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo, nivel, vida)
-VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01', 26, 390);
+INSERT INTO Personaje(nombre, genero, rol_id, fuerza, inteligencia, armadura, agilidad, imagen, oro, codigoAmigo, nivel, vida, esTuTurno)
+VALUES ('Arthas', 'Masculino', 1, 100, 20, 80, 60, '/spring/img/luchador.png', 500, 'codigo01', 26, 390, false);
 
 -- Insertar un usuario asociado al personaje (ID = 1)
 INSERT INTO Usuario(email, password, rol, activo, personaje_id)
-VALUES ('test@unlam.edu.ar', 'test', 'ADMIN', true, 1);
+VALUES ('test@unlam.edu.ar', '$2a$10$18z5TDsK7/VTCo5mocGB..miVXF0k/U6jrn1vbaKnaJYFuOormE/i', 'ADMIN', true, 1);
 
 -- Equipamiento en inventario del personaje (rol_id = 1 = Guerrero, 2 = Mago, 3 = Bandido)
 INSERT INTO Equipamiento(

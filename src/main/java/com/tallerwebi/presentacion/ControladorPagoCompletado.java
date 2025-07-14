@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.tallerwebi.dominio.entidad.Pago;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioMercadoPago;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,11 @@ public class ControladorPagoCompletado {
             model.put("mensajito", mensajito.get());
         }
 
-        return new ModelAndView("pago-completado");
+        model.put("imgFondo", "/img/pago-completadont.png");
+        if (operacionMP.equals("success")) {
+            model.put("imgFondo", "/img/pago-completado.png");
+        }
+
+        return new ModelAndView("pago-completado", model);
     }
 }

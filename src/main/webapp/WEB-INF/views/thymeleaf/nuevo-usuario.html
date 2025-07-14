@@ -15,34 +15,6 @@
   <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
 </head>
-<!--
-<body>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">UNLAM</a>
-</nav>
-
-<main role="main" class="container">
-
-  <div class = "container">
-    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-      <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
-        <h3 class="form-signin-heading">Nuevo Usuario</h3>
-        <hr class="colorgraph"><br>
-
-        <input th:field="*{email}" id="email" class="form-control" required/>
-        <input th:field="*{password}" type="password" id="password" class="form-control" required/>
-
-        <button id="btn-registrarme" class="btn btn-lg btn-primary btn-block" Type="Submit">Registrarme</button>
-        <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
-        </p>
-      </form>
-
-    </div>
-  </div>
-
-</main>
--->
 
 <body class="main-bg">
 <main th:style="'background-image: url(' + @{/img/fondo-login.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
@@ -60,7 +32,7 @@
         <div class="form-group">
           <input th:field="*{password}" type="password" id="password" class="form-control" required/>
         </div>
-        <button type="submit" class="form-button button-l margin-b">Registrarse</button>
+        <button type="submit" id="btn-login" class="form-button button-l margin-b">Registrarse</button>
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
         </p>
       </form>

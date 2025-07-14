@@ -5,6 +5,8 @@ import com.tallerwebi.dominio.interfaz.repositorio.RepositorioUsuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.dominio.interfaz.servicio.ServicioLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,16 +16,24 @@ import javax.transaction.Transactional;
 public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
-    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
-
+    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario, BCryptPasswordEncoder encoder){
         this.repositorioUsuario = repositorioUsuario;
+        this.encoder = encoder;
     }
 
     @Override
     public Usuario consultarUsuario (String email, String password) {
-       return repositorioUsuario.buscarUsuario(email, password);
+        Usuario usuario = repositorioUsuario.buscar(email);
+
+        // Verificar si el usuario existe antes de validar la contraseña
+        if (usuario != null && encoder.matches(password, usuario.getPassword())) {
+            return usuario;
+        }
+
+        return null;
     }
 
     @Override
@@ -31,6 +41,9 @@ public class ServicioLoginImpl implements ServicioLogin {
         if (repositorioUsuario.buscar(usuario.getEmail()) != null) {
             throw new UsuarioExistente("El usuario con ese email ya existe");
         }
+        String hashPass = encoder.encode(usuario.getPassword());
+        usuario.setPassword(hashPass);
+
         repositorioUsuario.guardar(usuario);
     }
 

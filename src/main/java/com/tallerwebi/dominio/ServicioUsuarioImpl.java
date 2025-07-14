@@ -7,29 +7,32 @@ import com.tallerwebi.dominio.interfaz.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+import javax.transaction.Transactional;
+
+@Service("servicioUsuario")
+@Transactional
 public class ServicioUsuarioImpl implements ServicioUsuario {
-    private RepositorioUsuario repoUsuario;
+    private RepositorioUsuario repositorioUsuario;
 
     @Autowired
     public ServicioUsuarioImpl(RepositorioUsuario repoUsuario) {
 
-        this.repoUsuario = repoUsuario;
+        this.repositorioUsuario = repoUsuario;
     }
 
     public void setUsuario(Usuario usuario) {
-        repoUsuario.guardar(usuario);
+        repositorioUsuario.guardar(usuario);
     }
 
     @Override
     public Usuario buscar(String mail) {
 
-        return repoUsuario.buscar(mail);
+        return repositorioUsuario.buscar(mail);
     }
 
     @Override
     public void setPersonaje(Personaje personaje, Usuario usuario) {
         usuario.setPersonaje(personaje);
-        repoUsuario.modificar(usuario);
+        repositorioUsuario.modificar(usuario);
     }
 }

@@ -49,8 +49,8 @@ public class ServicioHerreriaTest {
         estadisticasMock.setInteligencia(0);
         estadisticasMock.setFuerza(0);
         estadisticasMock.setArmadura(0);
-        equipamientoMock = new Arma("a", estadisticasMock,new Guerrero(), 10, 10, 50, 0, true );
-        equipamientoMock2 = new Arma("z", estadisticasMock,new Guerrero(), 10, 10, 50, 0, true );
+        equipamientoMock = new Arma("a", estadisticasMock,new Guerrero(), 10, 10, 50, 0, false );
+        equipamientoMock2 = new Arma("z", estadisticasMock,new Guerrero(), 10, 10, 50, 0, false );
         when(personajeMock.getOro()).thenReturn(50);
         when(mejoraDtoMock.getIdEquipamiento()).thenReturn(idEquipamientoMock);
         when(repositorioPersonaje.buscarPersonaje(idPersonajeMock)).thenReturn(personajeMock);
@@ -146,6 +146,7 @@ public class ServicioHerreriaTest {
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(0);
         armaGuerrero.setId(1l);
+        armaGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
 
@@ -169,6 +170,7 @@ public class ServicioHerreriaTest {
         armaGuerrero.setCostoMejora(0);
         armaGuerrero.setCostoCompra(0);
         armaGuerrero.setCostoVenta(0);
+        armaGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
 
@@ -201,6 +203,7 @@ public class ServicioHerreriaTest {
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(5);
         armaGuerrero.setId(1l);
+        armaGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
 
@@ -222,6 +225,7 @@ public class ServicioHerreriaTest {
         armaGuerrero.setCostoMejora(1);
         armaGuerrero.setNivel(0);
         armaGuerrero.setId(1l);
+        armaGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaGuerrero);
 
@@ -257,6 +261,7 @@ public class ServicioHerreriaTest {
         escudoGuerrero.setCostoMejora(1);
         escudoGuerrero.setNivel(0);
         escudoGuerrero.setId(1l);
+        escudoGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoGuerrero);
 
@@ -293,6 +298,7 @@ public class ServicioHerreriaTest {
         cascoGuerrero.setCostoMejora(1);
         cascoGuerrero.setNivel(0);
         cascoGuerrero.setId(1l);
+        cascoGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoGuerrero);
 
@@ -328,6 +334,7 @@ public class ServicioHerreriaTest {
         pecheraGuerrero.setCostoMejora(1);
         pecheraGuerrero.setNivel(0);
         pecheraGuerrero.setId(1l);
+        pecheraGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraGuerrero);
 
@@ -363,6 +370,7 @@ public class ServicioHerreriaTest {
         pantalonesGuerrero.setCostoMejora(1);
         pantalonesGuerrero.setNivel(0);
         pantalonesGuerrero.setId(1l);
+        pantalonesGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesGuerrero);
 
@@ -399,6 +407,7 @@ public class ServicioHerreriaTest {
         botasGuerrero.setCostoMejora(1);
         botasGuerrero.setNivel(0);
         botasGuerrero.setId(1l);
+        botasGuerrero.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasGuerrero);
 
@@ -436,6 +445,7 @@ public class ServicioHerreriaTest {
         armaMago.setCostoMejora(1);
         armaMago.setNivel(0);
         armaMago.setId(1l);
+        armaMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaMago);
 
@@ -472,6 +482,7 @@ public class ServicioHerreriaTest {
         escudoMago.setCostoMejora(1);
         escudoMago.setNivel(0);
         escudoMago.setId(1l);
+        escudoMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoMago);
 
@@ -508,6 +519,7 @@ public class ServicioHerreriaTest {
         cascoMago.setCostoMejora(1);
         cascoMago.setNivel(0);
         cascoMago.setId(1l);
+        cascoMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoMago);
 
@@ -544,6 +556,7 @@ public class ServicioHerreriaTest {
         pecheraMago.setCostoMejora(1);
         pecheraMago.setNivel(0);
         pecheraMago.setId(1l);
+        pecheraMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraMago);
 
@@ -580,6 +593,7 @@ public class ServicioHerreriaTest {
         pantalonesMago.setCostoMejora(1);
         pantalonesMago.setNivel(0);
         pantalonesMago.setId(1l);
+        pantalonesMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesMago);
 
@@ -616,6 +630,7 @@ public class ServicioHerreriaTest {
         botasMago.setCostoMejora(1);
         botasMago.setNivel(0);
         botasMago.setId(1l);
+        botasMago.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasMago);
 
@@ -652,6 +667,7 @@ public class ServicioHerreriaTest {
         armaBandido.setCostoMejora(1);
         armaBandido.setNivel(0);
         armaBandido.setId(1l);
+        armaBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(armaBandido);
 
@@ -687,6 +703,7 @@ public class ServicioHerreriaTest {
         escudoBandido.setCostoMejora(1);
         escudoBandido.setNivel(0);
         escudoBandido.setId(1l);
+        escudoBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(escudoBandido);
 
@@ -722,6 +739,7 @@ public class ServicioHerreriaTest {
         cascoBandido.setCostoMejora(1);
         cascoBandido.setNivel(0);
         cascoBandido.setId(1l);
+        cascoBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(cascoBandido);
 
@@ -757,6 +775,7 @@ public class ServicioHerreriaTest {
         pecheraBandido.setCostoMejora(1);
         pecheraBandido.setNivel(0);
         pecheraBandido.setId(1l);
+        pecheraBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pecheraBandido);
 
@@ -792,6 +811,7 @@ public class ServicioHerreriaTest {
         pantalonesBandido.setCostoMejora(1);
         pantalonesBandido.setNivel(0);
         pantalonesBandido.setId(1l);
+        pantalonesBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(pantalonesBandido);
 
@@ -827,6 +847,7 @@ public class ServicioHerreriaTest {
         botasBandido.setCostoMejora(1);
         botasBandido.setNivel(0);
         botasBandido.setId(1l);
+        botasBandido.setEquipado(false);
 
         when(repositorioInventario.obtenerEquipamientoPorId(mejoraDtoMock.getIdEquipamiento())).thenReturn(botasBandido);
 

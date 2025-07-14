@@ -48,11 +48,10 @@ public class ControladorLoginTest {
 		//preparacion
 
 		//ejecucion
-		ModelAndView modelAndView = controladorLogin.irALogin(sessionMock);
+		ModelAndView modelAndView = controladorLogin.irALogin();
 		//verificacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 		assertThat(modelAndView.getModel().get("datosLogin") instanceof DatosLogin, equalTo(true));
-		verify(sessionMock, times(1)).removeAttribute("idPersonaje");
 	}
 
 	@Test
