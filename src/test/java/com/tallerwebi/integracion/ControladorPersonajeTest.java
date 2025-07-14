@@ -53,9 +53,10 @@ public class ControladorPersonajeTest {
 
     private MockMvc mockMvc;
     private Usuario usuarioReal;
+    private Rol rolGuerrero;
 
 
-    @BeforeEach
+   /* @BeforeEach
     public void init(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
@@ -67,10 +68,36 @@ public class ControladorPersonajeTest {
 
         // Crear un rol en la bdd
         Guerrero guerrero = new Guerrero();
-        guerrero.setTipo("Guerrero");
+        guerrero.setTipo("GuerreroTest_" + System.currentTimeMillis());
         repositorioRol.guardarRol(guerrero);
+        rolGuerrero = guerrero;
 
-    }
+    }*/
+   @BeforeEach
+   public void init() {
+       this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+       // limpiar roles para evitar duplicados
+       for (Rol rol : repositorioRol.obtenerTodos()) {
+           repositorioRol.eliminar(rol);
+       }
+
+       // crear usuario
+       for (Usuario usuario : repoUsuario.obtenerTodos()) {
+           repoUsuario.eliminar(usuario);
+       }
+       usuarioReal = new Usuario();
+       usuarioReal.setEmail("gian@unlam.com");
+       usuarioReal.setPassword("1234");
+       repoUsuario.guardar(usuarioReal);
+
+       // crear rol con nombre único
+       Guerrero guerrero = new Guerrero();
+       guerrero.setTipo("Guerrero_" + System.nanoTime());
+       repositorioRol.guardarRol(guerrero);
+       rolGuerrero = guerrero;
+   }
+
 
     @Test
     public void debeIrALaPaginaCreacionPersonajeCuandoSeNavegaACreacionPersonaje() throws Exception {
@@ -95,7 +122,7 @@ public class ControladorPersonajeTest {
         personajeDTO.setNombre("Gian");
         personajeDTO.setImagen("luchador.png");
         personajeDTO.setGenero("Masculino");
-        personajeDTO.setIdRol(1L);
+        personajeDTO.setIdRol(rolGuerrero.getId());
 
         // ejecuto el post de la vista
         MvcResult result = this.mockMvc.perform(post("/guardar-personaje")
@@ -120,7 +147,7 @@ public class ControladorPersonajeTest {
         assertEquals("Gian", personajeAsignado.getNombre());
         assertEquals("luchador.png", personajeAsignado.getImagen());
         assertEquals("Masculino", personajeAsignado.getGenero());
-        assertEquals(repositorioRol.obtenerRolPorId(1L).getId(), personajeAsignado.getRol().getId());
+        assertEquals(rolGuerrero.getId(), personajeAsignado.getRol().getId());
         assertEquals(personajeAsignado, repoPersonaje.buscarPersonaje(personajeAsignado.getId()));
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Repository("repositorioUsuario")
@@ -48,5 +49,20 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
         sessionFactory.getCurrentSession().update(usuario);
     }
+
+    @Override
+    public List<Usuario> obtenerTodos() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createCriteria(Usuario.class).list();
+    }
+
+    @Override
+    public void eliminar(Usuario usuario) {
+        sessionFactory.getCurrentSession().delete(usuario);
+    }
+
+
+
+
 
 }
