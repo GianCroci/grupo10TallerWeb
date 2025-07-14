@@ -76,9 +76,10 @@ public class ControladorPersonajeTest {
     @Test
     public void debeIrALaPaginaCreacionPersonajeCuandoSeNavegaACreacionPersonaje() throws Exception {
 
-        MvcResult result = this.mockMvc.perform(get("/creacion-personaje"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = this.mockMvc.perform(get("/creacion-personaje")
+                        .sessionAttr("accesoCreacionPersonaje", true)                )
+                        .andExpect(status().isOk())
+                        .andReturn();
 
         ModelAndView modelAndView = result.getModelAndView();
         assert modelAndView != null;
