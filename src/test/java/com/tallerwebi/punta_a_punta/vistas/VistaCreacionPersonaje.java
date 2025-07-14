@@ -13,13 +13,18 @@ public class VistaCreacionPersonaje extends VistaWeb{
         this.escribirEnElElemento("#nombre", nombre);
     }
 
-    public void irACreacionDePersonaje() {
-        page.navigate("http://localhost:8080/spring/nuevo-personaje");
+    public void darClickEnFlechaIzquierdaDeSeleccionDePj(){
+        this.darClickEnElElemento("#flecha-derecha");
     }
 
-    public Page getPage() {
-        return this.page;
+    public void darClickEnFlechaDerechaDeSeleccionDePj(){
+        this.darClickEnElElemento("#flecha-derecha");
     }
+
+    public void darClickEnCrearPersonaje(){
+        this.darClickEnElElemento("#btn-registrarme");
+    }
+
 /*
     public String obtenerMensajeDeError(){
         return this.obtenerTextoDelElemento("p.alert.alert-danger");

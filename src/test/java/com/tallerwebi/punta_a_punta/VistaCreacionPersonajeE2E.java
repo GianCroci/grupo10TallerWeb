@@ -3,6 +3,7 @@ package com.tallerwebi.punta_a_punta;
 import com.microsoft.playwright.*;
 import com.tallerwebi.punta_a_punta.vistas.VistaCreacionPersonaje;
 import com.tallerwebi.punta_a_punta.vistas.VistaLogin;
+import com.tallerwebi.punta_a_punta.vistas.VistaNuevoUsuario;
 import org.junit.jupiter.api.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +15,7 @@ public class VistaCreacionPersonajeE2E {
     static Browser browser;
     BrowserContext context;
     VistaCreacionPersonaje vistaCreacionPersonaje;
-    private VistaLogin vistaLogin;
+    VistaNuevoUsuario vistaNuevoUsuario;
 
     @BeforeAll
     static void abrirNavegador() {
@@ -33,6 +34,14 @@ public class VistaCreacionPersonajeE2E {
     void crearContextoYPagina() {
         context = browser.newContext();
         Page page = context.newPage();
+
+        // Hacer login primero
+        vistaNuevoUsuario = new VistaNuevoUsuario(page);
+        vistaNuevoUsuario.escribirEMAIL("gian@unlam.edu.ar");
+        vistaNuevoUsuario.escribirClave("test");
+        vistaNuevoUsuario.darClickEnIniciarSesion();
+
+        // Crear vista de creación personaje en la misma página
         vistaCreacionPersonaje = new VistaCreacionPersonaje(page);
     }
 
@@ -42,14 +51,32 @@ public class VistaCreacionPersonajeE2E {
     }
 
     @Test
-    void deberiaEscribirElNombreDelPersonaje() {
-        vistaLogin.escribirEMAIL("test@unlam.edu.ar");
-        vistaLogin.escribirClave("test");
-        vistaLogin.darClickEnIniciarSesion();
+    void deberiaEscribirElNombreDelPersonajeElegirAlMagoCrearElPersonajeYRedirigirAHome() {
 
         vistaCreacionPersonaje.escribirNombre("Legolas");
+        vistaCreacionPersonaje.darClickEnFlechaDerechaDeSeleccionDePj();
+        vistaCreacionPersonaje.darClickEnFlechaDerechaDeSeleccionDePj();
+        vistaCreacionPersonaje.darClickEnCrearPersonaje();
+        String url = vistaCreacionPersonaje.obtenerURLActual();
+        assertThat(url, containsStringIgnoringCase("/spring/home"));
+    }
 
+    @Test
+    void deberiaEscribirElNombreDelPersonajeElegirALaBandidaCrearElPersonajeYRedirigirAHome() {
 
+        vistaCreacionPersonaje.escribirNombre("Legolas");
+        vistaCreacionPersonaje.darClickEnFlechaIzquierdaDeSeleccionDePj();
+        vistaCreacionPersonaje.darClickEnCrearPersonaje();
+        String url = vistaCreacionPersonaje.obtenerURLActual();
+        assertThat(url, containsStringIgnoringCase("/spring/home"));
+    }
+
+    @Test
+    void deberiaNoDejarteCrearElPersonajeSiNoLeAsignasUnNombre() {
+        vistaCreacionPersonaje.escribirNombre("");
+        vistaCreacionPersonaje.darClickEnFlechaDerechaDeSeleccionDePj();
+        vistaCreacionPersonaje.darClickEnFlechaDerechaDeSeleccionDePj();
+        vistaCreacionPersonaje.darClickEnCrearPersonaje();
         String url = vistaCreacionPersonaje.obtenerURLActual();
         assertThat(url, containsStringIgnoringCase("/spring/creacion-personaje"));
     }
