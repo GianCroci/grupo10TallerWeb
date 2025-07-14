@@ -27,10 +27,13 @@ public class ServicioLoginImpl implements ServicioLogin {
     @Override
     public Usuario consultarUsuario (String email, String password) {
         Usuario usuario = repositorioUsuario.buscar(email);
-        if (encoder.matches(password, usuario.getPassword())) {
+
+        // Verificar si el usuario existe antes de validar la contraseña
+        if (usuario != null && encoder.matches(password, usuario.getPassword())) {
             return usuario;
         }
-       return null;
+
+        return null;
     }
 
     @Override

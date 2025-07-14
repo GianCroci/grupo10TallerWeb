@@ -46,7 +46,7 @@ public class VistaLoginE2E {
 
     @Test
     void deberiaDarUnErrorAlIngresarDatosIncorrectosYTocarElBoton() {
-        vistaLogin.escribirEMAIL("dami@uam.edu.ar");
+        vistaLogin.escribirEMAIL("dami@ulam.edu.ar");
         vistaLogin.escribirClave("unlam");
         vistaLogin.darClickEnIniciarSesion();
         String texto = vistaLogin.obtenerMensajeDeError();
