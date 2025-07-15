@@ -32,6 +32,7 @@ public class VistaCreacionPersonajeE2E {
 
     @BeforeEach
     void crearContextoYPagina() {
+        ReiniciarDB.limpiarBaseDeDatos();
         context = browser.newContext();
         Page page = context.newPage();
 
