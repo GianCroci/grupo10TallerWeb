@@ -74,6 +74,7 @@ public class ControladorWebSocket {
         messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
     }
 
+
     @MessageMapping("/batalla/{salaId}")
     public void atacar(@DestinationVariable String salaId, @Payload AtaqueDTO ataque) {
         Batalla batalla = servicioBatallaWs.obtenerBatalla(salaId);
@@ -106,6 +107,12 @@ public class ControladorWebSocket {
             }
         }
     }
+
+    @MessageMapping("/batalla/salir")
+    public void salirBatalla(@Payload GanadorDTO datos) {
+        servicioBatallaWs.eliminarBatalla(datos.getIdSala());
+    }
+
 
 
 

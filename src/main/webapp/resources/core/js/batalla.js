@@ -81,5 +81,11 @@ function atacar() {
 }
 
 function salir() {
+    // Notificar al backend que salgo de la batalla
+    stompClient.send("/app/batalla/salir", {}, JSON.stringify({
+        idPersonaje: idPersonaje,
+        idSala: salaId
+    }));
     window.location.href = "/spring/home";
 }
+
