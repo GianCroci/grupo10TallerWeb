@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
@@ -21,23 +22,19 @@ public class ControladorNavbarAviso {
     @Autowired
     private ServicioPersonaje servicioPersonaje;
 
-
-
     @ModelAttribute
-    public void notificarDesafiosPendientes(HttpSession session, Model model) {
+    public void notificarDesafiosPendientes(HttpSession session, Model model, HttpServletRequest request) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         Personaje personaje = servicioPersonaje.buscarPersonaje(idPersonaje);
 
         if (personaje != null) {
             Optional<String> sala = servicioBatallaWs.buscarSalaPendientePara(personaje.getId());
 
-            model.addAttribute("tieneDesafio", sala.isPresent());
-            model.addAttribute("salaPendienteId", sala.orElse(null));
+            // Solo agregar al request scope, no al modelo
+            request.setAttribute("tieneDesafio", sala.isPresent());
+            request.setAttribute("salaPendienteId", sala.orElse(null));
         } else {
-            model.addAttribute("tieneDesafio", false);
+            request.setAttribute("tieneDesafio", false);
         }
     }
-
-
 }
-
