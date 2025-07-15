@@ -55,7 +55,8 @@ function conectarBatalla(idSala, nombre) {
                     document.getElementById("btnSalir").style.display = "block";
                     document.getElementById("btnAtacar").style.display = "none";
                     stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
-                        idGanador: idPersonaje
+                        idGanador: idPersonaje,
+                        idSala: salaId
                     }));
                 }
                 console.log("Jugador B - Mi HP:", estado.hpRival, "HP Rival:", estado.hpJugador);

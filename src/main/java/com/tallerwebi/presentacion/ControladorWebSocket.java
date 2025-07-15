@@ -99,6 +99,11 @@ public class ControladorWebSocket {
 
             servicioPersonaje.modificar(personajeGanador);
             System.out.println("🏆 " + personajeGanador.getNombre() + " ganó y ahora tiene " + personajeGanador.getOro() + " oro.");
+
+            if (ganador.getIdSala() != null) {
+                servicioBatallaWs.eliminarBatalla(ganador.getIdSala());
+                System.out.println("🗑️ Sala de batalla eliminada: " + ganador.getIdSala());
+            }
         }
     }
 
