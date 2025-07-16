@@ -45,7 +45,7 @@
 
         .productos-container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1250px;
             margin: 0 auto;
         }
 
@@ -63,12 +63,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 320px;
+
             box-sizing: border-box;
             box-shadow: 0 0 8px 2px #f4c542;
             text-align: center;
             justify-content: space-between;
+            min-height: 330px;
         }
+
 
         .producto-card:hover {
             transform: translateY(-20px) scale(1.05);
@@ -77,12 +79,13 @@
         }
 
         .producto-info {
-            height: 180px;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
+
 
 
 
@@ -109,10 +112,16 @@
             font-size: 1.2em;
             color: #f4c542;
             text-align: center;
-            margin: 0;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 6px white;
+        }
+        .producto-fuerza,
+        .producto-inteligencia,
+        .producto-agilidad {
+            color: #ca9b1c;
             font-weight: bold;
         }
-
         .producto-btn {
             padding: 10px 20px;
             font-size: 1em;
@@ -238,8 +247,11 @@
                     <div class="producto-info">
                         <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 80px;">
                         <div class="producto-nombre" th:text="${producto.nombre}">Nombre</div>
+                        <div class="producto-fuerza" th:text="'Fuerza: ' + ${producto.stats.fuerza}" style="color: #ca9b1c;">Fuerza</div>
+                        <div class="producto-inteligencia" th:text="'Inteligencia: ' + ${producto.stats.inteligencia}" style="color: #ca9b1c;">Inteligencia</div>
+                        <div class="producto-agilidad" th:text="'Agilidad: ' + ${producto.stats.agilidad}" style="color: #ca9b1c;">Agilidad</div>
                         <div class="producto-precio" th:text="'$' + ${producto.costoCompra}">Precio</div>
-                    </div>
+                    </div><br>
                     <button type="button" class="producto-btn"
                             onclick="const card = this.parentElement;
                                      const checkbox = card.querySelector('.checkbox-hidden');
