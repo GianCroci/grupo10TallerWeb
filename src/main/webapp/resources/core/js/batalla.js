@@ -35,9 +35,11 @@ function conectarBatalla(idSala, nombre) {
                 if (estado.hpJugador <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                 } if(estado.hpRival <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                     stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
                         idGanador: idPersonaje
                     }));
@@ -49,7 +51,7 @@ function conectarBatalla(idSala, nombre) {
                 if (estado.hpRival <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
                     document.getElementById("btnSalir").style.display = "block";
-                    document.getElementById("btnAtacar").style.display = "none !important";
+                    document.getElementById("btnAtacar").style.display = "none";
                 } if(estado.hpJugador <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
