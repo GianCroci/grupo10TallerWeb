@@ -194,11 +194,14 @@
         </a></li>
 
         <li class="dropdown d-flex align-items-center" style="margin-left: auto;">
-            <img th:src="${session.imagenPersonaje}" class="avatar-medieval" alt="Avatar" style="
-              border: 2px solid #8b4513;
-              border-radius: 50%;
-              box-shadow: 0 2px 4px rgba(139, 69, 19, 0.5);
-            " />
+            <img th:src="${session.imagenPersonaje}"
+                 class="avatar-medieval"
+                 style="
+                 border: 2px solid #8b4513;
+                 border-radius: 50%;
+                 box-shadow: 0 2px 4px rgba(139, 69, 19, 0.5);"
+                 th:style="'border: 2px solid #8b4513; border-radius: 50%; box-shadow: 0 2px 4px rgba(139, 69, 19, 0.5);' +
+               (${session.imagenPersonaje == null} ? ' background-color: black;' : '')" />
             <a href="#" class="dropdown-toggle d-flex align-items-center" id="dropdownPerfil" data-bs-toggle="dropdown" aria-expanded="false" style="
               text-decoration: none;
               color: #4a2c17;
