@@ -31,6 +31,7 @@
 
         h1 {
             font-size: 3em;
+            margin: 25px 0;
             margin-bottom: 10px;
             text-shadow: 2px 2px 5px #000;
         }
@@ -38,7 +39,7 @@
     </style>
 </head>
 
-<body th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 90vh'" class="bg-warning bg-opacity-50">
+<body th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'" class="bg-warning bg-opacity-50">
 <header th:replace="navbar :: nav"></header>
 
 <main class="container-fluid d-flex flex-column align-items-center">
@@ -50,7 +51,7 @@
                     <input th:field="*{nombre}" type="text" id="nombre" class="form-control" placeholder="Nombre" required/>
                 </div>
                 <div id="carouselExampleFade" class="carousel slide">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner mt-3">
                         <div>
                             <div class="carousel-item active">
                                  <img th:src="@{/img/luchador.png}" class="d-block w-50 mx-auto" alt="Guerrero" data-idrol="1">
