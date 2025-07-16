@@ -202,9 +202,8 @@
         }
     </style>
 </head>
-<body>
-<div th:style="|background-image: url('@{/img/fondo-mercado.png}')|"
-     class="container-mercado">
+<body th:style="|background-image: url('@{/img/fondo-mercado.png}')|">
+<div  class="container-mercado">
 
     <form th:action="@{/realizar-compra}" method="POST">
         <div th:if="${compraExitosa != null}"

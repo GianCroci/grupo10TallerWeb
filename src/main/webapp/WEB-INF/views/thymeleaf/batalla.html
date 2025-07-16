@@ -48,10 +48,9 @@
         }
     </style>
 </head>
-<body>
+<body th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'">
 <header th:replace="navbar :: nav"></header>
-<main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 100vh'"
-      class="container-fluid d-flex justify-content-center align-items-start">
+<main class="container-fluid d-flex justify-content-center align-items-start">
 
     <form class="margin-t" action="#" th:action="@{/atacar-rival}" method="POST">
         <h1 th:if="${resultado != null}" class="" th:text="'Resultado: ' + ${resultado}">

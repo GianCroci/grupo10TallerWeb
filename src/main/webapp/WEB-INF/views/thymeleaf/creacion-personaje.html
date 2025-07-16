@@ -38,11 +38,10 @@
     </style>
 </head>
 
-<body class="bg-warning bg-opacity-50">
+<body th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 90vh'" class="bg-warning bg-opacity-50">
 <header th:replace="navbar :: nav"></header>
 
-<main th:style="'background-image: url(' + @{/img/fondo-creacion-personaje.png} + '); background-size: cover; background-position: center bottom; height: 90vh'"
-      class="container-fluid d-flex flex-column align-items-center">
+<main class="container-fluid d-flex flex-column align-items-center">
 
     <h1 class="text-center text-black fs-1">NUEVO PERSONAJE</h1>
         <div class="w-100" style="max-width: 500px;">

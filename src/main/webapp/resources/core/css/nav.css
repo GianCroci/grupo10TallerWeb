@@ -1,5 +1,5 @@
 .dropdown-menu {
-    background-color: #2f2f2f;
+    background: rgba(15, 15, 15, 0.5);
     border: 2px solid #a77b34;
     font-family: 'MedievalSharp', cursive;
     animation: fadeIn 0.3s ease-in-out;
