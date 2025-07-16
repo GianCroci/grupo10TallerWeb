@@ -74,6 +74,7 @@ public class ControladorWebSocket {
         messagingTemplate.convertAndSend("/sala/batalla/" + salaId, estado);
     }
 
+
     @MessageMapping("/batalla/{salaId}")
     public void atacar(@DestinationVariable String salaId, @Payload AtaqueDTO ataque) {
         Batalla batalla = servicioBatallaWs.obtenerBatalla(salaId);
@@ -99,8 +100,19 @@ public class ControladorWebSocket {
 
             servicioPersonaje.modificar(personajeGanador);
             System.out.println("🏆 " + personajeGanador.getNombre() + " ganó y ahora tiene " + personajeGanador.getOro() + " oro.");
+
+            if (ganador.getIdSala() != null) {
+                servicioBatallaWs.eliminarBatalla(ganador.getIdSala());
+                System.out.println("🗑️ Sala de batalla eliminada: " + ganador.getIdSala());
+            }
         }
     }
+
+    @MessageMapping("/batalla/salir")
+    public void salirBatalla(@Payload GanadorDTO datos) {
+        servicioBatallaWs.eliminarBatalla(datos.getIdSala());
+    }
+
 
 
 

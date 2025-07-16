@@ -1,16 +1,24 @@
 <!-- navbar.html -->
-<nav th:fragment="nav" style="background: #262626; padding: 10px;">
-    <ul style="list-style: none; display: flex; gap: 20px;">
-        <li><a th:href="@{/}" style="color: white; text-decoration: none;">Inicio</a></li>
+
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+
+<nav th:fragment="nav"
+     style="
+       background: #262626;
+       padding: 10px;
+
+       font-family: 'MedievalSharp', cursive;
+     ">
+    <ul style="list-style: none; display: flex; gap: 20px; margin:0; padding:0;">
+        <li><a th:href="@{/home}" style="color: white; text-decoration: none;">Home</a></li>
         <li><a th:href="@{/taberna}" style="color: white; text-decoration: none;">Taberna</a></li>
         <li><a th:href="@{/mercado}" style="color: white; text-decoration: none;">Mercado</a></li>
         <li><a th:href="@{/inventario}" style="color: white; text-decoration: none;">Inventario</a></li>
-        <li><a th:href="@{/herreria}" style="color: white; text-decoration: none;">Herreria</a></li>
-        <li><a th:href="@{/creacion-personaje}" style="color: white; text-decoration: none;">Creacion de Personaje</a></li>
+        <li><a th:href="@{/herreria}" style="color: white; text-decoration: none;">Herrería</a></li>
+        <li><a th:href="@{/creacion-personaje}" style="color: white; text-decoration: none;">Creación de Personaje</a></li>
         <li>
             <a href="#"
-               th:attr="data-salaid=${salaPendienteId}, data-miid=${#httpSession.getAttribute('personaje') != null ? #httpSession.getAttribute('personaje').id : 0}
-"
+               th:attr="data-salaid=${salaPendienteId}, data-miid=${#httpSession.getAttribute('personaje') != null ? #httpSession.getAttribute('personaje').id : 0}"
                th:if="${tieneDesafio}"
                id="btn-batalla-pendiente"
                style="color: white; text-decoration: none;">
@@ -22,15 +30,8 @@
                 Batalla
             </a>
         </li>
-
-
-
-        <li><a th:href="@{/home}" style="color: white; text-decoration: none;">Home</a></li>
         <li><a th:href="@{/amigos}" style="color: white; text-decoration: none;">Amigos</a></li>
         <li><a th:href="@{/tablon-enemigos}" style="color: white; text-decoration: none;">Enemigos</a></li>
-        <li><a th:href="@{/logout}" style="color: white; text-decoration: none;">desconectarse</a></li>
+        <li><a th:href="@{/logout}" style="color: white; text-decoration: none;">Logout</a></li>
     </ul>
 </nav>
-
-
-

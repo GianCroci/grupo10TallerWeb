@@ -75,6 +75,11 @@ public class ServicioBatallaWsImpl implements ServicioBatallaWs {
         return batallas.get(salaId);
     }
 
+    public void eliminarBatalla(String salaId) {
+        batallas.remove(salaId);
+    }
+
+
 
 }
 
