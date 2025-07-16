@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +25,7 @@ public class ControladorInventario {
     }
 
     @GetMapping("/inventario")
-    public ModelAndView verEquipamiento(HttpSession session) {
+    public ModelAndView verEquipamiento(@RequestParam(value = "tipo", required = false) String tipo, HttpSession session) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         ModelMap model = new ModelMap();
 
@@ -33,21 +34,12 @@ public class ControladorInventario {
         }
 
         try {
-            List<Equipamiento> inventario = servicioInventario.obtenerInventario(idPersonaje);
+            List<Equipamiento> inventario = servicioInventario.obtenerInventarioFiltradoPorTipo(idPersonaje, tipo);
+            Equipamiento equipoSeleccionado = servicioInventario.obtenerEquipoSeleccionado(inventario, idPersonaje);
+
             model.addAttribute("inventario", inventario);
-
-            Equipamiento equipoSeleccionado = null;
-            if (!inventario.isEmpty()) {
-                equipoSeleccionado = inventario.stream()
-                        .filter(Equipamiento::getEquipado)
-                        .findFirst()
-                        .orElse(null);
-
-                if (equipoSeleccionado == null) {
-                    equipoSeleccionado = inventario.get(0);
-                }
-            }
             model.addAttribute("equipoSeleccionado", equipoSeleccionado);
+            model.addAttribute("tipoSeleccionado", tipo);
 
         } catch (InventarioVacioException e) {
             model.addAttribute("mensajeError", e.getMessage());
@@ -57,7 +49,7 @@ public class ControladorInventario {
     }
 
     @GetMapping("/inventario/{idEquipo}")
-    public ModelAndView verEquipoEspecifico(HttpSession session, @PathVariable Long idEquipo) {
+    public ModelAndView verEquipoEspecifico(@PathVariable Long idEquipo, @RequestParam(value = "tipo", required = false) String tipo, HttpSession session) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         ModelMap model = new ModelMap();
 
@@ -65,9 +57,21 @@ public class ControladorInventario {
             return new ModelAndView("redirect:/login");
         }
 
+        if (tipo == null || tipo.isBlank()) {
+            tipo = "Todos";
+        }
+
         try {
-            model.addAttribute("inventario", servicioInventario.obtenerInventario(idPersonaje));
-            model.addAttribute("equipoSeleccionado", servicioInventario.obtenerEquipamientoPorId(idPersonaje, idEquipo));
+            List<Equipamiento> inventarioCompleto = servicioInventario.obtenerInventario(idPersonaje);
+            List<Equipamiento> inventarioFiltrado = servicioInventario.obtenerInventarioFiltradoPorTipo(idPersonaje, tipo);
+
+            Equipamiento equipoSeleccionado = servicioInventario.obtenerEquipamientoPorId(idPersonaje, idEquipo);
+            equipoSeleccionado = servicioInventario.validarEquipoSeleccionadoEnFiltro(inventarioFiltrado, equipoSeleccionado, inventarioCompleto);
+
+            model.addAttribute("inventario", inventarioFiltrado);
+            model.addAttribute("equipoSeleccionado", equipoSeleccionado);
+            model.addAttribute("tipoSeleccionado", tipo);
+
         } catch (InventarioVacioException e) {
             model.addAttribute("mensajeError", e.getMessage());
         }
@@ -76,16 +80,20 @@ public class ControladorInventario {
     }
 
     @GetMapping("/inventario/equipar/{idEquipo}")
-    public String equipar(HttpSession session, @PathVariable Long idEquipo) {
+    public String equipar(@PathVariable Long idEquipo,@RequestParam(value = "tipo", required = false) String tipo, HttpSession session) {
         Long idPersonaje = (Long) session.getAttribute("idPersonaje");
         if (idPersonaje == null) {
             return "redirect:/login";
         }
+
         try {
             servicioInventario.equipar(idPersonaje, idEquipo);
         } catch (InventarioVacioException e) {
             System.err.println("Error al equipar: " + e.getMessage());
         }
-        return "redirect:/inventario";
+
+        return (tipo != null && !tipo.isBlank())
+                ? "redirect:/inventario?tipo=" + tipo
+                : "redirect:/inventario";
     }
 }
