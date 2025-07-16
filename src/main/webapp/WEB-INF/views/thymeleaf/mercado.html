@@ -245,7 +245,7 @@
                 <div th:each="producto : ${mercado.productos}" class="producto-card">
                     <input type="checkbox" class="checkbox-hidden" name="itemsSeleccionados" th:value="${producto.nombre}" />
                     <div class="producto-info">
-                        <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 80px;">
+                        <img th:src="@{${producto.imagen}}" alt="imagen del producto" style="max-width: 100px;">
                         <div class="producto-nombre" th:text="${producto.nombre}">Nombre</div>
                         <div class="producto-fuerza" th:text="'Fuerza: ' + ${producto.stats.fuerza}" style="color: #ca9b1c;">Fuerza</div>
                         <div class="producto-inteligencia" th:text="'Inteligencia: ' + ${producto.stats.inteligencia}" style="color: #ca9b1c;">Inteligencia</div>
