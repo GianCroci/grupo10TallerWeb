@@ -253,3 +253,11 @@ main{
     user-select: none;
 }
 
+.nombre-equipo h2 {
+    font-family: 'Macondo', cursive;
+    color: #1c110b;
+}
+.estadistica h2 {
+    font-family: 'Macondo', cursive;
+    color: #1c110b;
+}
