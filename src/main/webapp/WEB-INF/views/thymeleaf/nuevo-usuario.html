@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <header th:replace="navbar :: nav"></header>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,6 +34,7 @@
         <button type="submit" id="btn-login" class="form-button button-l margin-b">Registrarse</button>
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
         </p>
+        <a class="text-darkyellow" href="login"><small>Volver al login</small></a>
       </form>
     </div>
   </div>
