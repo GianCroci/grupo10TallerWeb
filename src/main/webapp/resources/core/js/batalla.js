@@ -35,9 +35,11 @@ function conectarBatalla(idSala, nombre) {
                 if (estado.hpJugador <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                 } if(estado.hpRival <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                     stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
                         idGanador: idPersonaje
                     }));
@@ -49,11 +51,14 @@ function conectarBatalla(idSala, nombre) {
                 if (estado.hpRival <= 0){
                     document.getElementById("estado").innerText = estado.mensaje + "Perdiste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                 } if(estado.hpJugador <= 0) {
                     document.getElementById("estado").innerText = estado.mensaje + "Ganaste";
                     document.getElementById("btnSalir").style.display = "block";
+                    document.getElementById("btnAtacar").style.display = "none";
                     stompClient.send("/app/batalla/ganador", {}, JSON.stringify({
-                        idGanador: idPersonaje
+                        idGanador: idPersonaje,
+                        idSala: salaId
                     }));
                 }
                 console.log("Jugador B - Mi HP:", estado.hpRival, "HP Rival:", estado.hpJugador);
@@ -78,5 +83,11 @@ function atacar() {
 }
 
 function salir() {
+    // Notificar al backend que salgo de la batalla
+    stompClient.send("/app/batalla/salir", {}, JSON.stringify({
+        idPersonaje: idPersonaje,
+        idSala: salaId
+    }));
     window.location.href = "/spring/home";
 }
+

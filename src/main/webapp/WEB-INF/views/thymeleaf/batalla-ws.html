@@ -20,18 +20,19 @@
     }
 
     h1, h2 {
+      font-size: 30px;
       text-shadow: 2px 2px #000;
       color: #f4d35e;
     }
 
     .img-personaje {
       width: 60%;
-      border: 3px solid #f4d35e;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
+      filter: drop-shadow(0 0.9rem 0.5rem rgba(0, 0, 0, 0.4));
     }
 
     #btnAtacar {
+      display: block;
+      margin: auto;
       font-size: 28px;
       padding: 15px 40px;
       border-radius: 12px;
@@ -53,6 +54,21 @@
       cursor: not-allowed;
     }
 
+    #btnSalir {
+      display: none;
+      margin: auto;
+      color: #fff;
+      background: linear-gradient(#b8893a, #634107);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #btnSalir:hover:enabled {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+
     #estado {
       margin-top: 15px;
       font-size: 22px;
@@ -61,7 +77,15 @@
     }
 
     p {
-      font-size: 20px;
+      margin-top: 10px;
+      font-size: 30px;
+      color: #f4d35e;
+      text-shadow: 2px 3px 4px rgba(0,0,0,0.83);
+    }
+
+    span{
+      font-size: 30px;
+      color: #ed0707;
     }
     .box-boton {
       margin-top: -5rem !important;
@@ -99,13 +123,12 @@
               th:disabled="${!personaje.esTuTurno}">
         ¡Atacar!
       </button>
+      <button id="btnSalir" class="btn btn-secondary btn-lg" onclick="salir()" th:href="@{/home}">
+        Salir
+      </button>
       <p id="estado">Esperando estado de batalla...</p>
     </div>
     <div class="mt-3">
-    <button id="btnSalir" class="btn btn-secondary btn-lg" onclick="salir()" style="display: none;">
-      Salir
-    </button>
-  </div>
   </div>
   <script th:inline="javascript">
     const idPersonaje = /*[[${personaje.id}]]*/ 0;

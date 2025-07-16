@@ -9,4 +9,7 @@ public interface ServicioBatallaWs {
     Batalla obtenerBatalla(String salaId);
 
     Optional<String> buscarSalaPendientePara(Long id);
+
+   void eliminarBatalla(String salaId);
+
 }
