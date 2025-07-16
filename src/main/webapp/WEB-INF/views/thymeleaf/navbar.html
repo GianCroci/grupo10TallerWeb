@@ -1,6 +1,7 @@
 <!-- navbar.html -->
 
 <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/nav.css}" />
 
 <nav th:fragment="nav"
      style="
@@ -32,6 +33,17 @@
         </li>
         <li><a th:href="@{/amigos}" style="color: white; text-decoration: none;">Amigos</a></li>
         <li><a th:href="@{/tablon-enemigos}" style="color: white; text-decoration: none;">Enemigos</a></li>
-        <li><a th:href="@{/logout}" style="color: white; text-decoration: none;">Logout</a></li>
+        <li class="dropdown d-flex align-items-center" style="margin-left: auto;">
+            <img th:src="${session.imagenPersonaje}" class="avatar-medieval" alt="Avatar" />
+            <a href="#" class="dropdown-toggle text-white d-flex align-items-center" id="dropdownPerfil" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                <span th:text="${session.nombrePersonaje}">Nombre</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownPerfil">
+
+                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </li>
     </ul>
+
+
 </nav>
