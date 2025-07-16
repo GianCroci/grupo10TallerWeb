@@ -171,6 +171,8 @@ public class ServicioTabernaImpl implements ServicioTaberna {
         personaje.getEstadisticas().setInteligencia(beneficioInteligencia);
 
     }
+
+
 }
 
 
