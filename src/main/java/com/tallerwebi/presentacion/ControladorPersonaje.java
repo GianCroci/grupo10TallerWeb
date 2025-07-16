@@ -56,7 +56,8 @@ public class ControladorPersonaje {
             servicioUsuario.setPersonaje(personajeCreado, usuarioLogueado);
             session.setAttribute( "idPersonaje", usuarioLogueado.getPersonaje().getId());
             session.setAttribute("nombrePersonaje", personajeCreado.getNombre());
-            session.setAttribute("imagenPersonaje", personajeCreado.getImagen());
+            String imagenMiniatura = personajeCreado.getImagen().replace(".png", "Miniatura.png");
+            session.setAttribute("imagenPersonaje", imagenMiniatura);
             return new ModelAndView("redirect:/home", modelMap);
         }
 
