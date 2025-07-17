@@ -90,7 +90,7 @@ public class ServicioPersonajeImpl implements ServicioPersonaje {
         personajeCreado.setGenero(genero);
         personajeCreado.setImagen(imagen);
         personajeCreado.setRol(rolObtenido);
-        personajeCreado.setOro(0);
+        personajeCreado.setOro(100);
         personajeCreado.setEstadisticas(new Estadisticas());
         personajeCreado.aplicarEstadisticasBase();
         personajeCreado.calcularNivel();

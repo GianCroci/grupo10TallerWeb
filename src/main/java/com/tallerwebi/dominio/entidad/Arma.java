@@ -19,7 +19,7 @@ public class Arma extends Equipamiento {
 
     @Override
     public void mejorar() throws NivelDeEquipamientoMaximoException {
-        if (this.getNivel() == 5){
+        if (this.getNivel() == 10){
             throw new NivelDeEquipamientoMaximoException("Se ha alcanzado el nivel maximo de este equipamiento");
         }
         this.getRol().aplicarMejora(this);

@@ -18,11 +18,12 @@
     <link rel="stylesheet" th:href="@{/css/nav.css}" />
 
     <style>
-        body, html {
+        * {
+            font-family: 'MedievalSharp', cursive;
+        }
+        body{
             margin: 0;
             padding: 0;
-            font-family: 'Trebuchet MS', sans-serif;
-            color: #fff;
         }
 
         .container-mercado {
@@ -41,6 +42,7 @@
             margin-bottom: 30px;
             text-shadow: 2px 2px 5px #000;
             text-align: center;
+            color: #e0b15c;
         }
 
         .productos-container {
@@ -106,6 +108,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #e0b15c;
         }
 
         .producto-precio {
@@ -118,7 +121,8 @@
         }
         .producto-fuerza,
         .producto-inteligencia,
-        .producto-agilidad {
+        .producto-agilidad,
+        .producto-armadura {
             color: #ca9b1c;
             font-weight: bold;
         }
@@ -211,8 +215,8 @@
         }
     </style>
 </head>
-<body th:style="|background-image: url('@{/img/fondo-mercado.png}')|">
-<div  class="container-mercado">
+<body >
+<div  th:style="|background-image: url(@{/img/fondo-mercado.png})|" class="container-mercado">
 
     <form th:action="@{/realizar-compra}" method="POST">
         <div th:if="${compraExitosa != null}"
@@ -250,6 +254,7 @@
                         <div class="producto-fuerza" th:text="'Fuerza: ' + ${producto.stats.fuerza}" style="color: #ca9b1c;">Fuerza</div>
                         <div class="producto-inteligencia" th:text="'Inteligencia: ' + ${producto.stats.inteligencia}" style="color: #ca9b1c;">Inteligencia</div>
                         <div class="producto-agilidad" th:text="'Agilidad: ' + ${producto.stats.agilidad}" style="color: #ca9b1c;">Agilidad</div>
+                        <div class="producto-armadura" th:text="'Armadura: ' + ${producto.stats.armadura}" style="color: #ca9b1c;">Armadura</div>
                         <div class="producto-precio" th:text="'$' + ${producto.costoCompra}">Precio</div>
                     </div><br>
                     <button type="button" class="producto-btn"
