@@ -18,11 +18,12 @@
     <link rel="stylesheet" th:href="@{/css/nav.css}" />
 
     <style>
-        body, html {
+        * {
+            font-family: 'MedievalSharp', cursive;
+        }
+        body{
             margin: 0;
             padding: 0;
-            font-family: 'Trebuchet MS', sans-serif;
-            color: #fff;
         }
 
         .container-mercado {
@@ -41,6 +42,7 @@
             margin-bottom: 30px;
             text-shadow: 2px 2px 5px #000;
             text-align: center;
+            color: #e0b15c;
         }
 
         .productos-container {
@@ -106,6 +108,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #e0b15c;
         }
 
         .producto-precio {
@@ -211,8 +214,8 @@
         }
     </style>
 </head>
-<body th:style="|background-image: url('@{/img/fondo-mercado.png}')|">
-<div  class="container-mercado">
+<body >
+<div  th:style="|background-image: url(@{/img/fondo-mercado.png})|" class="container-mercado">
 
     <form th:action="@{/realizar-compra}" method="POST">
         <div th:if="${compraExitosa != null}"

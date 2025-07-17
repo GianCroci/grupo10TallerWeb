@@ -9,10 +9,25 @@
 
   <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
 
   <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/login.css}"/>
   <link rel="stylesheet" th:href="@{/css/nav.css}" />
+  <style>
+    * {
+      font-family: 'MedievalSharp', cursive;
+    }
+    .text-outline {
+      color: #e0b15c;
+      text-shadow:
+              -1px -1px 0 #000,
+              1px -1px 0 #000,
+              -1px  1px 0 #000,
+              1px  1px 0 #000,
+              0px  0px 3px #000;
+    }
+  </style>
 </head>
 
 <body class="main-bg">
@@ -22,7 +37,7 @@
     <div>
       <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
     </div>
-    <h3 class="text-whitesmoke">Nuevo usuario</h3>
+    <h3 class="text-outline">Nuevo usuario</h3>
     <div class="container-content w-100">
       <form class="margin-t" action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
         <div class="form-group">
