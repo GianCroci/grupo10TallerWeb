@@ -58,6 +58,7 @@ public class ControladorPersonajeTest {
 
         ModelAndView modelAndView = controladorPersonaje.creacionPersonaje(redirectAttributesMock, sessionMock);
 
+
         String vistaEsperada = "creacion-personaje";
         String vistaobtenida = modelAndView.getViewName();
 
@@ -98,6 +99,8 @@ public class ControladorPersonajeTest {
         when(usuarioMockeado.getPersonaje()).thenReturn(personajeMockeado);
         when(personajeMockeado.getId()).thenReturn(1l);
         when(servicioPersonajeMock.crearPersonaje(any(), any(), any(), any())).thenReturn(personajeMockeado);
+        when(personajeMockeado.getImagen()).thenReturn("guerrero.png");
+
 
         //ejecucion
         ModelAndView modelAndView = controladorPersonaje.guardarPersonaje(personajeDtoMockeado, sessionMock);

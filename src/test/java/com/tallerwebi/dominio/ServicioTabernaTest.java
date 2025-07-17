@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -230,6 +231,85 @@ public class ServicioTabernaTest {
         int cervezasDisponibles = servicioTaberna.obtenerCervezasDisponibles(idPersonaje);
 
         assertEquals(0, cervezasDisponibles);
+    }
+
+
+    @Test
+    public void quePermitaInvitarCervezaSiQuedanDisponibles() {
+        Long idPersonaje = 1L;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(1);
+
+        servicioTaberna.invitarCerveza(idPersonaje, PersonajeTaberna.MERCADER);
+
+        verify(repositorioTabernaMock, times(1)).invitarCerveza(idPersonaje, PersonajeTaberna.MERCADER);
+    }
+
+    @Test
+    public void queNoPermitaInvitarCervezaSiYaInvitoDos() {
+        Long idPersonaje = 1L;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(2);
+
+        servicioTaberna.invitarCerveza(idPersonaje, PersonajeTaberna.GUARDIA);
+
+        verify(repositorioTabernaMock, never()).invitarCerveza(any(), any());
+    }
+
+    @Test
+    public void queObtengaCantidadDeCervezasInvitadas() {
+        Long idPersonaje = 1L;
+
+        when(repositorioTabernaMock.getCantidadCervezasInvitadas(idPersonaje, PersonajeTaberna.HERRERO)).thenReturn(3);
+
+        int cantidad = servicioTaberna.getCantidadCervezasInvitadas(idPersonaje, PersonajeTaberna.HERRERO);
+
+        assertEquals(3, cantidad);
+    }
+
+    @Test
+    public void queObtengaMapaDeCervezasPorPersonaje() {
+        Long idPersonaje = 1L;
+
+        for (PersonajeTaberna p : PersonajeTaberna.values()) {
+            when(repositorioTabernaMock.getCantidadCervezasInvitadas(idPersonaje, p)).thenReturn(2);
+        }
+
+        Map<PersonajeTaberna, Integer> resultado = servicioTaberna.obtenerCervezasInvitadasPorPersonaje(idPersonaje);
+
+        assertEquals(3, resultado.size()); // Hay 3 personajes en el enum
+        assertTrue(resultado.values().stream().allMatch(c -> c == 2));
+    }
+
+    @Test
+    public void queDevuelvaVistaCorrectaSegunPersonajeTaberna() {
+        assertEquals("mercader.png", servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.MERCADER));
+        assertEquals("herrero.png", servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.HERRERO));
+        assertEquals("guardia.png", servicioTaberna.obtenerVistaSegunPersonaje(PersonajeTaberna.GUARDIA));
+    }
+
+    @Test
+    public void queInviteUnaCervezaCuandoTieneMenosDeDosInvitacionesHoy() {
+        Long idPersonaje = 1L;
+        PersonajeTaberna personaje = PersonajeTaberna.MERCADER;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(1);
+
+        servicioTaberna.invitarCerveza(idPersonaje, personaje);
+
+        verify(repositorioTabernaMock).invitarCerveza(idPersonaje, personaje);
+    }
+
+    @Test
+    public void queNoInviteUnaCervezaCuandoYaTieneDosInvitacionesHoy() {
+        Long idPersonaje = 1L;
+        PersonajeTaberna personaje = PersonajeTaberna.MERCADER;
+
+        when(repositorioTabernaMock.cantidadInvitacionesHoy(idPersonaje)).thenReturn(2);
+
+        servicioTaberna.invitarCerveza(idPersonaje, personaje);
+
+        verify(repositorioTabernaMock, never()).invitarCerveza(anyLong(), any());
     }
 
 }

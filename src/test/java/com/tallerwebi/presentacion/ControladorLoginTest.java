@@ -91,6 +91,7 @@ public class ControladorLoginTest {
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
 		when(servicioUsuarioMock.buscar(anyString())).thenReturn(usuarioEncontradoMock);
 		when(usuarioEncontradoMock.getPersonaje()).thenReturn(personajeMock);
+		when(personajeMock.getImagen()).thenReturn("guerrero.png");
 
 
 		// ejecucion

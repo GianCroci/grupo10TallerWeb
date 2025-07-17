@@ -1,0 +1,31 @@
+.dropdown-menu {
+    background: rgba(15, 15, 15, 0.5);
+    border: 2px solid #a77b34;
+    font-family: 'MedievalSharp', cursive;
+    animation: fadeIn 0.3s ease-in-out;
+    padding: 4px 0;
+}
+
+.dropdown-menu .dropdown-item {
+    color: #f2e8c9;
+    padding: 6px 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #444;
+    color: #e0b15c;
+}
+
+.avatar-medieval {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 2px solid #a77b34;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    margin-right: 6px;
+    object-fit: cover;
+    object-position: 50% 5%;
+}
