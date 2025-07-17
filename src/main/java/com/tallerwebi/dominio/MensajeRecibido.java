@@ -5,6 +5,8 @@ public class MensajeRecibido {
     private String destinatario;
     private String remitente;
 
+    public MensajeRecibido(){};
+
     public String getMensaje() { return mensaje; }
     public void setMensaje(String mensaje) { this.mensaje = mensaje; }
 

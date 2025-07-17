@@ -16,4 +16,6 @@ public interface RepositorioPersonaje {
     List<Personaje> obtenerAmigos(Long idPersonaje);
 
     String obtenerCodigoAmigoPropio(Long idPersonaje);
+
+    void eliminar(Personaje personaje);
 }
