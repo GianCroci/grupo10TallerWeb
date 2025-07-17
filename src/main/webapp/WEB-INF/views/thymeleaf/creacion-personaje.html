@@ -22,11 +22,12 @@
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/nav.css}" />
     <style>
-        body, html {
+        * {
+            font-family: 'MedievalSharp', cursive;
+        }
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'MedievalSharp', cursive;
-            color: #fff;
         }
 
         h1 {
@@ -34,8 +35,41 @@
             margin: 25px 0;
             margin-bottom: 10px;
             text-shadow: 2px 2px 5px #000;
+            color: #e0b15c;
+        }
+        .text-outline {
+            color: #e0b15c;
+            text-shadow:
+                    -1px -1px 0 #000,
+                    1px -1px 0 #000,
+                    -1px  1px 0 #000,
+                    1px  1px 0 #000,
+                    0px  0px 3px #000;
+        }
+        .medieval-input {
+            background-color: #2d2323;
+            color: #f2e8c9;
+            border: 3px solid #a77b34;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 1.2rem;
+            box-shadow: inset 0 0 10px #000;
+            transition: all 0.3s ease;
         }
 
+        .medieval-input::placeholder {
+            color: #c2b280;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .medieval-input:focus {
+            outline: none;
+            border-color: #d4b24f;
+            box-shadow: 0 0 10px #a77b34;
+            background-color: #3c2f2f;
+            color: #f2e8c9;
+        }
     </style>
 </head>
 
@@ -43,11 +77,11 @@
 
 <main class="container-fluid d-flex flex-column align-items-center">
 
-    <h1 class="text-center text-black fs-1">NUEVO PERSONAJE</h1>
+    <h1 class="text-center fs-1 text-outline">NUEVO PERSONAJE</h1>
         <div class="w-100" style="max-width: 500px;">
             <form action="#" th:action="@{/guardar-personaje}" method="POST" th:object="${datosPersonaje}">
                 <div class="mb-n3">
-                    <input th:field="*{nombre}" type="text" id="nombre" class="form-control" placeholder="Nombre" required/>
+                    <input th:field="*{nombre}" type="text" id="nombre" class="form-control medieval-input" placeholder="Nombre" required/>
                 </div>
                 <div id="carouselExampleFade" class="carousel slide">
                     <div class="carousel-inner mt-3">

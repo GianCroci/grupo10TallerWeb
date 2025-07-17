@@ -30,4 +30,9 @@ public class VistaLogin extends VistaWeb {
         page.waitForSelector("button[type='submit']", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
         this.darClickEnElElemento("#btn-login");
     }
+
+    public void darClickEnRegistrarse() {
+        page.waitForSelector("a#registrarse", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
+        this.darClickEnElElemento("#registrarse");
+    }
 }
