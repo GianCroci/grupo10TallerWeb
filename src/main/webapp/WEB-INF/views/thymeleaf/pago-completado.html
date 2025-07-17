@@ -64,7 +64,9 @@
       th:style="'background-image: url(' + @{${imgFondo}} + ');margin: 0; padding: 0; background-size: 100% 100%; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100vw; background-attachment: fixed;'">
 
 <div class="mensaje-pago">
-  <h1>¡Pago Completado!</h1>
+  <h1 th:if="${mensajito.contains('El pago se ha realizado correctamente')}">¡Pago Completado!</h1>
+  <h1 th:if="${mensajito.contains('El pago no se ha realizado correctamente')}">¡Pago Rechazado!</h1>
+  <h1 th:if="${mensajito.contains('El pago sigue pendiente')}">¡Pago Pendiente!</h1>
   <p th:text="${mensajito}"></p>
   <a href="/spring/home" class="btn-volver">Volver al reino</a>
 </div>

@@ -46,7 +46,7 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 
         Producto productoObtenido = servicioProducto.buscarProductoPorId(pedido.getIdProducto());
 
-        String nGrokUrl = "https://76b0dab189d6.ngrok-free.app";
+        String nGrokUrl = "https://a9e952e4dd5d.ngrok-free.app";
 
         PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
                 .success(nGrokUrl + "/spring/pago/success?idPersonaje=" + pedido.getIdPersonajeComprador())

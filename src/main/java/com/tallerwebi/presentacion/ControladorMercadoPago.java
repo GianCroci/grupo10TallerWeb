@@ -68,9 +68,13 @@ public class ControladorMercadoPago {
     public ModelAndView pagoValidadoFallido(HttpServletRequest request) {
 
         String merchantOrderId  = request.getParameter("merchant_order_id");
+        String paymentCLienteId  = request.getParameter("payment_id");
+        if (merchantOrderId.equals("null") || paymentCLienteId.equals("null")) {
+            return new ModelAndView("redirect:http://localhost:8080/spring/pago-completado?operacionMP=failure");
+        }
         Long orderId = Long.parseLong(merchantOrderId);
         MerchantOrderClient merchantOrderClient = new MerchantOrderClient();
-        String paymentCLienteId  = request.getParameter("payment_id");
+
         Long paymentId = Long.parseLong(paymentCLienteId);
         PaymentClient paymentClient = new PaymentClient();
         try {
