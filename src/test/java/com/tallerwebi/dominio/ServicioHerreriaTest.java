@@ -201,7 +201,7 @@ public class ServicioHerreriaTest {
         armaGuerrero.setCostoCompra(0);
         armaGuerrero.setCostoVenta(0);
         armaGuerrero.setCostoMejora(1);
-        armaGuerrero.setNivel(5);
+        armaGuerrero.setNivel(10);
         armaGuerrero.setId(1l);
         armaGuerrero.setEquipado(false);
 
