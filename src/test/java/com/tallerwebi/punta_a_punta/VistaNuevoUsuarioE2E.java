@@ -43,7 +43,7 @@ public class VistaNuevoUsuarioE2E {
 
     @Test
     void deberiaCrearUnUsuarioAlIngresarUnMailNuevoYContraseniaValidadYNavegarACreacionPersonaje() {
-        vistaNuevoUsuario.escribirEMAIL("damian@unlam.edu.ar");
+        vistaNuevoUsuario.escribirEMAIL("dam@unlam.edu.ar");
         vistaNuevoUsuario.escribirClave("unlam");
         vistaNuevoUsuario.darClickEnIniciarSesion();
         String url = vistaNuevoUsuario.obtenerURLActual();
