@@ -97,4 +97,10 @@ public class RepositorioPersonajeImpl implements RepositorioPersonaje {
                 .uniqueResult();
     }
 
+    @Override
+    public void eliminar(Personaje personaje) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(personaje);
+    }
+
 }

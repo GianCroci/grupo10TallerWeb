@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,6 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
@@ -55,24 +58,6 @@ public class ControladorPersonajeTest {
     private Usuario usuarioReal;
     private Rol rolGuerrero;
 
-
-   /* @BeforeEach
-    public void init(){
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-
-        //creo un usuario real en la bdd
-        usuarioReal = new Usuario();
-        usuarioReal.setEmail("gian@unlam.com");
-        usuarioReal.setPassword("1234");
-        repoUsuario.guardar(usuarioReal);
-
-        // Crear un rol en la bdd
-        Guerrero guerrero = new Guerrero();
-        guerrero.setTipo("GuerreroTest_" + System.currentTimeMillis());
-        repositorioRol.guardarRol(guerrero);
-        rolGuerrero = guerrero;
-
-    }*/
    @BeforeEach
    public void init() {
        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
