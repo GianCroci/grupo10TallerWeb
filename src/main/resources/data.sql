@@ -20,10 +20,10 @@ INSERT INTO Equipamiento(
     costoCompra, costoMejora, costoVenta, nivel, equipado,
     personaje_id, rol_id, imagen
 ) VALUES
-      ('Espada', 10, 0, 0, 0, 50, 20, 30, 0, FALSE, 1, 1, 'img/espada.png'),
-      ('Bastón', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/baston.png'),
+      ('Espada', 10, 0, 0, 0, 50, 20, 30, 5, FALSE, 1, 1, 'img/espada.png'),
+      ('Baston', 0, 12, 0, 0, 40, 15, 25, 0, FALSE, 1, 2, 'img/baston.png'),
       ('Daga', 4, 0, 0, 10, 35, 10, 20, 0, FALSE, 1, 3, 'img/daga.png'),
-      ('Casco', 0, 0, 5, 0, 35, 10, 20, 0, FALSE, 1, 1, 'img/casco.png');
+      ('Casco', 0, 0, 5, 0, 35, 1000, 20, 0, FALSE, 1, 1, 'img/casco.png');
 
 -- Subtablas
 INSERT INTO Arma(id) VALUES (1);
@@ -79,9 +79,9 @@ INSERT INTO Escudo(id) VALUES (23);
 INSERT INTO Escudo(id) VALUES (24);
 
 INSERT INTO Enemigo(id, nombre, descripcion, imagenEnemigo, imagenFondo, fuerza, inteligencia, armadura, agilidad, nivel, vida)
-VALUES (1, 'Slime', 'Baboso', 'img/slime.png', 'img/calabozo.png', 20, 5, 20, 5, 5, 75),
-(2, 'Lobo', 'Auuuuu', 'img/lobo.png', 'img/bosque.png', 40, 40, 10, 60, 15, 225),
-(3, 'Trol', 'Trolaso', 'img/trol.png', 'img/caverna.png', 250, 0, 150, 100, 50, 750);
+VALUES (1, 'Slime', 'Una masa gelatinosa y ácida que se arrastra lentamente. Pese a su apariencia inofensiva, puede disolver lo que toca.', 'img/slime.png', 'img/calabozo.png', 20, 5, 20, 5, 5, 75),
+(2, 'Lobo', 'Rápido y letal, este lobo acecha desde la oscuridad del bosque. Ataca en manada y no muestra piedad con los débiles.', 'img/lobo.png', 'img/bosque.png', 40, 40, 10, 60, 15, 225),
+(3, 'Trol', 'Gigante bruto de las cavernas. Fuerte, resistente y con una piel que se regenera, aunque lento y fácil de engañar', 'img/trol.png', 'img/caverna.png', 250, 0, 150, 100, 50, 750);
 
 INSERT INTO Slime (id) VALUES (1);
 INSERT INTO Lobo (id) VALUES (2);

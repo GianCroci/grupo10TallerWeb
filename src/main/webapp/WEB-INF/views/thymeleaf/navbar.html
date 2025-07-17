@@ -51,7 +51,7 @@
             <li><a th:href="@{/taberna}" style="color: #4a2c17; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 69, 19, 0.2)'" onmouseout="this.style.background='transparent'">Taberna</a></li>
             <li><a th:href="@{/mercado}" style="color: #4a2c17; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 69, 19, 0.2)'" onmouseout="this.style.background='transparent'">Mercado</a></li>
             <li><a th:href="@{/inventario}" style="color: #4a2c17; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 69, 19, 0.2)'" onmouseout="this.style.background='transparent'">Inventario</a></li>
-            <li><a th:href="@{/herreria}" style="color: #4a2c17; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 69, 19, 0.2)'" onmouseout="this.style.background='transparent'">Herrería</a></li>
+            <li><a id="herreria" th:href="@{/herreria}" style="color: #4a2c17; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 69, 19, 0.2)'" onmouseout="this.style.background='transparent'">Herrería</a></li>
             <li>
                 <a href="#"
                    th:attr="data-salaid=${salaPendienteId}, data-miid=${#httpSession.getAttribute('personaje') != null ? #httpSession.getAttribute('personaje').id : 0}"

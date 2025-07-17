@@ -304,7 +304,7 @@
                                 <div class="col-md-4" th:each="productoActual : ${productosParaComprarPorMP}">
                                     <label class="rounded-product p-3 d-flex flex-column align-items-center position-relative" style="cursor:pointer;">
                                         <input type="radio" name="productoSeleccionado" th:value="${productoActual.id}" class="form-check-input position-absolute top-0 end-0 m-2" required>
-                                        <img src="img/oro.png" th:alt="${productoActual.nombre}" style="width:80px; height:80px; object-fit:cover;" class="rounded mb-2">
+                                        <img th:src="${productoActual.imagen}" th:alt="${productoActual.nombre}" style="height:80px; object-fit:cover;" class="rounded mb-2">
                                         <h5 class="text-center mb-1" th:text="${productoActual.nombre}">Nombre</h5>
                                         <p class="mb-1" th:text="'Precio: $' + ${productoActual.precio}">Precio</p>
                                         <p class="mb-0 text-success" th:text="'Recompensa: ' + ${productoActual.cantidadProducto}">Recompensa</p>
